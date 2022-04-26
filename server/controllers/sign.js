@@ -1,10 +1,8 @@
 
 module.exports = {
-    signIn : async (req, res) => {
-    
+    signIn : async (req, res) => { 
     },
 
-    signOut : async (req, res) => {
-    
+    signOut : async (req, res) => { 
     },
 }
