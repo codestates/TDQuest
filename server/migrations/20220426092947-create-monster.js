@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       monster_image: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(5000)
       },
       kind: {
         type: Sequelize.STRING

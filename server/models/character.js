@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+     static associate(models) {
       // define association here
       models.character.hasOne(models.Class, {
         foreignKey: 'character_id'
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   character.init({
-    image: DataTypes.STRING,
+    image: DataTypes.STRING(5000),
     level: DataTypes.INTEGER,
     status_phy: DataTypes.INTEGER,
     status_int: DataTypes.INTEGER,
@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     phy_name: DataTypes.STRING,
     int_name: DataTypes.STRING,
     spi_name: DataTypes.STRING,
+    class: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'character',

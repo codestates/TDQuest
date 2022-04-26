@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+     static associate(models) {
       // define association here
       models.monster.hasMany(models.raid, {
         foreignKey: 'monster_id'
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   monster.init({
-    monster_image: DataTypes.STRING,
+    monster_image: DataTypes.STRING(5000),
     kind: DataTypes.STRING,
     name: DataTypes.STRING,
     hp: DataTypes.INTEGER,
