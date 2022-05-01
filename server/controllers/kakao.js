@@ -11,7 +11,7 @@ module.exports = {
     },
 
     callback : async (req, res) => {
-        const {data} = await axios({
+        const {data} = await axios({ //token
           method: 'POST',
           url: `${process.env.KAKAO_URL}/token`,
           headers:{
@@ -34,6 +34,8 @@ module.exports = {
                     'authorization':`bearer ${kakao_access_token}`,
                 }
              });
+
+          
     },
 
 }

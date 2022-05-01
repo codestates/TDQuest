@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { user } = require('../models')
+const { character } = require('../models')
 
 module.exports = {
     login: async (req, res) => {
@@ -17,16 +18,10 @@ module.exports = {
             }
             const AccessToken = jwt.sign(payload, process.env.ACCESS_SECRET, { expiresIn: '1h' })
             const RefreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, { expiresIn: '24h' })
+            const characterInfo = await character.findOne({ where : {id : userInfo.dataValues.id}})
             res.status(200).cookie('refreshToken', RefreshToken)
                 .json({
-                    'accessToken': AccessToken, userInfo: {
-                        id: userInfo.dataValues.id,
-                        email: userInfo.dataValues.email,
-                        name: userInfo.dataValues.name,
-                        message: userInfo.dataValues.message,
-                        profilepath: userInfo.dataValues.profilepath
-                    }
-                })
+                    'accessToken': AccessToken, characterInfo : characterInfo})
         }
     },
 

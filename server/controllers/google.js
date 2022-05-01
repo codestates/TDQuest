@@ -39,5 +39,18 @@ module.exports = {
             sns_id : sub,
             type:'google',
             };
+
+          const isUser = await user.findOne({where : {email : email}})
+          if (isUser) { //user가 있는 경우
+            const accessToken = makeAccessToken(sns_id);
+            const refreshToken = makeRefreshToken(user_id);
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true
+            });
+
+          }
+          else {
+
+          }
     }
 }
