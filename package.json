@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mdhnpm/aws-ssm-parameters": "^1.0.3"
+  }
+}
