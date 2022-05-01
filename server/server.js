@@ -5,10 +5,6 @@ const router = require('./router')
 const https = require("https");
 const fs = require('fs');
 
-const aws = require('./config/env')
-
-console.log(aws)
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
