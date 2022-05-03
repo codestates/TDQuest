@@ -1,8 +1,8 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
-const dotenv = require('dotenv');
 const { user } = require('../models')
-const { verifyToken, accessToken, refreshToken} = require('../middleware/authToken');
+const { verifyToken, makeAccessToken, makeRefreshToken} = require('../middleware/auth');
+const { existID, signID } = require("../middleware/authID")
 
 module.exports = {
     google : async (req, res) => {
@@ -32,25 +32,29 @@ module.exports = {
     
           const access_token = data['access_token'];
           const {data:me} = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
-          const {sub, email, name} = me;
+      
           const userInfo = {
-            email: email,
-            nickname:name,
-            sns_id : sub,
-            type:'google',
+            email: me.email,
+            nickname: me.name,
             };
 
-          const isUser = await user.findOne({where : {email : email}})
-          if (isUser) { //user가 있는 경우
-            const accessToken = makeAccessToken(sns_id);
-            const refreshToken = makeRefreshToken(user_id);
-            res.cookie('refreshToken', refreshToken, {
-                httpOnly: true
-            });
-
+          const user_email = await existID(userInfo.eamil)
+            
+          if(user_email){
+              const accessToken = makeAccessToken(user_email);
+              const refreshToken = makeRefreshToken(user_email);
+              res.cookie('refreshToken', refreshToken, {
+                  httpOnly: true
+              });
           }
-          else {
-
-          }
-    }
+          else{
+              const signUpUserId= await signID(userInfo);
+              const refreshToken = makeRefreshToken(signUpUserId);
+              res.cookie('refreshToken', refreshToken, {
+                  httpOnly: true
+              });
+          
+            }
+      return res.redirect("http://localhost:3000")    
+  }
 }

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { user } = require('../models')
 const { character } = require('../models')
+const { verifyToken, makeAccessToken, makeRefreshToken} = require('../middleware/auth');
 
 module.exports = {
     login: async (req, res) => {
@@ -10,14 +11,8 @@ module.exports = {
             res.status(401).send({ message: 'not authorized' })
         } //401: 권한없음
         else {
-            let payload = {
-                email: userInfo.dataValues.email,
-                nickname: userInfo.dataValues.nickname,
-                password: userInfo.dataValues.password,
-
-            }
-            const AccessToken = jwt.sign(payload, process.env.ACCESS_SECRET, { expiresIn: '1h' })
-            const RefreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, { expiresIn: '24h' })
+            const AccessToken = makeAccessToken(userInfo.dataValues.email)
+            const RefreshToken = makeRefreshToken(userInfo.dataValues.email)
             const characterInfo = await character.findOne({ where : {id : userInfo.dataValues.id}})
             res.status(200).cookie('refreshToken', RefreshToken)
                 .json({

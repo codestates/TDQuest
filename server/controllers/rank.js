@@ -1,12 +1,39 @@
-const { user } =require("../models")
+const { character } = require("../models")
 
 module.exports = {
     All : async (req, res) => {
+        const characterStat = await character.findAll({
+            attribute : ['status_phy', 'status_int', 'status_spl'],
+            raw: true
+        })
+        .then(data => { // 유저 배열이 주어짐
+            let max = 0
+            let ranker = []
+            data.map((el, idx) => {  // 한 유저 객체
+                const stat = el.status_phy + el.status_int + el.status_spl
+                if (max < stat) {
+                    max = stat
+                }
+                return stat
+            }) // data는 각 스탯을 더한 값으로 바뀜
+            .forEach((el , idx) => {
+                if (el === max) {
+                    ranker.push(idx+1)
+                }
+            })
+            ranker.map(el => { 
+                const rankerUser = await user.findOne({
+                    where : { id : el }
+                })
+                return rankerUser
+                }
+            )
+            res.status(200).json({ranker : ranker})
+        })
     },
-
     phyRank : async (req, res) => {
-        const phyRank =  user.findAll({
-            order: sequelize.literal('max(status_phy) DESC'),
+        const phyRank =  await user.findAll({
+            order: ['status_phy', 'DESC'],
         }, {limit : 5})
 
         if (phyRank) {
@@ -18,8 +45,8 @@ module.exports = {
     },
 
     intRank : async (req, res) => {
-        const intRank =  user.findAll({
-            order: sequelize.literal('max(status_int) DESC'),
+        const intRank = await user.findAll({
+            order: ['status_int', 'DESC'],
         }, {limit : 5})
 
         if (phyRank) {
@@ -31,8 +58,8 @@ module.exports = {
     },
 
     splRank : async (req, res) => {
-        const splRank =  user.findAll({
-            order: sequelize.literal('max(status_spl) DESC'),
+        const splRank = await user.findAll({
+            order: ['status_spl', 'DESC'],
         }, {limit : 5})
 
         if (splRank) {

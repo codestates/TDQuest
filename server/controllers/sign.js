@@ -10,7 +10,7 @@ module.exports = {
             name: name,
             password: password
         })
-        res.status(200).redirect('/login')
+        res.status(200).redirect('/log/in')
     },
 
     signOut : async (req, res) => {
