@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const makeAccessToken = (id, password) => {
+const makeAccessToken = (email, password) => {
     try {
-        return jwt.sign({id}, process.env.ACCESS_SECRET, { expiresIn: '1d'})
+        return jwt.sign(email, process.env.ACCESS_SECRET, { expiresIn: '1d'})
     } catch (error) {
         
     }
@@ -16,7 +16,7 @@ const verifyToken = (token) => {
     catch (error) {
  
         if(error.name === 'TokenExpiredError'){
-            
+            console.log(error)
         }
         if(error.name === 'JsonWebTokenError'){
             console.log(error);
@@ -28,9 +28,9 @@ const verifyToken = (token) => {
     }   
 }
 
-const makeRefreshToken = (id) => {
+const makeRefreshToken = (email) => {
     try {
-        return jwt.sign({id}, process.env.REFRESH_SECRET, { expiresIn: '3d' })
+        return jwt.sign(email, process.env.REFRESH_SECRET, { expiresIn: '3d' })
         
     } catch (error) {
         return "error"
