@@ -1,9 +1,17 @@
 import React from "react";
+import { useEffect } from "react";
 import {MainpageContainer, Wrapper, LogoWrapper, DesCard, StatCard, BearWrapper} from "./MainPageStyle"
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 
 
 function MainPage({ bgColor }: { bgColor: string }) {
+  useEffect(()=>{
+    AOS.init();
+  })
+    
+
   return (
   <MainpageContainer bgColor={bgColor}>
     <LogoWrapper>
@@ -19,14 +27,14 @@ function MainPage({ bgColor }: { bgColor: string }) {
         <img src={require('../../static/images/TodoSample.png')}></img>
       </div>
 
-      <DesCard>
+      <DesCard data-aos="fade-right">
         <h1>Proceed To-Do List and get stat points!</h1><br/>
         <p>Complete your own To-Do list and get related stat points!<br/>Feel your real stat grows.</p>
       </DesCard>
     </Wrapper>
 
     <Wrapper bgColor={"#F2FFEC"} direction={"column"} >
-      <div style={{display : "flex", justifyContent:"space-around", alignItems:"flex-start"}}>
+      <div style={{display : "flex", justifyContent:"space-around", alignItems:"flex-start"}} data-aos="fade-up">
         <StatCard>
           <span>
             <img src={require('../../static/images/Physical.png')} style={{width:"50px"}}></img>
@@ -73,7 +81,7 @@ function MainPage({ bgColor }: { bgColor: string }) {
     </Wrapper>
 
     <Wrapper bgColor={bgColor} direction={"row"}>
-    <DesCard>
+    <DesCard data-aos="fade-left">
         <h1>Get the rewards from Raid Boss!</h1><br/>
         <p>Remember! Raid boss open every weekend.<br/> You will meet three type of dangerous monsters.<br/>Make your choice.</p>
       </DesCard>
@@ -88,7 +96,7 @@ function MainPage({ bgColor }: { bgColor: string }) {
         <img src={require('../../static/images/RankingSample.png')}></img>
       </div>
 
-      <DesCard>
+      <DesCard data-aos="fade-right">
         <h1>Become a Weekly Top User!</h1><br/>
         <p>Do you want to be a top ranker? complete your task as much as you can.</p>
       </DesCard>
