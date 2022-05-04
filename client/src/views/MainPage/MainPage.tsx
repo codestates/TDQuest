@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect }  from "react";
 import {MainpageContainer, Wrapper, LogoWrapper, DesCard, StatCard, BearWrapper} from "./MainPageStyle"
 import AOS from "aos";
 import "aos/dist/aos.css";
