@@ -1,22 +1,28 @@
 import React from "react";
-import styled from "styled-components";
-
-const FooterContainer = styled.footer<{ bgColor: string }>`
-  background-color: ${(props) => props.bgColor};
-  height: 150px;
-  display: ;
-`;
-
-const Description = styled.section`
-  height: 100px;
-`;
-
-const Logo = styled.div`
-  height: 100px;
-`;
+import {FooterContainer, Description, DescWrapper, LogoWrapper} from "./FooterStyle"
 
 function Footer({ bgColor }: { bgColor: string }) {
-  return <FooterContainer bgColor={bgColor}></FooterContainer>;
+  return (
+  <FooterContainer bgColor={bgColor}>
+    <Description>
+      <DescWrapper>
+        <p>Contact</p><br/>
+        <p>About Us</p><br/>
+        <p>Terms & Conditions</p><br/>
+      </DescWrapper>
+
+      <DescWrapper>
+        <p>Change country</p><br/>
+        <p>FAQ</p><br/>
+      </DescWrapper>
+    </Description>
+
+    <LogoWrapper>
+      <h1>TDQuest</h1><br/>
+      <p>Copyright © 2022 5B's</p>
+    </LogoWrapper>
+  </FooterContainer>
+  );
 }
 
 export default Footer;
