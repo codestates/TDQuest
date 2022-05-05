@@ -1,18 +1,24 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../../components/Button";
+import Status from "../../components/Status";
+import HelperBear from "../../components/HelperBear";
+import AboutStatus from "./AboutStatus";
+import TodoStatusIcon from "./TodoStatusIcon";
 
 const StatusPageContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  height: 100%;
+  @media (max-width: 768px) {
+    height: auto;
+  }
 `;
 
 const StatusBreadCrumb = styled.div`
-  width: 100vw;
+  width: 100%;
   margin-top: 30px;
   margin-bottom: 20px;
   .breadCrumbContainer {
@@ -32,7 +38,7 @@ const StatusBreadCrumb = styled.div`
 `;
 
 const SectionContainer = styled.div`
-  width: 90vw;
+  width: 90%;
   display: flex;
   @media (max-width: 768px) {
     flex-direction: column;
@@ -40,98 +46,88 @@ const SectionContainer = styled.div`
 `;
 
 const StatusContainer = styled.div`
-  width: 30vw;
-  height: 50vh;
-  border: 1px solid;
+  width: 30%;
+  height: 340px;
+  padding: 20px;
+  border: 1px solid #dbae0d;
   margin-right: 10px;
   margin-bottom: 20px;
+  display: flex;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
-const Status = styled.div<{ direction?: string }>`
+const MyToDoStatusWrapper = styled.div`
   display: flex;
-  flex-direction: ${(props) => props.direction || "row"};
+  flex-direction: column;
+  width: 100%;
+  h1 {
+    font-size: 1.3rem;
+    height: 2rem;
+    font-family: "Fredoka One", cursive;
+    color: #414693;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #c38b8b;
+  }
+`;
+
+const MyInfoContainer = styled.div`
+  border: 1px solid #dbae0d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 340px;
+  padding: 20px;
+  margin-bottom: 20px;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+`;
+
+const MyInfoWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
   @media (max-width: 768px) {
     flex-direction: column;
   }
 `;
 
-const MyInfoContainer = styled.div`
-  border: 1px solid;
+const MyInfoDetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60vw;
-  height: 340px;
-  padding: 20px;
-`;
-
-const MyToDoStatus = styled.div`
-  display: flex;
-  flex-direction: column;
-  h1 {
-    font-size: 1.3rem;
-    font-family: "Fredoka One", cursive;
-    color: #414693;
+  width: 400px;
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
   }
 `;
 
-const HelperBear = styled.div`
+const MyInfo = styled.div`
   display: flex;
-  height: 100px;
-  img {
-    image-rendering: pixelated;
-    width: 100px;
-    margin-right: 30px;
-  }
-  .bubble {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 180px;
-    height: 60px;
-    padding: 10px;
-    background: #ffffff;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    border: #7f7f7f solid 3px;
-    text-align: center;
-  }
+`;
 
-  .bubble:after {
-    content: "";
-    position: absolute;
-    border-style: solid;
-    border-width: 8px 18px 8px 0;
-    border-color: transparent #ffffff;
-    display: block;
-    width: 0;
-    z-index: 1;
-    margin-top: -8px;
-    left: -18px;
-    top: 35%;
-  }
-
-  .bubble:before {
-    content: "";
-    position: absolute;
-    border-style: solid;
-    border-width: 10px 20px 10px 0;
-    border-color: transparent #7f7f7f;
-    display: block;
-    width: 0;
-    z-index: 0;
-    margin-top: -10px;
-    left: -23px;
-    top: 35%;
+const MyCompletedStatus = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 5px;
+  @media (max-width: 768px) {
+    font-size: 16px;
   }
 `;
 
-const AboutStatus = styled.div`
+const BearWrapper = styled.div`
   display: flex;
-  width: 90vw;
-  height: 20vh;
-  border: 1px solid;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  @media (max-width: 768px) {
+    margin-top: 20px;
+    width: 100%;
+  }
 `;
 
 function StatusPage({ bgColor }: { bgColor: string }) {
@@ -147,19 +143,46 @@ function StatusPage({ bgColor }: { bgColor: string }) {
       </StatusBreadCrumb>
       <SectionContainer>
         <StatusContainer>
-          <Status></Status>
+          <Status character="char_default"></Status>
         </StatusContainer>
         <MyInfoContainer>
-          <MyToDoStatus>
+          <MyToDoStatusWrapper>
             <h1>My To-Do Status</h1>
-          </MyToDoStatus>
-          <HelperBear>
-            <img src={require("../../static/images/HelperBear.png")}></img>
-            <div className="bubble">Good job for Physical activities!</div>
-          </HelperBear>
+            <MyInfoWrapper>
+              <MyInfoDetailWrapper>
+                {/* 추후 데이터를 받아와 map으로 한번에 작성할 예정 */}
+                <MyInfo>
+                  <TodoStatusIcon source="Physical.png" name="Physical" />
+                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                </MyInfo>
+                <MyInfo>
+                  <TodoStatusIcon
+                    source="Intelligence.png"
+                    name="Intelligence"
+                  />
+                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                </MyInfo>
+                <MyInfo>
+                  <TodoStatusIcon source="Spirit.png" name="Spirit" />
+                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                </MyInfo>
+                <MyInfo>
+                  <TodoStatusIcon source="Exp.png" name="Exp" />
+                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                </MyInfo>
+              </MyInfoDetailWrapper>
+              <BearWrapper>
+                <HelperBear
+                  width="160px"
+                  height="50px"
+                  text="Good job for physical activities!"
+                />
+              </BearWrapper>
+            </MyInfoWrapper>
+          </MyToDoStatusWrapper>
         </MyInfoContainer>
       </SectionContainer>
-      <AboutStatus></AboutStatus>
+      <AboutStatus />
     </StatusPageContainer>
   );
 }
