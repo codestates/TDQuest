@@ -11,7 +11,7 @@ const StatusPageContainer = styled.div<{ bgColor: string }>`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100%;
+  height: 100vh;
   @media (max-width: 768px) {
     height: auto;
   }
@@ -47,14 +47,15 @@ const SectionContainer = styled.div`
 
 const StatusContainer = styled.div`
   width: 30%;
-  height: 340px;
-  padding: 20px;
+  height: 350px;
+  padding: 15px;
   border: 1px solid #dbae0d;
   margin-right: 10px;
   margin-bottom: 20px;
   display: flex;
   @media (max-width: 768px) {
-    width: 90%;
+    width: auto;
+    margin-right: 0px;
   }
 `;
 
@@ -78,11 +79,11 @@ const MyInfoContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 340px;
-  padding: 20px;
+  height: 350px;
+  padding: 15px 20px;
   margin-bottom: 20px;
   @media (max-width: 768px) {
-    width: 90%;
+    width: auto;
   }
 `;
 
