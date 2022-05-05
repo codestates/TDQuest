@@ -3,14 +3,14 @@ const { character } = require("../models")
 module.exports = {
     All : async (req, res) => {
         const characterStat = await character.findAll({
-            attribute : ['status_phy', 'status_int', 'status_spl'],
+            attribute : ['status_phy', 'status_int', 'status_spi'],
             raw: true
         })
         .then(data => { // 유저 배열이 주어짐
             let max = 0
             let ranker = []
             data.map((el, idx) => {  // 한 유저 객체
-                const stat = el.status_phy + el.status_int + el.status_spl
+                const stat = el.status_phy + el.status_int + el.status_spi
                 if (max < stat) {
                     max = stat
                 }
@@ -22,7 +22,7 @@ module.exports = {
                 }
             })
             ranker.map(el => { 
-                const rankerUser = await user.findOne({
+                const rankerUser = await character.findOne({
                     where : { id : el }
                 })
                 return rankerUser
@@ -57,9 +57,9 @@ module.exports = {
         }
     },
 
-    splRank : async (req, res) => {
+    spiRank : async (req, res) => {
         const splRank = await user.findAll({
-            order: ['status_spl', 'DESC'],
+            order: ['status_spi', 'DESC'],
         }, {limit : 5})
 
         if (splRank) {
