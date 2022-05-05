@@ -1,40 +1,21 @@
-const jwt = require('jsonwebtoken');
+const { user } = require("../models")
 
-const makeAccessToken = (email, password) => {
-    try {
-        return jwt.sign(email, process.env.ACCESS_SECRET, { expiresIn: '1d'})
-    } catch (error) {
-        
+module.exports = {
+    
+    existID : async (email) => {
+        const userInfo = await user.findOne({
+            email : email
+        })
+        if (userInfo) {
+            return userInfo
+        }
+    },
+
+    signID : (userInfo) => {
+        const userInfo = await user.create({
+            email : userInfo.email,
+            name : userInfo.nickname
+        })
+        res.redirect("http://localhost:3000")
     }
 }
-
-const verifyToken = (token) => {
-    try {
-        const decoded = jwt.verify(token, process.env.ACCESS_SECRET)
-        return decoded;
-    }
-    catch (error) {
- 
-        if(error.name === 'TokenExpiredError'){
-            console.log(error)
-        }
-        if(error.name === 'JsonWebTokenError'){
-            console.log(error);
-        }
-        if(error.name === 'NotBeforeError'){
-            console.log(error);
-        }
-        return
-    }   
-}
-
-const makeRefreshToken = (email) => {
-    try {
-        return jwt.sign(email, process.env.REFRESH_SECRET, { expiresIn: '3d' })
-        
-    } catch (error) {
-        return "error"
-    }
-}
-
-module.exports = {verifyToken , makeAccessToken, makeRefreshToken }
