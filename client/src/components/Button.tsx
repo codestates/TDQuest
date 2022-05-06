@@ -1,20 +1,24 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const ButtonContainer = styled.button<{
   width?: string;
   fontSize?: string;
   padding?: string;
+  height?: string;
+  marginBottom?: string;
 }>`
-  width: ${(props) => props.width || "120px"};
-  font-size: ${(props) => props.fontSize || "20px"};
+  width: ${(props) => props.width || '120px'};
+  font-size: ${(props) => props.fontSize || '20px'};
   padding: ${(props) => props.padding || null};
   background-color: #509b67;
-  font-family: "Fredoka One", cursive;
-  height: 50px;
+  font-family: 'Fredoka One', cursive;
+  height: ${(props) => props.height || '50px'};
   color: white;
   border-radius: 5px;
   border: none;
+  cursor: pointer;
+  margin-bottom: ${(props) => props.marginBottom || null};
   &:hover {
     background-color: #66ca81;
   }
@@ -30,14 +34,24 @@ function Button({
   fontSize,
   padding,
   text,
+  height,
+  marginBottom,
 }: {
   width?: string;
   fontSize?: string;
   padding?: string;
   text: string;
+  height?: string;
+  marginBottom?: string;
 }) {
   return (
-    <ButtonContainer width={width} fontSize={fontSize} padding={padding}>
+    <ButtonContainer
+      width={width}
+      fontSize={fontSize}
+      padding={padding}
+      height={height}
+      marginBottom={marginBottom}
+    >
       {text}
     </ButtonContainer>
   );

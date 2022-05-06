@@ -22,7 +22,7 @@ function MainRouter({
 }) {
   return (
     <BrowserRouter>
-      <Header bgColor={headerColor} />
+      <Header bgColor={headerColor} bodyColor={bgColor} />
       <Routes>
         <Route path='/' element={<MainPage bgColor={mainPageColor} />} />
         <Route path='/todo' element={<TodoListPage bgColor={bgColor} />} />
