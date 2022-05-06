@@ -1,10 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const FooterContainer = styled.footer<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
   height: 150px;
-  display: ;
 `;
 
 const Description = styled.section`
