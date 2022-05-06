@@ -42,6 +42,7 @@ export const MenuBarContainer = styled.div`
 
 interface IMenuBar {
   active: boolean;
+  bodyColor: string;
 }
 
 export const MenuBar = styled.div<IMenuBar>`
@@ -51,7 +52,7 @@ export const MenuBar = styled.div<IMenuBar>`
   color: black;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  background-color: ${(props) => (props.active ? '#f2ffec' : '')};
+  background-color: ${(props) => (props.active ? props.bodyColor : '')};
   text-align: center;
   padding-top: 10px;
   width: 100%;
@@ -70,4 +71,24 @@ export const SignHandler = styled.div`
   font-family: 'Fredoka One', cursive;
   font-size: 30px;
   color: white;
+`;
+
+export const ToggleMenu = styled.div`
+  padding-right: 3vw;
+  border: none;
+  z-index: 10;
+`;
+
+export const ToggleIcon = styled.img`
+  width: 40px;
+  cursor: pointer;
+`;
+
+export const DropDownContainer = styled.div`
+  /* this is how we cover the entire page */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
