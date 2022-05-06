@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
-const { verifyToken, accessToken, refreshToken} = require('../middleware/authToken');
+const { verifyToken, makeAccessToken, makeRefreshToken } = require('../middleware/auth');
+const { existID, signID } = require("../middleware/authID")
 
 module.exports = {
     kakao : async (req, res) => {
@@ -35,7 +36,25 @@ module.exports = {
                 }
              });
 
-          
-    },
+          const userInfo = {
+               email: me.kakao_account.email,
+               nickname: me.kakao_account.profile.nickname,
+             };
 
+          const user_email = await existID(userInfo.email);
+          
+            if(user_email){
+              const refreshToken = makeRefreshToken(user_email);
+              
+              res.cookie('refreshToken', refreshToken, { httpOnly: true});
+            }
+            
+            else{
+             const signUpUserId= await signID(userInfo);
+             const refreshToken = makeRefreshToken(signUpUserId);
+          
+             res.cookie('refreshToken', refreshToken, { httpOnly: true });
+            }
+    return res.redirect("http://localhost:3000")
+  },
 }
