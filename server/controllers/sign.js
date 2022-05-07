@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { user } = require('../models')
-const { character } = require("../models")
-const character = require('./character')
+
 module.exports = {
     signIn : async (req, res) => {
         const { email, name, password } = req.body.userInfo
@@ -11,7 +10,7 @@ module.exports = {
             name: name,
             password: password
         })
-        res.status(200).redirect('/log/in')
+        res.status(200).redirect('/login')
     },
 
     signOut : async (req, res) => {
