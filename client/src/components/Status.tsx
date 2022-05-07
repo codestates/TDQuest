@@ -13,25 +13,27 @@ import {
   UserNameWrapper,
   UserName,
   StatusContainer,
+  CharacterInfoContainer,
 } from "./Status_Style";
-
-type StatusType = {
-  direction?: string;
-  character: string;
-  userLevel?: string;
-  userTitle?: string;
-  userName?: string;
-  statValues?: number[];
-};
+// Types
+import { CharDataType } from "../Types/generalTypes";
 
 function Status({
-  direction,
-  character,
-  userLevel,
-  userTitle,
-  userName,
-  statValues,
-}: StatusType) {
+  charData,
+  onlyChar,
+}: {
+  charData: CharDataType;
+  onlyChar?: boolean;
+}): JSX.Element {
+  const {
+    user_id: userName,
+    image: character,
+    status_phy,
+    status_int,
+    status_spl,
+    userLevel,
+    userExp,
+  } = charData;
   return (
     <MainContainer>
       <CharacterContainer>
@@ -44,39 +46,43 @@ function Status({
           <CharacterBackgroundBottom />
         </CharacterBackground>
       </CharacterContainer>
-      <UserNameContainer>
-        <UserLevel>12</UserLevel>
-        <UserNameWrapper>
-          <UserTitle>강인하고 지혜롭고 끈기있는</UserTitle>
-          <UserName>TEST_USER_1</UserName>
-        </UserNameWrapper>
-      </UserNameContainer>
-      <StatusContainer>
-        <StatusDetail
-          img="Physical"
-          titleText="PHY"
-          innerText="Physic"
-          value={30}
-        />
-        <StatusDetail
-          img="Intelligence"
-          titleText="INT"
-          innerText="Intellig"
-          value={20}
-        />
-        <StatusDetail
-          img="Spirit"
-          titleText="SPI"
-          innerText="Spirit"
-          value={30}
-        />
-        <StatusDetail
-          img="Exp"
-          titleText="Next Level"
-          value={30}
-          isExp={true}
-        />
-      </StatusContainer>
+      {onlyChar ? null : (
+        <CharacterInfoContainer>
+          <UserNameContainer>
+            <UserLevel>{userLevel}</UserLevel>
+            <UserNameWrapper>
+              <UserTitle>강인하고 지혜롭고 끈기있는</UserTitle>
+              <UserName>{userName}</UserName>
+            </UserNameWrapper>
+          </UserNameContainer>
+          <StatusContainer>
+            <StatusDetail
+              img="Physical"
+              titleText="PHY"
+              innerText="Physic"
+              value={status_phy}
+            />
+            <StatusDetail
+              img="Intelligence"
+              titleText="INT"
+              innerText="Intellig"
+              value={status_int}
+            />
+            <StatusDetail
+              img="Spirit"
+              titleText="SPI"
+              innerText="Spirit"
+              value={status_spl}
+            />
+            <StatusDetail
+              img="Exp"
+              titleText="Next Level"
+              value={userExp}
+              isExp={true}
+            />
+          </StatusContainer>
+        </CharacterInfoContainer>
+      )}
     </MainContainer>
   );
 }

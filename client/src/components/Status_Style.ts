@@ -4,6 +4,16 @@ export const MainContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  max-width: 500px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CharacterInfoContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
 `;
 
 export const CharacterContainer = styled.div`

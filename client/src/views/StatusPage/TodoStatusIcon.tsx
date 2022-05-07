@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 // 아이콘 기본 크기 : 30px
+// 옵션 종류 : source, name, size
 // 필수입력값 : source = "아이콘이름.png" | string
 // 옵션입력값 : name = "아이콘이름" | string
 const Status_icon = styled.div<{ size?: string }>`
@@ -30,7 +31,7 @@ function TodoStatusIcon({
   source: string;
   name?: string;
   size?: string;
-}) {
+}): JSX.Element {
   return (
     <Status_icon size={size}>
       <img src={require(`../../static/images/${source}`)} alt={name} />

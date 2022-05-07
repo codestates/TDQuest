@@ -45,8 +45,13 @@ const AboutStatusContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-left: 50px;
+    padding: 5px;
     .about_container {
       display: flex;
+      @media (max-width: 912px) {
+        margin-top: 10px;
+        flex-direction: column;
+      }
       @media (max-width: 768px) {
         flex-direction: column;
       }
@@ -67,7 +72,7 @@ const AboutStatusContainer = styled.div`
   }
 `;
 
-function AboutStatus() {
+function AboutStatus(): JSX.Element {
   return (
     <AboutStatusContainer>
       <div className="imageContainer">

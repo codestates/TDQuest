@@ -1,182 +1,134 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import AboutStatus from "./AboutStatus";
 import TodoStatusIcon from "./TodoStatusIcon";
 import { color_primary_green_light } from "../../components/CommonStyle";
+import {
+  StatusPageContainer,
+  StatusHeader,
+  SectionContainer,
+  StatusContainer,
+  MyToDoStatusWrapper,
+  MyInfoContainer,
+  MyInfoWrapper,
+  MyInfoDetailWrapper,
+  MyInfo,
+  MyCompletedStatus,
+  BearWrapper,
+} from "./StatusPageStyle";
+import Loading from "../../components/Loading";
+// API REQUEST
+import {
+  getCharacterInfo,
+  dummyRes_getCharacterInfo,
+} from "../../API/tdquestAPI";
+// Types
+import { CharDataType } from "../../Types/generalTypes";
 
-const StatusPageContainer = styled.div<{ bgColor: string }>`
-  background-color: ${(props) => props.bgColor};
-`;
-const StatusBreadCrumb = styled.div`
-  width: 100%;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  .breadCrumbContainer {
-    display: flex;
-    margin-left: 3vw;
-    img {
-      image-rendering: pixelated;
-      width: 30px;
-      margin-right: 10px;
+interface IProps {
+  userData: CharDataType;
+}
+
+function StatusPage(): JSX.Element {
+  const [userData, setUserData] = useState<CharDataType>({} as CharDataType);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        const getcharacterData: any =
+          dummyRes_getCharacterInfo.data.characterInfo;
+        setUserData(getcharacterData);
+        setLoading(false);
+      }, 2000);
     }
-    h1 {
-      font-size: 1.5rem;
-      font-family: "Fredoka One", cursive;
-      color: #414693;
-    }
-  }
-`;
+  }, []);
 
-const SectionContainer = styled.div`
-  width: 90%;
-  display: flex;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
+  console.log(userData);
 
-const StatusContainer = styled.div`
-  width: 30%;
-  height: 350px;
-  padding: 15px;
-  border: 1px solid #dbae0d;
-  margin-right: 10px;
-  margin-bottom: 20px;
-  display: flex;
-  @media (max-width: 768px) {
-    width: auto;
-    margin-right: 0px;
-  }
-`;
+  const {
+    user_id,
+    image,
+    status_phy,
+    status_int,
+    status_spl,
+    userLevel,
+    userExp,
+  } = userData;
 
-const MyToDoStatusWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  h1 {
-    font-size: 1.3rem;
-    height: 2rem;
-    font-family: "Fredoka One", cursive;
-    color: #414693;
-    margin-bottom: 15px;
-    border-bottom: 3px solid #c38b8b;
-  }
-`;
+  console.log(userData);
 
-const MyInfoContainer = styled.div`
-  border: 1px solid #dbae0d;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 350px;
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  @media (max-width: 768px) {
-    width: auto;
-  }
-`;
-
-const MyInfoWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const MyInfoDetailWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-direction: column;
-  }
-`;
-
-const MyInfo = styled.div`
-  display: flex;
-`;
-
-const MyCompletedStatus = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  margin-bottom: 5px;
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
-`;
-
-const BearWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  @media (max-width: 768px) {
-    margin-top: 20px;
-    width: 100%;
-  }
-`;
-
-function StatusPage() {
   return (
-    <StatusPageContainer bgColor={bgColor}>
-      <StatusBreadCrumb>
-        <div className="breadCrumbContainer">
-          <img
-            src={require("../../static/images/icons/Achievements.png")}
-          ></img>
-          <h1>My Status</h1>
-        </div>
-      </StatusBreadCrumb>
-      <SectionContainer>
-        <StatusContainer>
-          <Status character="char_default"></Status>
-        </StatusContainer>
-        <MyInfoContainer>
-          <MyToDoStatusWrapper>
-            <h1>My To-Do Status</h1>
-            <MyInfoWrapper>
-              <MyInfoDetailWrapper>
-                {/* 추후 데이터를 받아와 map으로 한번에 작성할 예정 */}
-                <MyInfo>
-                  <TodoStatusIcon source="Physical.png" name="Physical" />
-                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
-                </MyInfo>
-                <MyInfo>
-                  <TodoStatusIcon
-                    source="Intelligence.png"
-                    name="Intelligence"
-                  />
-                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
-                </MyInfo>
-                <MyInfo>
-                  <TodoStatusIcon source="Spirit.png" name="Spirit" />
-                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
-                </MyInfo>
-                <MyInfo>
-                  <TodoStatusIcon source="Exp.png" name="Exp" />
-                  <MyCompletedStatus>60 lists completed</MyCompletedStatus>
-                </MyInfo>
-              </MyInfoDetailWrapper>
-              <BearWrapper>
-                <HelperBear
-                  width="160px"
-                  height="50px"
-                  text="Good job for physical activities!"
-                />
-              </BearWrapper>
-            </MyInfoWrapper>
-          </MyToDoStatusWrapper>
-        </MyInfoContainer>
-      </SectionContainer>
-      <AboutStatus />
-    </StatusPageContainer>
+    <div>
+      {loading ? (
+        <StatusPageContainer bgColor={color_primary_green_light}>
+          <Loading customText="Loading..." />
+        </StatusPageContainer>
+      ) : (
+        <StatusPageContainer bgColor={color_primary_green_light}>
+          <StatusHeader>
+            <div className="headerContainer">
+              <img
+                src={require("../../static/images/icons/Achievements.png")}
+                alt="Achievements"
+              />
+              <h1>My Status</h1>
+            </div>
+          </StatusHeader>
+          <SectionContainer>
+            <StatusContainer>
+              <Status charData={userData}></Status>
+            </StatusContainer>
+            <MyInfoContainer>
+              <MyToDoStatusWrapper>
+                <h1>My To-Do Status</h1>
+                <MyInfoWrapper>
+                  <MyInfoDetailWrapper>
+                    {/* 추후 데이터를 받아와 map으로 한번에 작성할 예정 */}
+                    <MyInfo>
+                      <TodoStatusIcon
+                        source="Physical.png"
+                        name="Physical"
+                        size="25px"
+                      />
+                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                    </MyInfo>
+                    <MyInfo>
+                      <TodoStatusIcon
+                        source="Intelligence.png"
+                        name="Intelligence"
+                        size="25px"
+                      />
+                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                    </MyInfo>
+                    <MyInfo>
+                      <TodoStatusIcon
+                        source="Spirit.png"
+                        name="Spirit"
+                        size="25px"
+                      />
+                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                    </MyInfo>
+                    <MyInfo>
+                      <TodoStatusIcon source="Exp.png" name="Exp" size="25px" />
+                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                    </MyInfo>
+                  </MyInfoDetailWrapper>
+                  <BearWrapper>
+                    <HelperBear
+                      width="160px"
+                      height="50px"
+                      text="Good job for physical activities!"
+                    />
+                  </BearWrapper>
+                </MyInfoWrapper>
+              </MyToDoStatusWrapper>
+            </MyInfoContainer>
+          </SectionContainer>
+          <AboutStatus />
+        </StatusPageContainer>
+      )}
+    </div>
   );
 }
 

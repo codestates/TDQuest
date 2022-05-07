@@ -30,13 +30,19 @@ const StatusTextContainer = styled.div<{ isExp?: boolean }>`
   }
 `;
 
-const StatusBar = styled.div<{ isExp?: boolean }>`
+const StatusBar = styled.div<{ isExp?: boolean; value: number }>`
   margin-left: 5px;
   margin-right: 5px;
   border-radius: 3px;
-  width: 50%;
+  width: 55%;
   height: ${(props) => (props.isExp ? "15px" : "20px")};
-  background-color: ${(props) => (props.isExp ? "#8FD14F" : "#12cdd4")};
+  background-color: ${(props) => (props.isExp ? "#75c624" : "#adfcff")};
+  .progress {
+    border-radius: 3px;
+    width: ${(props) => props.value}%;
+    height: 100%;
+    background-color: ${(props) => (props.isExp ? "#a4ed5a" : "#12cdd4")};
+  }
 `;
 
 const StatusValue = styled.div`
@@ -44,7 +50,7 @@ const StatusValue = styled.div`
   font-family: "Fredoka One", cursive;
 `;
 
-function StatusDetail({ img, titleText, innerText, value, isExp }: Data) {
+function StatusDetail({ img, titleText, innerText, value, isExp }: Data): JSX.Element {
   return (
     <StatusImageContainer>
       <img src={require(`../static/images/${img}.png`)} />
@@ -52,7 +58,9 @@ function StatusDetail({ img, titleText, innerText, value, isExp }: Data) {
         <h1>{titleText}</h1>
         <h2>{innerText}</h2>
       </StatusTextContainer>
-      <StatusBar isExp={isExp} />
+      <StatusBar isExp={isExp} value={value}>
+        <div className="progress"></div>
+      </StatusBar>
       <StatusValue>{value}</StatusValue>
     </StatusImageContainer>
   );
