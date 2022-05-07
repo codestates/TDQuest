@@ -11,7 +11,7 @@ const StatusPageContainer = styled.div<{ bgColor: string }>`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   @media (max-width: 768px) {
     height: auto;
   }

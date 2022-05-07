@@ -1,6 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import StatusDetail from "./StatusDetail";
+import {
+  MainContainer,
+  CharacterContainer,
+  CharacterBackground,
+  CharacterBackgroundBottom,
+  Character,
+  UserNameContainer,
+  UserLevel,
+  UserTitle,
+  UserNameWrapper,
+  UserName,
+  StatusContainer,
+} from "./Status_Style";
 
 type StatusType = {
   direction?: string;
@@ -8,101 +21,8 @@ type StatusType = {
   userLevel?: string;
   userTitle?: string;
   userName?: string;
+  statValues?: number[];
 };
-
-const MainContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const CharacterContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
-
-const CharacterBackground = styled.div`
-  width: 100%;
-  height: 150px;
-  background-color: #686cd5;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  z-index: 5;
-  .character_wrapper {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    z-index: 20;
-    justify-content: center;
-  }
-`;
-
-const CharacterBackground_Bottom = styled.div`
-  width: 100%;
-  height: 35%;
-  background-color: #0ca789;
-  border-radius: 10px;
-  z-index: 15;
-`;
-
-const Character = styled.img`
-  image-rendering: pixelated;
-  width: 70px;
-  z-index: 50;
-`;
-
-const UserNameContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
-const UserLevel = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #30acda;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-`;
-
-const UserTitle = styled.div`
-  font-size: 0.9rem;
-  font-weight: 600;
-`;
-
-const UserNameWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const UserName = styled.div`
-  font-size: 0.9rem;
-  font-weight: 600;
-`;
-
-const StatusContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  img {
-    width: 25px;
-  }
-`;
 
 function Status({
   direction,
@@ -110,6 +30,7 @@ function Status({
   userLevel,
   userTitle,
   userName,
+  statValues,
 }: StatusType) {
   return (
     <MainContainer>
@@ -120,7 +41,7 @@ function Status({
               src={require(`../static/images/character/${character}.png`)}
             />
           </div>
-          <CharacterBackground_Bottom />
+          <CharacterBackgroundBottom />
         </CharacterBackground>
       </CharacterContainer>
       <UserNameContainer>
@@ -146,7 +67,7 @@ function Status({
         <StatusDetail
           img="Spirit"
           titleText="SPI"
-          innerText="Spirit "
+          innerText="Spirit"
           value={30}
         />
         <StatusDetail
