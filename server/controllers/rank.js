@@ -22,7 +22,7 @@ module.exports = {
                 }
             })
             ranker.map(el => { 
-                const rankerUser = await character.findOne({
+                const rankerUser = character.findOne({
                     where : { id : el }
                 })
                 return rankerUser
