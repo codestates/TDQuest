@@ -7,7 +7,7 @@ module.exports = {
 
         const userInfo = user.create({
             email: email,
-            name: name,
+            nickname: nickname,
             password: password
         })
         res.status(200).redirect('/login')
