@@ -4,19 +4,11 @@ import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import AboutStatus from "./AboutStatus";
 import TodoStatusIcon from "./TodoStatusIcon";
+import { color_primary_green_light } from "../../components/CommonStyle";
 
 const StatusPageContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  @media (max-width: 768px) {
-    height: auto;
-  }
 `;
-
 const StatusBreadCrumb = styled.div`
   width: 100%;
   margin-top: 30px;
@@ -131,7 +123,7 @@ const BearWrapper = styled.div`
   }
 `;
 
-function StatusPage({ bgColor }: { bgColor: string }) {
+function StatusPage() {
   return (
     <StatusPageContainer bgColor={bgColor}>
       <StatusBreadCrumb>

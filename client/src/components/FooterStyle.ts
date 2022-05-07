@@ -1,7 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import {
+  color_primary_green_dark,
+  fontSize_h1_laptop,
+  fontSize_body_laptop,
+} from './CommonStyle';
 
-export const FooterContainer = styled.footer<{ bgColor: string }>`
-  background-color: ${(props) => props.bgColor};
+export const FooterContainer = styled.footer`
+  background-color: ${color_primary_green_dark};
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -28,8 +33,8 @@ export const Description = styled.section`
 `;
 
 export const DescWrapper = styled.section`
-  width : 200px;
-  font-size: 18px;
+  width: 200px;
+  font-size: ${fontSize_body_laptop};
   color: white;
 
   > p {
@@ -47,19 +52,18 @@ export const DescWrapper = styled.section`
 export const LogoWrapper = styled.div`
   text-align: right;
   height: 100px;
-  font-size: 18px;
+  font-size: ${fontSize_body_laptop};
   color: white;
 
-  >h1{
-    font-family: "Fredoka One", cursive;
-    font-size: 35px;
+  > h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: ${fontSize_h1_laptop};
   }
 
   @media (max-width: 768px) {
     text-align: center;
-    line-height: 70% ;
+    line-height: 70%;
     height: auto;
     padding-bottom: 25px;
   }
 `;
-
