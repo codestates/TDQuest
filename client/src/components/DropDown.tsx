@@ -2,13 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from './Button';
 import { Link } from 'react-router-dom';
+import {
+  color_primary_green_dark,
+  color_primary_green_light,
+  color_context_blue,
+  fontSize_smallButton_laptop,
+} from './CommonStyle';
 
-const DropDownContainer = styled.div<{
-  headerColor: string;
-  bodyColor: string;
-}>`
-  background-color: ${(props) => props.bodyColor};
-  border: 2px solid ${(props) => props.headerColor};
+const DropDownContainer = styled.div<{}>`
+  background-color: ${color_primary_green_light};
+  border: 2px solid ${color_primary_green_dark};
   border-radius: 10px;
   position: absolute;
   right: 1vw;
@@ -23,26 +26,20 @@ const MenuItems = styled.li<{}>`
 
 const Item = styled.p<{}>`
   color: black;
-  font-size: 18px;
+  font-size: ${fontSize_smallButton_laptop};
   cursor: pointer;
   margin-bottom: 10px;
   &:hover {
-    color: #194795;
+    color: ${color_context_blue};
   }
   @media (min-width: 768px) {
     display: none;
   }
 `;
 
-function DropDown({
-  headerColor,
-  bodyColor,
-}: {
-  headerColor: string;
-  bodyColor: string;
-}) {
+function DropDown() {
   return (
-    <DropDownContainer headerColor={headerColor} bodyColor={bodyColor}>
+    <DropDownContainer>
       <MenuItems>
         <Item>
           <Link to={'/status'}>My Status</Link>
@@ -58,7 +55,7 @@ function DropDown({
         </Item>
         <Button
           width='100%'
-          fontSize='18px'
+          fontSize={fontSize_smallButton_laptop}
           padding='3px'
           text='My page'
           height='100%'
@@ -66,7 +63,7 @@ function DropDown({
         ></Button>
         <Button
           width='100%'
-          fontSize='18px'
+          fontSize={fontSize_smallButton_laptop}
           padding='3px'
           text='Sign out'
           height='100%'

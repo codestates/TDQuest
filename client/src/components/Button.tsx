@@ -1,5 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import {
+  color_primary_green_dark,
+  color_primary_green_medium,
+  fontSize_bigButton_laptop,
+} from './CommonStyle';
 
 const ButtonContainer = styled.button<{
   width?: string;
@@ -9,9 +14,9 @@ const ButtonContainer = styled.button<{
   marginBottom?: string;
 }>`
   width: ${(props) => props.width || '120px'};
-  font-size: ${(props) => props.fontSize || '20px'};
+  font-size: ${(props) => props.fontSize || fontSize_bigButton_laptop};
   padding: ${(props) => props.padding || null};
-  background-color: #509b67;
+  background-color: ${color_primary_green_dark};
   font-family: 'Fredoka One', cursive;
   height: ${(props) => props.height || '50px'};
   color: white;
@@ -20,7 +25,7 @@ const ButtonContainer = styled.button<{
   cursor: pointer;
   margin-bottom: ${(props) => props.marginBottom || null};
   &:hover {
-    background-color: #66ca81;
+    background-color: ${color_primary_green_medium};
   }
   min-width: 100px;
 `;

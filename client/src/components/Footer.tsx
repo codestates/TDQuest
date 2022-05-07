@@ -6,9 +6,9 @@ import {
   LogoWrapper,
 } from './FooterStyle';
 
-function Footer({ bgColor }: { bgColor: string }) {
+function Footer() {
   return (
-    <FooterContainer bgColor={bgColor}>
+    <FooterContainer>
       <Description>
         <DescWrapper>
           <p>Contact</p>
