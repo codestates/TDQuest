@@ -5,6 +5,7 @@ const { verifyToken, makeAccessToken, makeRefreshToken} = require('../middleware
 
 module.exports = {
     login: async (req, res) => {
+        console.log(req.body)
         const userInfo = await user.findOne({ where: { email: req.body.email, password: req.body.password } })
         
         if (!userInfo) {

@@ -43,16 +43,12 @@ module.exports = {
           if(user_email){
               const accessToken = makeAccessToken(user_email);
               const refreshToken = makeRefreshToken(user_email);
-              res.cookie('refreshToken', refreshToken, {
-                  httpOnly: true
-              });
+              res.cookie('refreshToken', refreshToken);//{ httpOnly: true}
           }
           else{
               const signUpUserId= await signID(userInfo);
               const refreshToken = makeRefreshToken(signUpUserId);
-              res.cookie('refreshToken', refreshToken, {
-                  httpOnly: true
-              });
+              res.cookie('refreshToken', refreshToken);//{ httpOnly: true}
           
             }
       return res.redirect("http://localhost:3000")    

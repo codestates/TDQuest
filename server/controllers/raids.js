@@ -1,11 +1,12 @@
 const { user } = require("../models")
 const { raids } = require('../models')
 const { damage_log } = require("../models")
-const user = require('../models/user')
 
 module.exports = {
     inviteRaids : async (req, res) => {
         await raids.create({
+            user_id : req.body.user_id,
+            moster_id : req.body.monster_id,
             hit_damage : 0,
         })
         res.status(200).json({message : "레이드에 참가합니다"})
