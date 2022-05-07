@@ -1,8 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import { color_primary_green_light } from '../../components/CommonStyle';
 
-const RaidJoinContainer = styled.div<{ bgColor: string }>`
-  background-color: ${(props) => props.bgColor};
+const RaidJoinContainer = styled.div`
+  background-color: ${color_primary_green_light};
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -10,8 +11,8 @@ const RaidJoinContainer = styled.div<{ bgColor: string }>`
   align-items: center;
 `;
 
-function RaidJoinPage({ bgColor }: { bgColor: string }) {
-  return <RaidJoinContainer bgColor={bgColor}>Boss Page</RaidJoinContainer>;
+function RaidJoinPage() {
+  return <RaidJoinContainer>Boss Page</RaidJoinContainer>;
 }
 
 export default RaidJoinPage;
