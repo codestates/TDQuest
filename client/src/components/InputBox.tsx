@@ -36,18 +36,22 @@ function InputBox({state, handler}: { state : boolean, handler : MouseEventHandl
   }
 
   // axios
-  const url = "http:localhost:8080"
+  const url = "http://localhost:3001"
   const signUp = async () => {
     try {
       const response = await axios({
         method : "post",
         url : `${url}/sign/in`,
         data : {
-          name :'',
-          email : userInfo.email,
-          password : userInfo.password
+          userInfo :{
+            nickname :'',
+            email : userInfo.email,
+            password : userInfo.password
+          }
         }
-      })
+      }
+    )
+
       console.log("response : ", response)
     }
 
@@ -65,8 +69,8 @@ function InputBox({state, handler}: { state : boolean, handler : MouseEventHandl
           password : userInfo.password
         }
       })
-      window.location.href = "/todo";
       console.log("response : ", response)
+      window.location.href = "/todo";
     }
     catch(err) {
       console.log("Error (signIn): ", err)
@@ -74,15 +78,16 @@ function InputBox({state, handler}: { state : boolean, handler : MouseEventHandl
   }
 
   const handleSubmit = (e : FormEvent<HTMLButtonElement>) => {
-      if (state){
-        signIn()
+    e.preventDefault();
+    if (state){
+      signIn();
+    } else {
+      if (emailResult && pswResult){
+        signUp();
       } else {
-        if (emailResult && pswResult){
-          signUp()
-        } else {
-          alert("이메일 또는 비밀번호를 확인하세요")
-        }
+        alert("이메일 또는 비밀번호를 확인하세요")
       }
+    }
   }
 
 
@@ -102,7 +107,7 @@ function InputBox({state, handler}: { state : boolean, handler : MouseEventHandl
               ID <input type="email" placeholder="ID (e-mail)" onChange={emailTest}/>
             </span>
             {/* valid */}
-            {!state? <span>&nbsp;&nbsp;   {emailResult? <span>✓</span> : <span style={{color : "#f56864"}}>ID must be e-mail format</span>}</span> : null}
+            {!state? <span>&nbsp;&nbsp;   {emailResult? <span>✔︎</span> : <span style={{color : "#f56864"}}>✘ ID must be e-mail format</span>}</span> : null}
             {/* valid */}
 
 
@@ -111,20 +116,21 @@ function InputBox({state, handler}: { state : boolean, handler : MouseEventHandl
             </span>
             {!state? <span>&nbsp;&nbsp;   <input style={{marginTop : "1rem"}} type="password" placeholder="Password Check" onChange={pswTest} /></span> : null}
             {/* valid */}
-            {!state? <span>&nbsp;&nbsp;   {pswResult? <span>✓</span> : <span style={{color : "#f56864"}}>Password must be same</span>}</span> : null}
+            {!state? <span>&nbsp;&nbsp;   {pswResult? <span>✔︎</span> : <span style={{color : "#f56864"}}>✘ Password must be same</span>}</span> : null}
             {/* valid */}
 
           </div>
         </div>
         
         <Button text={state? "Sign In" : "Sign Up"} height="40px"/>
-        <button onClick={handleSubmit}>{state? "Sign In" : "Sign Up"}</button>
 
         <DontYouSign>
             {state? <div><p>Don't you have account yet?</p><br/><p onClick={handler}>Go to Sign Up</p></div> : null}
         </DontYouSign>
 
       </FormContainer>
+      <button onClick={handleSubmit}>{state? "Sign In" : "Sign Up"}</button>
+
     </InputBoxContainer>
   )
 }
