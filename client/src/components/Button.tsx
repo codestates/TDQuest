@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { color_primary_deactivate } from "./CommonStyle";
 import {
   color_primary_green_dark,
   color_primary_green_medium,
@@ -16,21 +17,13 @@ type ButtonData = {
   deactive?: boolean;
 };
 
-// width?: string;
-// fontSize?: string;
-// padding?: string;
-// height?: string;
-// marginBottom?: string;
-// deactive?: boolean;
-
 const ButtonContainer = styled.button<ButtonData>`
   width: ${(props) => props.width || "120px"};
   font-size: ${(props) => props.fontSize || fontSize_bigButton_laptop};
   padding: ${(props) => props.padding || null};
-  /* background-color: ${color_primary_green_dark}; */
   background-color: ${(props) => {
     if (props.deactive === true) {
-      return "#808080";
+      return color_primary_deactivate;
     }
     return color_primary_green_dark;
   }};

@@ -52,7 +52,8 @@ const UserInfoContainer = styled.div`
 `;
 
 const CharContainer = styled.div`
-  flex: 1 0 0;
+  flex: 1.5 0 0;
+  display: flex;
 `;
 
 const UserInfoDetailContainer = styled.div`
@@ -63,13 +64,11 @@ const UserInfoDetailContainer = styled.div`
   h1 {
     font-size: 1.5rem;
     font-family: "Fredoka One", cursive;
-    color: black;
     margin-bottom: 10px;
   }
   h2 {
     font-size: 1.2rem;
     font-family: "Fredoka One", cursive;
-    color: black;
   }
   .ButtonContainer {
     width: 80%;
@@ -102,6 +101,7 @@ function MyPage() {
     }
   }, []);
 
+  // 캐릭터 창 렌더링을 위한 더미 Data
   const {
     user_id,
     image,
@@ -133,7 +133,7 @@ function MyPage() {
           </MyPageHeader>
           <UserInfoContainer>
             <CharContainer>
-              <Status charData={charData} onlyChar={true}></Status>
+              <Status charData={charData} onlyChar={true} />
             </CharContainer>
             <UserInfoDetailContainer>
               <h1>{user_id}</h1>
