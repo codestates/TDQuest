@@ -1,10 +1,18 @@
 import styled from 'styled-components';
+import {
+  color_primary_green_dark,
+  color_context_blue,
+  color_primary_green_light,
+  fontSize_h1_laptop,
+  fontSize_h2_laptop,
+  fontSize_h3_laptop,
+} from './CommonStyle';
 
-export const HeaderContainer = styled.div<{ bgColor: string }>`
-  background-color: ${(props) => props.bgColor};
+export const HeaderContainer = styled.div`
+  background-color: ${color_primary_green_dark};
   height: 80px;
   font-family: 'Fredoka One', cursive;
-  font-size: 35px;
+  font-size: ${fontSize_h1_laptop};
   color: white;
   display: flex;
   align-items: center;
@@ -42,34 +50,34 @@ export const MenuBarContainer = styled.div`
 
 interface IMenuBar {
   active: boolean;
-  bodyColor: string;
 }
 
 export const MenuBar = styled.div<IMenuBar>`
   /* display: flex; */
   /* align-items: flex-end; */
-  font-size: 25px;
+  font-size: ${fontSize_h3_laptop};
   color: black;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  background-color: ${(props) => (props.active ? props.bodyColor : '')};
+  background-color: ${(props) =>
+    props.active ? color_primary_green_light : ''};
   text-align: center;
   padding-top: 10px;
   width: 100%;
   font-family: 'Fredoka One', cursive;
   a {
     &:hover {
-      color: #194795;
+      color: ${color_context_blue};
     }
   }
 `;
 
 export const SignHandler = styled.div`
-  background-color: #509b67;
+  background-color: ${color_primary_green_dark};
   padding-right: 3vw;
   border: none;
   font-family: 'Fredoka One', cursive;
-  font-size: 30px;
+  font-size: ${fontSize_h2_laptop};
   color: white;
 `;
 

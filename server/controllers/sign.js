@@ -1,3 +1,4 @@
+
 const jwt = require('jsonwebtoken')
 const { user } = require('../models')
 const { character } = require("../models")
@@ -23,8 +24,9 @@ module.exports = {
         })
     },
 
-    signOut : async (req, res) => {
-        user.destory({where: {id : req.query.id}})
-        res.status(200)
-    },
-}
+
+  signOut: async (req, res) => {
+    user.destory({ where: { id: req.query.id } });
+    res.status(200);
+  },
+};

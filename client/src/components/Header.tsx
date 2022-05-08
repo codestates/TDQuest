@@ -10,19 +10,12 @@ import {
   ToggleIcon,
   DropDownContainer,
 } from './HeaderStyle';
-import Button from './Button';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import UserIcon from '../static/images/icons/circle_user.svg';
 import DropDown from './DropDown';
 
-function Header({
-  bgColor,
-  bodyColor,
-}: {
-  bgColor: string;
-  bodyColor: string;
-}) {
+function Header() {
   // 추후 Login 관련 state로 사용 (redux로 변경 예정)
   const isLogin = true;
   // 해당 페이지의 nav 메뉴 버튼 활성화를 위해 현재 경로 가져옴
@@ -35,7 +28,7 @@ function Header({
   };
 
   return (
-    <HeaderContainer bgColor={bgColor}>
+    <HeaderContainer>
       <Logo>
         <Link to={'/'}>
           <LogoImage src={require('../static/images/Logo.png')} alt='logo' />
@@ -46,28 +39,16 @@ function Header({
       MainPage에서는 MenuBar가 표시되지 않으므로 필요한 작업임! */}
       {isLogin ? (
         <MenuBarContainer>
-          <MenuBar
-            bodyColor={bodyColor}
-            active={location.pathname === '/status' ? true : false}
-          >
+          <MenuBar active={location.pathname === '/status' ? true : false}>
             <Link to={'/status'}>My Status</Link>
           </MenuBar>
-          <MenuBar
-            bodyColor={bodyColor}
-            active={location.pathname === '/todo' ? true : false}
-          >
+          <MenuBar active={location.pathname === '/todo' ? true : false}>
             <Link to={'/todo'}>To-Do List</Link>
           </MenuBar>
-          <MenuBar
-            bodyColor={bodyColor}
-            active={location.pathname === '/raid' ? true : false}
-          >
+          <MenuBar active={location.pathname === '/raid' ? true : false}>
             <Link to={'/raid'}>Boss Raid</Link>
           </MenuBar>
-          <MenuBar
-            bodyColor={bodyColor}
-            active={location.pathname === '/ranking' ? true : false}
-          >
+          <MenuBar active={location.pathname === '/ranking' ? true : false}>
             <Link to={'/ranking'}>Ranking</Link>
           </MenuBar>
         </MenuBarContainer>
@@ -90,7 +71,7 @@ function Header({
             sideMenuToggleHanddler();
           }}
         >
-          <DropDown headerColor={bgColor} bodyColor={bodyColor}></DropDown>
+          <DropDown></DropDown>
         </DropDownContainer>
       ) : null}
     </HeaderContainer>

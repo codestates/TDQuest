@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-const router = require('./router')
+const cors = require("cors");
+const router = require("./router");
 const https = require("https");
 const fs = require('fs');
 const redis = require('redis');
@@ -30,7 +30,7 @@ app.use(
   })
 );
 
-app.use('/', router)
+app.use("/", router);
 const HTTPS_PORT = process.env.HTTPS_PORT || 3001;
 let server;
 
@@ -44,6 +44,6 @@ let server;
 //   server.listen(HTTPS_PORT, () => console.log(`Listening on port ${HTTPS_PORT}`));
 
 // } else {
-server = app.listen(HTTPS_PORT)
+server = app.listen(HTTPS_PORT);
 
 module.exports = server;
