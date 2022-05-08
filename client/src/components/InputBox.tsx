@@ -36,7 +36,7 @@ function InputBox({state, handler}: { state : boolean, handler : MouseEventHandl
   }
 
   // axios
-  const url = "http://localhost:3001"
+  const url = ""
   const signUp = async () => {
     try {
       const response = await axios({
@@ -61,15 +61,15 @@ function InputBox({state, handler}: { state : boolean, handler : MouseEventHandl
   }
   const signIn = async () => {
     try {
-      const response = await axios({
-        method : "post",
-        url : `${url}/log/in`,
-        data : {
-          email : userInfo.email,
-          password : userInfo.password
-        }
-      })
-      console.log("response : ", response)
+      // const response = await axios({
+      //   method : "post",
+      //   url : `${url}/log/in`,
+      //   data : {
+      //     email : userInfo.email,
+      //     password : userInfo.password
+      //   }
+      // })
+      // console.log("response : ", response)
       window.location.href = "/todo";
     }
     catch(err) {
