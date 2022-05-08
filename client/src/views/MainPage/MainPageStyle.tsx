@@ -1,4 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import {
+  fontSize_h1_laptop,
+  fontSize_h1_tablet,
+  fontSize_body_laptop,
+  fontSize_body_tablet,
+} from '../../components/CommonStyle';
+
 // 고정 px들 반응형에 맞게 수정
 export const MainpageContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -24,16 +31,16 @@ export const LogoWrapper = styled.section`
   }
 
   h1 {
-    font-family: "Fredoka One", cursive;
-    font-size : 94px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 94px;
   }
 
   p {
-    padding-top : 15px;
-    text-align: center ;
+    padding-top: 15px;
+    text-align: center;
   }
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     h1 {
       font-size: 48px;
     }
@@ -42,40 +49,41 @@ export const LogoWrapper = styled.section`
       width: 50px;
     }
   }
-`
+`;
 
-export const Wrapper = styled.section<{bgColor : string, direction : string}>`
-  background-color: ${props => props.bgColor};
+export const Wrapper = styled.section<{ bgColor: string; direction: string }>`
+  background-color: ${(props) => props.bgColor};
   width: 100%;
   display: flex;
-  flex-direction: ${props => props.direction};
-  justify-content: ${props => (props.direction === "column"? "space-around" : "center")};
+  flex-direction: ${(props) => props.direction};
+  justify-content: ${(props) =>
+    props.direction === 'column' ? 'space-around' : 'center'};
   align-items: center;
-  padding : 5%;
-  height : 50vh;
+  padding: 5%;
+  height: 50vh;
 
   > div > img {
-    width : 700px;
-    box-shadow: 0 0 10px gray;
+    width: 700px;
+    box-shadow: 0 0 10px black;
 
-    @media (max-width: 1215px) and (min-width: 769px){
+    @media (max-width: 1215px) and (min-width: 769px) {
       width: 50vw;
     }
   }
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     flex-direction: column;
     justify-content: center;
-    height: fit-content ;
+    height: fit-content;
 
     > div {
       flex-direction: column;
     }
 
     > div > img {
-    width : 90vw;
-    box-shadow: 0 0 10px black;
-    margin : 2rem;
+      width: 90vw;
+      box-shadow: 0 0 10px black;
+      margin: 2rem;
     }
   }
 `;
@@ -83,28 +91,29 @@ export const Wrapper = styled.section<{bgColor : string, direction : string}>`
 export const DesCard = styled.section`
   width: 400px;
   padding: 3rem;
-  text-align: center ;
+  text-align: center;
 
   h1 {
-    font-family: "Fredoka One", cursive;
-    font-size : 36px;
+    font-family: 'Fredoka One', cursive;
+    font-size: ${fontSize_h1_laptop};
   }
 
   p {
-    padding-top : 18px;
+    padding-top: 18px;
+    font-size: ${fontSize_body_laptop};
   }
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     padding: 0;
     width: 80vw;
     text-align: left;
 
     h1 {
-      font-size : 22px;
+      font-size: ${fontSize_h1_tablet};
     }
 
     p {
-      font-size: 11px;
+      font-size: ${fontSize_body_tablet};
       padding-top: 0;
     }
   }
@@ -112,9 +121,9 @@ export const DesCard = styled.section`
 
 export const StatCard = styled.section`
   padding-top: 1rem;
-  padding-left : 1rem;
-  padding-right : 1rem;
-  width : 300px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -126,51 +135,53 @@ export const StatCard = styled.section`
   }
 
   h1 {
-    font-family: "Fredoka One", cursive;
-    font-size : 36px;
-    text-align: center ;
+    font-family: 'Fredoka One', cursive;
+    font-size: ${fontSize_h1_laptop};
+    text-align: center;
   }
 
   p {
     width: 60%;
-    padding-top : 18px;
+    padding-top: 18px;
     text-align: center;
   }
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     padding: 0;
     width: 80vw;
     margin: 1rem;
 
+    h1 {
+      font-size: ${fontSize_h1_tablet};
+    }
     p {
-      font-size : 14px;
+      font-size: 14px;
     }
   }
-  
 `;
 
 export const BearWrapper = styled.section`
-  display : flex;
-  
+  display: flex;
+
   > img {
     width: 100px;
-    margin-right: 2rem ;
+    margin-right: 2rem;
   }
 
   > span {
     background-color: white;
     border-radius: 20px;
-    border : 3px solid gray;
+    border: 3px solid gray;
     text-align: center;
-    padding : 2rem;
+    padding: 2rem;
 
     p {
-      font-family: "Fredoka One", cursive;
-      font-size : 24px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 24px;
     }
   }
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     margin-top: 1rem;
     > img {
       width: 50px;
@@ -181,8 +192,8 @@ export const BearWrapper = styled.section`
       padding: 1rem;
 
       p {
-      font-size : 14px;
-    }
+        font-size: 14px;
+      }
     }
   }
 `;

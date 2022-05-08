@@ -11,8 +11,8 @@ module.exports = {
         }
     },
 
-    signID : (userInfo) => {
-        const userInfo = await user.create({
+    signID : async (userInfo) => {
+        await user.create({
             email : userInfo.email,
             name : userInfo.nickname
         })

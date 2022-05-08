@@ -16,7 +16,6 @@ app.use(
 );
 
 app.use('/', router)
-
 const HTTPS_PORT = process.env.HTTPS_PORT || 3001;
 let server;
 
