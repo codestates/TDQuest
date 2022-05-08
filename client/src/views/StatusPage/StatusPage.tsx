@@ -28,7 +28,7 @@ import { CharDataType } from "../../Types/generalTypes";
 
 function StatusPage(): JSX.Element {
   const [userData, setUserData] = useState<CharDataType>({} as CharDataType);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     if (loading) {
       setTimeout(() => {
@@ -68,7 +68,7 @@ function StatusPage(): JSX.Element {
                 src={require("../../static/images/icons/Achievements.png")}
                 alt="Achievements"
               />
-              <h1>My Status</h1>
+              <h2>My Status</h2>
             </div>
           </StatusHeader>
           <SectionContainer>
@@ -77,7 +77,7 @@ function StatusPage(): JSX.Element {
             </StatusContainer>
             <MyInfoContainer>
               <MyToDoStatusWrapper>
-                <h1>My To-Do Status</h1>
+                <h3>My To-Do Status</h3>
                 <MyInfoWrapper>
                   <MyInfoDetailWrapper>
                     {/* 추후 데이터를 받아와 map으로 한번에 작성할 예정 */}

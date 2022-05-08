@@ -50,7 +50,13 @@ const StatusValue = styled.div`
   font-family: "Fredoka One", cursive;
 `;
 
-function StatusDetail({ img, titleText, innerText, value, isExp }: Data): JSX.Element {
+function StatusDetail({
+  img,
+  titleText,
+  innerText,
+  value,
+  isExp,
+}: Data): JSX.Element {
   return (
     <StatusImageContainer>
       <img src={require(`../static/images/${img}.png`)} />

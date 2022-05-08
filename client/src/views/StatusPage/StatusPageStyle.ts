@@ -1,4 +1,15 @@
 import styled from "styled-components";
+import {
+  fontSize_h1_laptop,
+  fontSize_h2_laptop,
+  fontSize_h3_laptop,
+  fontSize_body_mobile_medium,
+  fontSize_body_mobile_small,
+  fontSize_body_laptop,
+  color_menu_header_purple,
+  color_border_yellow,
+  color_border_underbar_brown,
+} from "../../components/CommonStyle";
 
 export const StatusPageContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -25,10 +36,10 @@ export const StatusHeader = styled.div`
       width: 30px;
       margin-right: 10px;
     }
-    h1 {
-      font-size: 1.5rem;
+    h2 {
+      font-size: ${fontSize_h2_laptop};
       font-family: "Fredoka One", cursive;
-      color: #414693;
+      color: ${color_menu_header_purple};
     }
   }
 `;
@@ -45,7 +56,7 @@ export const StatusContainer = styled.div`
   width: 30%;
   height: 350px;
   padding: 15px;
-  border: 1px solid #dbae0d;
+  border: 1px solid ${color_border_yellow};
   margin-right: 10px;
   margin-bottom: 20px;
   display: flex;
@@ -63,18 +74,18 @@ export const MyToDoStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  h1 {
-    font-size: 1.3rem;
+  h3 {
+    font-size: ${fontSize_h3_laptop};
     height: 2rem;
     font-family: "Fredoka One", cursive;
-    color: #414693;
+    color: ${color_menu_header_purple};
     margin-bottom: 15px;
-    border-bottom: 3px solid #c38b8b;
+    border-bottom: 3px solid ${color_border_underbar_brown};
   }
 `;
 
 export const MyInfoContainer = styled.div`
-  border: 1px solid #dbae0d;
+  border: 1px solid ${color_border_yellow};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -125,8 +136,9 @@ export const MyCompletedStatus = styled.div`
   width: 100%;
   align-items: center;
   margin-bottom: 5px;
+  font-size: ${fontSize_body_laptop};
   @media (max-width: 768px) {
-    font-size: 16px;
+    font-size: ${fontSize_body_mobile_medium};
   }
 `;
 

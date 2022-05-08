@@ -1,12 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import {
+  fontSize_h3_laptop,
+  color_context_gray,
+  color_menu_header_purple,
+  color_border_yellow,
+} from "../../components/CommonStyle";
 
 const AboutStatusContainer = styled.div`
   display: flex;
   width: 90%;
   height: 20%;
   min-height: 150px;
-  border: 1px solid #dbae0d;
+  border: 1px solid ${color_border_yellow};
   margin-bottom: 20px;
   @media (max-width: 768px) {
     flex-direction: column;
@@ -25,10 +31,10 @@ const AboutStatusContainer = styled.div`
     img {
       width: 90px;
     }
-    h1 {
-      font-size: 1.2rem;
+    h3 {
+      font-size: ${fontSize_h3_laptop};
       font-family: "Fredoka One", cursive;
-      color: #414693;
+      color: ${color_menu_header_purple};
       margin-bottom: 10px;
     }
     @media (max-width: 768px) {
@@ -38,7 +44,7 @@ const AboutStatusContainer = styled.div`
     }
   }
   .about_title {
-    color: #515151;
+    color: ${color_context_gray};
   }
   .about_description {
     display: flex;
@@ -63,7 +69,7 @@ const AboutStatusContainer = styled.div`
       width: 100%;
       margin-left: 3px;
       margin-bottom: 5px;
-      color: #515151;
+      color: ${color_context_gray};
     }
     @media (max-width: 768px) {
       margin: 10px;
@@ -76,7 +82,7 @@ function AboutStatus(): JSX.Element {
   return (
     <AboutStatusContainer>
       <div className="imageContainer">
-        <h1>About Status</h1>
+        <h3>About Status</h3>
         <img
           src={require("../../static/images/AboutStatus.png")}
           alt="AboutStatus_image"

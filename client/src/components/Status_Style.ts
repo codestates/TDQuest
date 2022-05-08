@@ -1,19 +1,24 @@
 import styled from "styled-components";
+import {
+  fontSize_body_laptop,
+  fontSize_body_laptop_small,
+} from "./CommonStyle";
 
-export const MainContainer = styled.div`
+export const MainContainer = styled.div<{ direction?: string }>`
   width: 100%;
   display: flex;
-  flex-direction: column;
-  max-width: 500px;
+  flex-direction: ${(props) => props.direction || "column"};
+  max-width: 600px;
   justify-content: center;
   align-items: center;
 `;
 
-export const CharacterInfoContainer = styled.div`
+export const CharacterInfoContainer = styled.div<{ direction?: string }>`
   display: flex;
   width: 100%;
   height: 100%;
   flex-direction: column;
+  margin-left: ${(props) => (props.direction ? "10px" : "0px")};
 `;
 
 export const CharacterContainer = styled.div`
@@ -73,25 +78,26 @@ export const UserLevel = styled.div`
   border-radius: 4px;
   width: 30px;
   height: 30px;
-  font-size: 1rem;
+  font-size: ${fontSize_body_laptop};
   font-weight: bold;
   color: white;
 `;
 
 export const UserTitle = styled.div`
-  font-size: 0.9rem;
+  font-size: ${fontSize_body_laptop_small};
   font-weight: 600;
 `;
 
-export const UserNameWrapper = styled.div`
+export const UserNameWrapper = styled.div<{ direction?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-left: ${(props) => (props.direction ? "5px" : "0px")};
 `;
 
 export const UserName = styled.div`
-  font-size: 0.9rem;
+  font-size: ${fontSize_body_laptop};
   font-weight: 600;
 `;
 
@@ -99,6 +105,7 @@ export const StatusContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 5px;
   img {
     width: 25px;
   }

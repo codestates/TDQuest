@@ -1,5 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import {
+  fontSize_body_laptop,
+  fontSize_body_laptop_small,
+} from "./CommonStyle";
 
 const HelperBearContainer = styled.div<{
   width?: string;
@@ -29,7 +33,7 @@ const HelperBearContainer = styled.div<{
     border: #7f7f7f solid 3px;
     text-align: center;
     /* custom code */
-    font-size: 16px;
+    font-size: ${fontSize_body_laptop_small};
   }
 
   .bubble:after {
