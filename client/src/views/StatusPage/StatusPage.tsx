@@ -26,10 +26,6 @@ import {
 // Types
 import { CharDataType } from "../../Types/generalTypes";
 
-interface IProps {
-  userData: CharDataType;
-}
-
 function StatusPage(): JSX.Element {
   const [userData, setUserData] = useState<CharDataType>({} as CharDataType);
   const [loading, setLoading] = useState(true);
