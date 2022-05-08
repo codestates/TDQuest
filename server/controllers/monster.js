@@ -1,6 +1,7 @@
 const { monster } = require("../models")
 const { raids } =require("../models")
 const { character } = require("../models")
+const { user } = require("../models/user")
 
 module.exports = {
     getMonster : async (req, res) => {
@@ -31,8 +32,16 @@ module.exports = {
                     .then(monsterClear => {
                         character.increment(
                             { 'level' : monsterClear.reward},
-                            { where : { }}
-                        )
+                            { include : { model : user,
+                                include : { model : damage_log,
+                                    include : { model : raids,
+                                        include : { model : monsters,
+                                            where : { id : req.body.monster_id}
+                                        }
+                                    }
+                                }
+                            }
+                        })
                     })
                 }
                 else {

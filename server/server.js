@@ -3,10 +3,25 @@ const app = express();
 const cors = require("cors");
 const router = require("./router");
 const https = require("https");
-const fs = require("fs");
+const fs = require('fs');
+const redis = require('redis');
+const session = require('express-session');
+// const redisStore = require('connect-redis')(session)
+// const redisClient = redis.createClient({
+//   host : "127.0.0.1",
+//   port : 6379,
+//   legacyMode: true
+// }); //aws 주소 바꾸기
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(session({
+  secret: "secret",
+  saveUninitialized: false,
+  resave: false,
+  // store: new redisStore({client : redisClient})
+}))
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
