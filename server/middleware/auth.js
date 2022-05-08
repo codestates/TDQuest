@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     
-    makeAccessToken : (email) => {
+    makeAccessToken : (el) => {
         try {
-            return jwt.sign(email, process.env.ACCESS_SECRET, { expiresIn: '1d'})
+            return jwt.sign({el}, process.env.ACCESS_SECRET)
         } catch (error) {
             return 'error'   
         }
@@ -13,7 +13,7 @@ module.exports = {
 
     makeRefreshToken : (email) => {
         try {
-            return jwt.sign(email, process.env.REFRESH_SECRET, { expiresIn: '3d' })
+            return jwt.sign({email}, process.env.REFRESH_SECRET, { expiresIn: '3d' })
             
         } catch (error) {
             return "error"
@@ -50,7 +50,7 @@ module.exports = {
           const refreshToken = makeRefreshToken(verifyAccessToken.email);
   
             res.cookie('refreshToken', refreshToken, {
-                httpOnly: true
+                // httpOnly: true
             }).json({accessToken})       
         } 
         return res.json({message : "인증 실패"})

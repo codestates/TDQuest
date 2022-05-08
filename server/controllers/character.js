@@ -22,7 +22,7 @@ module.exports = {
                 { status_phy : 0.5 },
                 {include : {
                     model : user,
-                    where : { user_id : req.query.id }
+                    where : { id : req.query.id }
                 }})
                 res.status(200).json({characterInfo : characterInfo})
             }
