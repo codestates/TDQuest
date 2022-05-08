@@ -56,7 +56,7 @@ export const Wrapper = styled.section<{bgColor : string, direction : string}>`
 
   > div > img {
     width : 700px;
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px gray;
 
     @media (max-width: 1215px) and (min-width: 769px){
       width: 50vw;
