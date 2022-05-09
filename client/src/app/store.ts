@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
+import chracterReducer from '../features/character/characterSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    chracter: chracterReducer,
   },
 });
 

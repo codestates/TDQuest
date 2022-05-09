@@ -21,6 +21,7 @@ module.exports = {
         const characterInfo = await character.increment(
                 { status_phy : 0.5 },
                 { where : { user_id : req.query.id }})
+
                 res.status(200).json({characterInfo : characterInfo})
             }
         else {
