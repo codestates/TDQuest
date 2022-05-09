@@ -51,7 +51,7 @@ module.exports = {
                                 }
                             })
                         })
-                    }
+                    } // 잡고 난 후에, 다른 테이블 삭제?
                 })
     res.status(200).json({message : '데미지를 넣었습니다.'})
     },
