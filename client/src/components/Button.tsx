@@ -1,26 +1,51 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { color_primary_deactivate } from "./CommonStyle";
+import {
+  color_primary_green_dark,
+  color_primary_green_medium,
+  fontSize_bigButton_laptop,
+} from "./CommonStyle";
 
-const ButtonContainer = styled.button<{
+type ButtonData = {
   width?: string;
   fontSize?: string;
   padding?: string;
+  text?: string;
   height?: string;
   marginBottom?: string;
-}>`
-  width: ${(props) => props.width || '120px'};
-  font-size: ${(props) => props.fontSize || '20px'};
+  deactive?: boolean;
+};
+
+const ButtonContainer = styled.button<ButtonData>`
+  width: ${(props) => props.width || "120px"};
+  font-size: ${(props) => props.fontSize || fontSize_bigButton_laptop};
   padding: ${(props) => props.padding || null};
-  background-color: #509b67;
-  font-family: 'Fredoka One', cursive;
-  height: ${(props) => props.height || '50px'};
+  background-color: ${(props) => {
+    if (props.deactive === true) {
+      return color_primary_deactivate;
+    }
+    return color_primary_green_dark;
+  }};
+  font-family: "Fredoka One", cursive;
+  height: ${(props) => props.height || "50px"};
   color: white;
   border-radius: 5px;
   border: none;
-  cursor: pointer;
+  cursor: ${(props) => {
+    if (props.deactive === true) {
+      return null;
+    }
+    return "pointer";
+  }};
   margin-bottom: ${(props) => props.marginBottom || null};
   &:hover {
-    background-color: #66ca81;
+    background-color: ${(props) => {
+      if (props.deactive === true) {
+        return null;
+      }
+      return color_primary_green_medium;
+    }};
   }
   min-width: 100px;
 `;
@@ -36,14 +61,8 @@ function Button({
   text,
   height,
   marginBottom,
-}: {
-  width?: string;
-  fontSize?: string;
-  padding?: string;
-  text: string;
-  height?: string;
-  marginBottom?: string;
-}) {
+  deactive,
+}: ButtonData) {
   return (
     <ButtonContainer
       width={width}
@@ -51,6 +70,7 @@ function Button({
       padding={padding}
       height={height}
       marginBottom={marginBottom}
+      deactive={deactive}
     >
       {text}
     </ButtonContainer>

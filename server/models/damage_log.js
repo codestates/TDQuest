@@ -3,31 +3,30 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class raid extends Model {
+  class damage_log extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-     static associate(models) {
+    static associate(models) {
       // define association here
-      models.raid.hasMany(models.damage_log, {
-        foreignKey: 'damage_log_id'
+      models.user.belongsTo(models.user, {
+        foreignKey: 'user_id'
       })
-      models.raid.belongsTo(models.monster, {
-        foreignKey: 'monster_id'
+      models.character.belongsTo(models.raid, {
+        foreignKey: 'raid_id'
       })
     }
   }
-  raid.init({
-    name: DataTypes.STRING,
-    hit_damage: {
+  damage_log.init({
+    log: {
       type : DataTypes.INTEGER,
       defaultValue : 0
     },
   }, {
     sequelize,
-    modelName: 'raid',
+    modelName: 'damage_log',
   });
-  return raid;
+  return damage_log;
 };

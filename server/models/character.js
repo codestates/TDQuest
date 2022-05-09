@@ -21,15 +21,23 @@ module.exports = (sequelize, DataTypes) => {
   }
   character.init({
     image: DataTypes.STRING(5000),
-    level: DataTypes.INTEGER,
-    status_phy: DataTypes.INTEGER,
-    status_int: DataTypes.INTEGER,
-    status_spi: DataTypes.INTEGER,
+    level: {
+      type : DataTypes.INTEGER,
+      defaultValue : 1
+    },
+    status_phy: {
+      type : DataTypes.INTEGER,
+      defaultValue : 0
+    },
+    status_int: {
+      type : DataTypes.INTEGER,
+      defaultValue : 0
+    },
+    status_spi: {
+      type : DataTypes.INTEGER,
+      defaultValue : 0
+    },
     medal: DataTypes.STRING,
-    phy_name: DataTypes.STRING,
-    int_name: DataTypes.STRING,
-    spi_name: DataTypes.STRING,
-    class: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'character',

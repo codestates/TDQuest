@@ -18,13 +18,15 @@ module.exports = {
             email : req.body.email
         }})
         .then(data => {
-            const characterInfo = character.create()
+            const characterInfo = character.create({
+                user_id : data.dataValues.id
+            })
             res.status(200).redirect('/login').json({characterInfo: characterInfo})
         })
     },
 
-    signOut : async (req, res) => {
-        user.destory({where: {id : req.query.id}})
-        res.status(200)
-    },
-}
+  signOut: async (req, res) => {
+    user.destory({ where: { id: req.query.id } });
+    res.status(200);
+  },
+};
