@@ -20,19 +20,14 @@ module.exports = {
         if (req.body.is_complete) {
         const characterInfo = await character.increment(
                 { status_phy : 0.5 },
-                {include : {
-                    model : user,
-                    where : { id : req.query.id }
-                }})
+                { where : { user_id : req.query.id }})
+
                 res.status(200).json({characterInfo : characterInfo})
             }
         else {
         const characterInfo = await character.decrement(
                 { status_phy : 0.5 },
-                {include : {
-                    model : user,
-                    where : { user_id : req.query.id }
-                }})
+                { where : { user_id : req.query.id }})
         }
         res.status(200).json({characterInfo : characterInfo})
     },
@@ -41,19 +36,13 @@ module.exports = {
         if (req.body.is_complete) {
             const characterInfo = await character.increment(
                     { status_int : 0.5 },
-                    {include : {
-                        model : user,
-                        where : { user_id : req.query.id }
-                    }})
+                    { where : { user_id : req.query.id }})
                     res.status(200).json({characterInfo : characterInfo})
                 }
             else {
             const characterInfo = await character.decrement(
                     { status_int : 0.5 },
-                    {include : {
-                        model : user,
-                        where : { user_id : req.query.id }
-                    }})
+                    { where : { user_id : req.query.id }})
             }
             res.status(200).json({characterInfo : characterInfo})
     },
@@ -62,19 +51,13 @@ module.exports = {
         if (req.body.is_complete) {
             const characterInfo = await character.increment(
                     { status_spl : 0.5 },
-                    {include : {
-                        model : user,
-                        where : { user_id : req.query.id }
-                    }})
+                    { where : { user_id : req.query.id }})
                     res.status(200).json({characterInfo : characterInfo})
                 }
             else {
             const characterInfo = await character.decrement(
                     { status_spl : 0.5 },
-                    {include : {
-                        model : user,
-                        where : { user_id : req.query.id }
-                    }})
+                    { where : { user_id : req.query.id }})
             }
             res.status(200).json({characterInfo : characterInfo})
     },
@@ -82,19 +65,13 @@ module.exports = {
         if (req.body.is_complete) {
             const characterInfo = await character.increment(
                     { status_etc : 0.5 },
-                    {include : {
-                        model : user,
-                        where : { user_id : req.query.id }
-                    }})
+                    { where : { user_id : req.query.id }})
                     res.status(200).json({characterInfo : characterInfo})
                 }
             else {
             const characterInfo = await character.decrement(
                     { status_etc : 0.5 },
-                    {include : {
-                        model : user,
-                        where : { user_id : req.query.id }
-                    }})
+                    { where : { user_id : req.query.id }})
             }
             res.status(200).json({characterInfo : characterInfo})
     },

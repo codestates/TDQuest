@@ -11,19 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
      static associate(models) {
       // define association here
-      models.ToDo_list.belongsTo(models.user, {
+      models.todo_list.belongsTo(models.user, {
         foreignKey: 'user_id'
       })
     }
   }
   ToDo_list.init({
-    name: DataTypes.STRING,
     content: DataTypes.STRING,
     kind: DataTypes.STRING,
     is_complete: DataTypes.BOOLEAN
   }, {
     sequelize,
-    modelName: 'ToDo_list',
+    modelName: 'todo_list',
   });
   return ToDo_list;
 };
