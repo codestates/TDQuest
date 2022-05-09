@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-const jwt = require("jsonwebtoken");
-const { user } = require("../models");
-
-module.exports = {
-  signIn: async (req, res) => {
-    const { email, name, password } = req.body.userInfo;
-
-    const userInfo = user.create({
-      email: email,
-      nickname: nickname,
-      password: password,
-    });
-    res.status(200).redirect("/login");
-  },
-=======
 const jwt = require('jsonwebtoken')
 const { user } = require('../models')
 const { character } = require("../models")
@@ -34,11 +18,12 @@ module.exports = {
             email : req.body.email
         }})
         .then(data => {
-            const characterInfo = character.create()
+            const characterInfo = character.create({
+                user_id : data.dataValues.id
+            })
             res.status(200).redirect('/login').json({characterInfo: characterInfo})
         })
     },
->>>>>>> 07a5d80 (create Redis)
 
   signOut: async (req, res) => {
     user.destory({ where: { id: req.query.id } });

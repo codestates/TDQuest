@@ -2,21 +2,6 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn("raids", "user_id", {
-      type: Sequelize.INTEGER,
-    });
-    await queryInterface.addConstraint("raids", {
-      fields: ["user_id"],
-      type: "foreign key",
-      name: "users_raids_id_fk",
-      references: {
-        table: "users",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
-
     await queryInterface.addColumn("raids", "monster_id", {
       type: Sequelize.INTEGER,
     });
@@ -32,10 +17,10 @@ module.exports = {
       onUpdate: "cascade",
     });
 
-    await queryInterface.addColumn("ToDo_lists", "user_id", {
+    await queryInterface.addColumn("todo_lists", "user_id", {
       type: Sequelize.INTEGER,
     });
-    await queryInterface.addConstraint("ToDo_lists", {
+    await queryInterface.addConstraint("todo_lists", {
       fields: ["user_id"],
       type: "foreign key",
       name: "users_ToDo_lists_id_fk",
@@ -62,28 +47,42 @@ module.exports = {
       onUpdate: "cascade",
     });
 
-    await queryInterface.addColumn("Classes", "character_id", {
+    await queryInterface.addColumn("damage_log", "user_id", {
       type: Sequelize.INTEGER,
     });
-    await queryInterface.addConstraint("Classes", {
-      fields: ["character_id"],
+    await queryInterface.addConstraint("damage_log", {
+      fields: ["user_id"],
       type: "foreign key",
-      name: "characters_Classes_id_fk",
+      name: "damage_log_user_id_fk",
       references: {
-        table: "characters",
+        table: "users",
         field: "id",
       },
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-
+    await queryInterface.addColumn("damage_log", "raid_id", {
+      type: Sequelize.INTEGER,
+    });
+    await queryInterface.addConstraint("damage_log", {
+      fields: ["raid_id"],
+      type: "foreign key",
+      name: "raid_id_damage_log_id_fk",
+      references: {
+        table: "raids",
+        field: "id",
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn("raids", "user_id");
     await queryInterface.removeColumn("raids", "monster_id");
-    await queryInterface.removeColumn("Todo_lists", "user_id");
+    await queryInterface.removeColumn("todo_lists", "user_id");
     await queryInterface.removeColumn("characters", "user_id");
     await queryInterface.removeColumn("Classes", "character_id");
+    await queryInterface.removeColumn("damage_log", "user_id");
+    await queryInterface.removeColumn("damage_log", "raid_id");
   },
 };
