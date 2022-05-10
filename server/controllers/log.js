@@ -16,10 +16,7 @@ module.exports = {
                 }
                 else {
                     character.findOne({
-                        include : {
-                            model : user,
-                            where : { id : userInfo.dataValues.id }
-                        }
+                        where : { user_id : req.body.user_id}
                     })
                     .then(characterInfo => {
                         res.status(200).json({characterInfo : characterInfo})
@@ -32,6 +29,6 @@ module.exports = {
     logout : async (req, res) => {
         // res.clearCookie('accessToken');
         res.session.destroy()
-        return res.status(200).redirect('/')
+        return res.status(200)
     },
 }
