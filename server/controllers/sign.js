@@ -6,7 +6,6 @@ const { makeAccessToken } = require('../middleware/auth');
 module.exports = {
     signIn : async (req, res) => {
         const { email, nickname, password } = req.body.userInfo
-
         const passwordToken = makeAccessToken(password)
 
         const isUser = await user.findOne({
