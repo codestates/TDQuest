@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
      static associate(models) {
       // define association here
-      models.monster.hasMany(models.raid, {
+      models.monster.hasOne(models.raid, {
         foreignKey: 'monster_id'
       })
     }
