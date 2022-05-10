@@ -9,6 +9,7 @@ import {
   color_menu_header_purple,
   color_border_yellow,
   color_border_underbar_brown,
+  color_secondary_beige,
 } from "../../components/CommonStyle";
 
 export const StatusPageContainer = styled.div<{ bgColor: string }>`
@@ -57,6 +58,7 @@ export const StatusContainer = styled.div`
   height: 350px;
   padding: 15px;
   border: 1px solid ${color_border_yellow};
+  background-color: ${color_secondary_beige};
   margin-right: 10px;
   margin-bottom: 20px;
   display: flex;
@@ -85,6 +87,7 @@ export const MyToDoStatusWrapper = styled.div`
 `;
 
 export const MyInfoContainer = styled.div`
+  background-color: ${color_secondary_beige};
   border: 1px solid ${color_border_yellow};
   display: flex;
   justify-content: space-between;

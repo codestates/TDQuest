@@ -5,6 +5,7 @@ import {
   color_context_gray,
   color_menu_header_purple,
   color_border_yellow,
+  color_secondary_beige,
 } from "../../components/CommonStyle";
 
 const AboutStatusContainer = styled.div`
@@ -13,6 +14,7 @@ const AboutStatusContainer = styled.div`
   height: 20%;
   min-height: 150px;
   border: 1px solid ${color_border_yellow};
+  background-color: ${color_secondary_beige};
   margin-bottom: 20px;
   @media (max-width: 768px) {
     flex-direction: column;
