@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import StatusDetail from "./StatusDetail";
+import React from 'react';
+import styled from 'styled-components';
+import StatusDetail from './StatusDetail';
 import {
   MainContainer,
   CharacterContainer,
@@ -14,9 +14,9 @@ import {
   UserName,
   StatusContainer,
   CharacterInfoContainer,
-} from "./Status_Style";
+} from './Status_Style';
 // Types
-import { CharDataType } from "../Types/generalTypes";
+import { CharDataType } from '../Types/generalTypes';
 
 // 옵션 : onlyChar, direction
 // onlyChar = true일 경우, 캐릭터 창만 표시
@@ -42,24 +42,24 @@ function Status({
 
   // 유저 칭호를 설정하는 함수
   const setUserTitle = (userStat: number[]): string => {
-    const result = ["허약하고", "우둔하고", "별볼일없는"];
+    const result = ['허약하고', '우둔하고', '별볼일없는'];
     //Physical 칭호
     if (30 <= userStat[0] && userStat[0] < 50) {
-      result[0] = "건강하고";
+      result[0] = '건강하고';
     } else if (50 <= userStat[0] && userStat[0] < 100) {
-      result[0] = "강인하고";
+      result[0] = '강인하고';
     }
     // Int 칭호
     if (30 <= userStat[1] && userStat[1] < 50) {
-      result[1] = "명석하고";
+      result[1] = '명석하고';
     } else if (50 <= userStat[1] && userStat[1] < 100) {
-      result[1] = "지혜롭고";
+      result[1] = '지혜롭고';
     }
     // Spl 칭호
     if (30 <= userStat[2] && userStat[2] < 50) {
-      result[2] = "매력있는";
+      result[2] = '매력있는';
     } else if (50 <= userStat[2] && userStat[2] < 100) {
-      result[2] = "끈기높은";
+      result[2] = '끈기높은';
     }
     return `${result[0]} ${result[1]} ${result[2]}`;
   };
@@ -70,7 +70,7 @@ function Status({
     <MainContainer direction={direction}>
       <CharacterContainer>
         <CharacterBackground>
-          <div className="character_wrapper">
+          <div className='character_wrapper'>
             <Character
               src={require(`../static/images/character/${character}.png`)}
             />
@@ -80,7 +80,7 @@ function Status({
       </CharacterContainer>
       {onlyChar ? null : (
         <CharacterInfoContainer direction={direction}>
-          <UserNameContainer>
+          <UserNameContainer direction={direction}>
             <UserLevel>{userLevel}</UserLevel>
             <UserNameWrapper direction={direction}>
               <UserTitle>{userTitle}</UserTitle>
@@ -89,26 +89,26 @@ function Status({
           </UserNameContainer>
           <StatusContainer>
             <StatusDetail
-              img="Physical"
-              titleText="PHY"
-              innerText="Physic"
+              img='Physical'
+              titleText='PHY'
+              innerText='Physic'
               value={status_phy}
             />
             <StatusDetail
-              img="Intelligence"
-              titleText="INT"
-              innerText="Intellig"
+              img='Intelligence'
+              titleText='INT'
+              innerText='Intellig'
               value={status_int}
             />
             <StatusDetail
-              img="Spirit"
-              titleText="SPI"
-              innerText="Spirit"
+              img='Spirit'
+              titleText='SPI'
+              innerText='Spirit'
               value={status_spl}
             />
             <StatusDetail
-              img="Exp"
-              titleText="Next Level"
+              img='Exp'
+              titleText='Next Level'
               value={userExp}
               isExp={true}
             />
