@@ -14,7 +14,7 @@ export const color_secondary_beige = '#FBFBED';
 
 export const color_secondary_purple = '#686CD5';
 
-export const color_context_pink = '#C38B8B';
+export const color_context_brown = '#C38B8B';
 
 export const color_context_beige = '#E6E6E6';
 
@@ -31,6 +31,9 @@ export const color_context_beige_light = '#F9FCFF';
 
 // Text hover
 export const color_context_blue = '#194795';
+
+// white
+export const color_white = '#FFFFFF';
 
 // -----------------------------------------------------//
 
