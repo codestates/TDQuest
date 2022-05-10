@@ -1,6 +1,6 @@
 const { user } = require("../models")
 
-module.exports = {
+module.exports = { //oauth ID 검증
     
     existID : async (email) => {
         const userInfo = await user.findOne({
