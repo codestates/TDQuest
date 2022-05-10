@@ -38,7 +38,7 @@ module.exports = {
             nickname: me.name,
             };
 
-          const user_email = await existID(userInfo.eamil)
+          const user_email = await existID(userInfo.email)
             
           if(user_email){
               const accessToken = makeAccessToken(user_email);

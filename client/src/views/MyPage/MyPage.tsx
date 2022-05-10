@@ -6,84 +6,19 @@ import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import Button from "../../components/Button";
 import { CharDataType, UserDataType } from "../../Types/generalTypes";
+import {
+  MyPageContainer,
+  MyPageHeader,
+  UserInfoContainer,
+  CharContainer,
+  UserInfoDetailContainer,
+  HelperBearContainer,
+} from "./MyPageStyle";
 // API REQUEST
 import {
   dummyRes_getCharacterInfo,
   dummyRes_getUserInfo,
 } from "../../API/tdquestAPI";
-
-const MyPageContainer = styled.div<{ bgColor: string }>`
-  background-color: ${(props) => props.bgColor};
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  min-height: 90vh;
-  @media (max-width: 768px) {
-    height: auto;
-  }
-`;
-
-const MyPageHeader = styled.div`
-  width: 100%;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  .headerContainer {
-    display: flex;
-    margin-left: 3vw;
-    img {
-      image-rendering: pixelated;
-      width: 30px;
-      margin-right: 10px;
-    }
-    h1 {
-      font-size: 1.5rem;
-      font-family: "Fredoka One", cursive;
-      color: #414693;
-    }
-  }
-`;
-
-const UserInfoContainer = styled.div`
-  width: 90%;
-  display: flex;
-  align-items: center;
-`;
-
-const CharContainer = styled.div`
-  flex: 1 0 0;
-`;
-
-const UserInfoDetailContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  flex: 2 0 0;
-  h1 {
-    font-size: 1.5rem;
-    font-family: "Fredoka One", cursive;
-    color: black;
-    margin-bottom: 10px;
-  }
-  h2 {
-    font-size: 1.2rem;
-    font-family: "Fredoka One", cursive;
-    color: black;
-  }
-  .ButtonContainer {
-    width: 80%;
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-evenly;
-  }
-`;
-
-const HelperBearContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex: 3 0 0;
-`;
 
 function MyPage() {
   const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
@@ -102,6 +37,7 @@ function MyPage() {
     }
   }, []);
 
+  // 캐릭터 창 렌더링을 위한 더미 Data
   const {
     user_id,
     image,
@@ -133,7 +69,7 @@ function MyPage() {
           </MyPageHeader>
           <UserInfoContainer>
             <CharContainer>
-              <Status charData={charData} onlyChar={true}></Status>
+              <Status charData={charData} onlyChar={true} />
             </CharContainer>
             <UserInfoDetailContainer>
               <h1>{user_id}</h1>

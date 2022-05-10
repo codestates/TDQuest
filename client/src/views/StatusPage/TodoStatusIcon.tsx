@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { fontSize_body_laptop } from "../../components/CommonStyle";
 
 // 아이콘 기본 크기 : 30px
 // 옵션 종류 : source, name, size
@@ -19,6 +20,7 @@ const Status_icon = styled.div<{ size?: string }>`
     justify-content: flex-end;
   }
   p {
+    font-size: ${fontSize_body_laptop};
     margin-left: 5px;
   }
 `;

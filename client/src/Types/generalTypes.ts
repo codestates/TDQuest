@@ -7,6 +7,7 @@ export type CharDataType = {
   status_spl: number;
   userLevel: number;
   userExp: number;
+  userTitle?: string[];
 };
 
 export type UserDataType = {
