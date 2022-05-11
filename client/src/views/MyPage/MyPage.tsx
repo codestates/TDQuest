@@ -5,89 +5,30 @@ import Loading from "../../components/Loading";
 import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import Button from "../../components/Button";
+import MsgModal from "../../components/MsgModal";
+import DeleteUserAlert_Modal from "./DeleteUserAlert_Modal";
 import { CharDataType, UserDataType } from "../../Types/generalTypes";
+import {
+  MyPageContainer,
+  MyPageHeader,
+  UserInfoContainer,
+  CharContainer,
+  UserInfoDetailContainer,
+  HelperBearContainer,
+} from "./MyPageStyle";
 // API REQUEST
 import {
   dummyRes_getCharacterInfo,
   dummyRes_getUserInfo,
 } from "../../API/tdquestAPI";
 
-const MyPageContainer = styled.div<{ bgColor: string }>`
-  background-color: ${(props) => props.bgColor};
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  min-height: 90vh;
-  @media (max-width: 768px) {
-    height: auto;
-  }
-`;
-
-const MyPageHeader = styled.div`
-  width: 100%;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  .headerContainer {
-    display: flex;
-    margin-left: 3vw;
-    img {
-      image-rendering: pixelated;
-      width: 30px;
-      margin-right: 10px;
-    }
-    h1 {
-      font-size: 1.5rem;
-      font-family: "Fredoka One", cursive;
-      color: #414693;
-    }
-  }
-`;
-
-const UserInfoContainer = styled.div`
-  width: 90%;
-  display: flex;
-  align-items: center;
-`;
-
-const CharContainer = styled.div`
-  flex: 1.5 0 0;
-  display: flex;
-`;
-
-const UserInfoDetailContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  flex: 2 0 0;
-  h1 {
-    font-size: 1.5rem;
-    font-family: "Fredoka One", cursive;
-    margin-bottom: 10px;
-  }
-  h2 {
-    font-size: 1.2rem;
-    font-family: "Fredoka One", cursive;
-  }
-  .ButtonContainer {
-    width: 80%;
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-evenly;
-  }
-`;
-
-const HelperBearContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex: 3 0 0;
-`;
-
 function MyPage() {
   const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
   const [userData, setUserData] = useState<UserDataType>({} as UserDataType);
   const [loading, setLoading] = useState(true);
+  const [onChange, setOnChange] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     if (loading) {
       setTimeout(() => {
@@ -97,7 +38,7 @@ function MyPage() {
         setUserData(getUserData);
         setCharData(getcharacterData);
         setLoading(false);
-      }, 2000);
+      }, 500);
     }
   }, []);
 
@@ -114,6 +55,21 @@ function MyPage() {
 
   const { nickname, email } = userData;
 
+  const handleChange = () => {
+    setOnChange(!onChange);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const deletAccount = () => {
+    // 유저 정보 삭제 관련 로직
+    console.log("유저 정보 삭제");
+  };
+
   return (
     <div>
       {loading ? (
@@ -122,6 +78,14 @@ function MyPage() {
         </MyPageContainer>
       ) : (
         <MyPageContainer bgColor={color_primary_green_light}>
+          <MsgModal
+            header="❗️ Delete account"
+            open={showModal}
+            close={closeModal}
+            footerClick={deletAccount}
+          >
+            <DeleteUserAlert_Modal />
+          </MsgModal>
           <MyPageHeader>
             <div className="headerContainer">
               <img
@@ -136,16 +100,27 @@ function MyPage() {
               <Status charData={charData} onlyChar={true} />
             </CharContainer>
             <UserInfoDetailContainer>
-              <h1>{user_id}</h1>
-              <h2>{email}</h2>
-              <div className="ButtonContainer">
-                <Button text="Change info"></Button>
-                <Button text="Delete Account" deactive={true}></Button>
+              <div className="user_id_wrapper">
+                <h1>{user_id}</h1>
               </div>
+              <h2>{email}</h2>
+              {!onChange ? (
+                <div className="ButtonContainer">
+                  <Button text="Change info" onClick={handleChange} />
+                  <div className="button_margin"></div>
+                  <Button text="Delete Account" deactive={true} />
+                </div>
+              ) : (
+                <div className="ButtonContainer">
+                  <Button text="Save Change" onClick={handleChange} />
+                  <div className="button_margin"></div>
+                  <Button text="Delete Account" onClick={openModal} />
+                </div>
+              )}
             </UserInfoDetailContainer>
             <HelperBearContainer>
               <HelperBear
-                width="200px"
+                width="220px"
                 text="Your total done list : 1,050! Great job!"
               />
             </HelperBearContainer>
