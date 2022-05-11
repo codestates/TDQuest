@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { color_primary_green_light } from "../../components/CommonStyle";
+import {
+  color_primary_green_light,
+  color_context_gray,
+} from "../../components/CommonStyle";
 
 export const MyPageContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -43,6 +46,9 @@ export const UserInfoContainer = styled.div`
 export const CharContainer = styled.div`
   flex: 1.5 0 0;
   display: flex;
+  min-width: 200px;
+  max-width: 300px;
+  height: 200px;
 `;
 
 export const UserInfoDetailContainer = styled.div`
@@ -50,25 +56,41 @@ export const UserInfoDetailContainer = styled.div`
   align-items: center;
   flex-direction: column;
   flex: 2 0 0;
-  h1 {
-    font-size: 1.5rem;
-    font-family: "Fredoka One", cursive;
-    margin-bottom: 10px;
+  max-width: 500px;
+  min-width: 300px;
+  .user_id_wrapper {
+    display: flex;
+    width: 70%;
+    justify-content: flex-start;
+    h1 {
+      width: 100%;
+      font-size: 1.3rem;
+      font-family: "Fredoka One", cursive;
+      margin-bottom: 15px;
+    }
   }
   h2 {
-    font-size: 1.2rem;
+    width: 70%;
+    font-size: 1.3rem;
     font-family: "Fredoka One", cursive;
+    margin-bottom: 15px;
+    color: ${color_context_gray};
   }
   .ButtonContainer {
     width: 80%;
+    max-width: 350px;
+    min-width: 300px;
     margin-top: 10px;
     display: flex;
     justify-content: space-evenly;
+    .button_margin {
+      min-width: 5px;
+    }
   }
 `;
 
 export const HelperBearContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 3 0 0;
 `;

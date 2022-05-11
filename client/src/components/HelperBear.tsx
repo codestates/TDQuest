@@ -34,6 +34,8 @@ const HelperBearContainer = styled.div<{
     text-align: center;
     /* custom code */
     font-size: ${fontSize_body_laptop_small};
+    font-family: "Fredoka One", cursive;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   }
 
   .bubble:after {

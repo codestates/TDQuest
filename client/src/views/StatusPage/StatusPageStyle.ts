@@ -10,6 +10,7 @@ import {
   color_border_yellow,
   color_border_underbar_brown,
   color_secondary_beige,
+  color_context_gray,
 } from "../../components/CommonStyle";
 
 export const StatusPageContainer = styled.div<{ bgColor: string }>`
@@ -63,6 +64,7 @@ export const StatusContainer = styled.div`
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   @media (max-width: 912px) {
     width: 55%;
   }
@@ -96,6 +98,7 @@ export const MyInfoContainer = styled.div`
   height: 350px;
   padding: 15px 20px;
   margin-bottom: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   @media (max-width: 768px) {
     width: auto;
   }
@@ -132,6 +135,8 @@ export const MyInfoDetailWrapper = styled.div`
 
 export const MyInfo = styled.div`
   display: flex;
+  font-family: "Fredoka One", cursive;
+  color: ${color_context_gray};
 `;
 
 export const MyCompletedStatus = styled.div`
@@ -139,6 +144,7 @@ export const MyCompletedStatus = styled.div`
   width: 100%;
   align-items: center;
   margin-bottom: 5px;
+  font-family: "Fredoka One", cursive;
   font-size: ${fontSize_body_laptop};
   @media (max-width: 768px) {
     font-size: ${fontSize_body_mobile_medium};

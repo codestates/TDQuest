@@ -15,6 +15,7 @@ const AboutStatusContainer = styled.div`
   min-height: 150px;
   border: 1px solid ${color_border_yellow};
   background-color: ${color_secondary_beige};
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   margin-bottom: 20px;
   @media (max-width: 768px) {
     flex-direction: column;
@@ -31,7 +32,10 @@ const AboutStatusContainer = styled.div`
     min-width: 160px;
     margin-left: 20px;
     img {
-      width: 90px;
+      width: 70px;
+      @media (max-width: 768px) {
+        width: 70px;
+      }
     }
     h3 {
       font-size: ${fontSize_h3_laptop};
@@ -41,7 +45,7 @@ const AboutStatusContainer = styled.div`
     }
     @media (max-width: 768px) {
       flex-direction: row;
-      margin: 20px 0;
+      margin: 15px 0;
       width: 100%;
     }
   }
@@ -54,6 +58,7 @@ const AboutStatusContainer = styled.div`
     justify-content: center;
     margin-left: 50px;
     padding: 5px;
+    font-family: "Fredoka One", cursive;
     .about_container {
       display: flex;
       @media (max-width: 912px) {
