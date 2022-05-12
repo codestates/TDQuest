@@ -47,8 +47,8 @@ module.exports = {
       image: 'test.jpg',
       level: 100,
       status_phy: 150,
-      status_int: 10,
-      status_spi: 10,
+      status_int: 30,
+      status_spi: 20,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -58,9 +58,9 @@ module.exports = {
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
       level: 100,
-      status_phy: 150,
-      status_int: 10,
-      status_spi: 10,
+      status_phy: 200,
+      status_int: 0,
+      status_spi: 0,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -70,8 +70,8 @@ module.exports = {
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
       level: 100,
-      status_phy: 150,
-      status_int: 10,
+      status_phy: 500,
+      status_int: 0,
       status_spi: 10,
       medal: 'gold',
       createdAt: new Date(),
@@ -82,9 +82,9 @@ module.exports = {
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
       level: 100,
-      status_phy: 150,
-      status_int: 10,
-      status_spi: 10,
+      status_phy: 3000,
+      status_int: 0,
+      status_spi: 0,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -147,12 +147,26 @@ module.exports = {
     monster_id : monsterId
   }]);
 
-  const damage_log_Id = await queryInterface.bulkInsert('damage_log', [{
+  const damage_log_Id1 = await queryInterface.bulkInsert('damage_log', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
     raid_id : raidsId,
-    user_id : userId4
+    user_id : userId1
+  }]);
+  const damage_log_Id2 = await queryInterface.bulkInsert('damage_log', [{
+    log: 30,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    raid_id : raidsId,
+    user_id : userId2
+  }]);
+  const damage_log_Id3 = await queryInterface.bulkInsert('damage_log', [{
+    log: 30,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    raid_id : raidsId,
+    user_id : userId3
   }]);
 },
 

@@ -15,7 +15,7 @@ const userInfo = require("../controllers/userInfo");
 
 //character
 router.get("/character", character.getCharacter);
-router.patch("/character/:status", character.updateStatus);
+router.patch("/character", character.updateStatus);
 
 //log
 router.post("/log/in", log.login);
@@ -42,8 +42,8 @@ router.get("/rank", rank.All);
 router.get("/rank/:status", rank.statusRank);
 
 //sign
-router.post("/sing/in", sign.signIn);
-router.delete("/sing/out", sign.signOut);
+router.post("/sign/in", sign.signIn);
+router.delete("/sign/out", sign.signOut);
 
 //userInfo
 router.get("/userInfo", userInfo.getUser);
