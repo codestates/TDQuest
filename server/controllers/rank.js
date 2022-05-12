@@ -21,10 +21,11 @@ module.exports = {
                     ranker.push(idx+1)
                 }
             })
-            ranker.map(el => { 
-                const rankerUser = character.findOne({
+            ranker.map(async el => {
+                const rankerUser = await character.findOne({
                     where : { id : el }
                 })
+                console.log(rankerUser)
                 return rankerUser
                 }
             )
@@ -32,7 +33,7 @@ module.exports = {
         })
     },
     statusRank : async (req, res) => {
-        const statusRank =  await user.findAll({
+        const statusRank =  await character.findAll({
             order: [req.params.status, 'DESC'],
         }, {limit : 5})
 

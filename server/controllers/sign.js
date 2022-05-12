@@ -5,7 +5,7 @@ const { makeAccessToken } = require('../middleware/token');
 
 module.exports = {
     signIn : async (req, res) => {
-        const { email, nickname, password } = req.body.userInfo
+        const { email, nickname, password } = req.body
         const passwordToken = makeAccessToken(password)
 
         const isUser = await user.findOne({
@@ -15,7 +15,7 @@ module.exports = {
             res.status(409).json({message: "이미 아이디가 있습니다."})
         }
         else {
-            const userInfo = user.create({
+            await user.create({
              email: email,
              nickname: nickname,
              password: passwordToken

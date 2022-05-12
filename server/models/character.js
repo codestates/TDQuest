@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       models.character.belongsTo(models.user, {
         foreignKey: 'user_id'
       })
+      models.user.hasOne(models.character, {
+        foreignKey: 'user_id'
+      })
     }
   }
   character.init({
