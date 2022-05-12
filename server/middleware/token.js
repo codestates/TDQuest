@@ -26,16 +26,15 @@ module.exports = {
             return decoded;
         } catch (error) {
             if(error.name === 'TokenExpiredError'){
-                
+                res.status(404).json({message: "Not Found"})        
             }
             if(error.name === 'JsonWebTokenError'){
-                console.log(error);
+                res.status(404).json({message: "Not Found"})
             }
             if(error.name === 'NotBeforeError'){
                 console.log(error);
+                res.status(404).json({message: "Not Found"})
             }
-    
-            console.log(err)
             return false
         }
     },
@@ -53,6 +52,6 @@ module.exports = {
                 // httpOnly: true
             }).json({accessToken})       
         } 
-        return res.json({message : "인증 실패"})
+        return res.status(401).json({message : "인증 실패"})
     }
 }   

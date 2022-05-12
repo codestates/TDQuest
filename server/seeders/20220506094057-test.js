@@ -118,7 +118,7 @@ module.exports = {
       is_complete : true,
       createdAt: new Date(),
       updatedAt: new Date(),
-      user_id : userId1
+      user_id : userId2
     },
     {
       content : "백종원표 닭도리탕 만들기",
@@ -126,7 +126,7 @@ module.exports = {
       is_complete : false,
       createdAt: new Date(),
       updatedAt: new Date(),
-      user_id : userId1
+      user_id : userId3
     }
   ]);
 
@@ -152,7 +152,7 @@ module.exports = {
     createdAt: new Date(),
     updatedAt: new Date(),
     raid_id : raidsId,
-    user_id : userId1
+    user_id : userId4
   }]);
 },
 

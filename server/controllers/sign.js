@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { user } = require('../models')
 const { character } = require("../models")
-const { makeAccessToken } = require('../middleware/auth');
+const { makeAccessToken } = require('../middleware/token');
 
 module.exports = {
     signIn : async (req, res) => {
@@ -28,7 +28,7 @@ module.exports = {
                 const characterInfo = character.create({
                     user_id : data.dataValues.id
                 })
-            res.status(200).json({characterInfo: characterInfo})
+            res.status(200).json({characterInfo: characterInfo, userInfo : data})
         })
         }
     },

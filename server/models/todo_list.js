@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
   ToDo_list.init({
     content: DataTypes.STRING,
     kind: DataTypes.STRING,
-    is_complete: DataTypes.BOOLEAN
+    is_complete: {
+      type : DataTypes.BOOLEAN,
+      defaultValue : 0
+    }
   }, {
     sequelize,
     modelName: 'todo_list',

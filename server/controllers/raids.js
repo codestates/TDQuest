@@ -6,15 +6,20 @@ const user = require("../models/user")
 
 module.exports = {
     inviteRaids : async (req, res) => {
-        await damage_log.create({
-            user_id : req.body.user_id,
-            raid_id : req.body.raid_id,
-            log : 0
-        })
-        res.status(200).json({message : "레이드에 참가합니다"})
-    },
+        try {
+            await damage_log.create({
+                user_id : req.body.user_id,
+                raid_id : req.body.raid_id,
+                log : 0
+            })
+            res.status(201).json({message : "레이드에 참가합니다"})
+        }
+        catch {
+            res.status(404).json({message : "Not Found"})
+        }},
     
     attack : async (req, res) => {
+        try {
         await damage_log.increment(
             { log : 0.5 },
             { where : {
@@ -53,6 +58,10 @@ module.exports = {
                         })
                     } // 잡고 난 후에, 다른 테이블 삭제?
                 })
-    res.status(200).json({message : '데미지를 넣었습니다.'})
+            res.status(200).json({message : '데미지를 넣었습니다.'})
+            }
+            catch {
+                res.status(404).json({message : "Not Found"})
+            }
     },
 }
