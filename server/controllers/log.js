@@ -5,7 +5,7 @@ const { redisSet } = require("../middleware/session")
 
 module.exports = {
     login: async (req, res) => {
-    
+        
         await user.findOne({ where: { email: req.body.email}})
         .then(userInfo => {
             req.session.key = userInfo.dataValues.email

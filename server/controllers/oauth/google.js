@@ -1,8 +1,8 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
-const { user } = require('../models')
-const { verifyToken, makeAccessToken, makeRefreshToken} = require('../middleware/auth');
-const { existID, signID } = require("../middleware/authID")
+const { user } = require('../../models')
+const { verifyToken, makeAccessToken, makeRefreshToken} = require('../../middleware/token');
+const { existID, signID } = require("./authID")
 
 module.exports = {
     google : async (req, res) => {
@@ -51,6 +51,6 @@ module.exports = {
               res.cookie('refreshToken', refreshToken);//{ httpOnly: true}
           
             }
-      return res.redirect("http://localhost:3000")    
+      return res.status(200).json({message : "로그인 성공"})  
   }
 }
