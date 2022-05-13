@@ -19,7 +19,7 @@ module.exports = {
                         where : { user_id : userInfo.dataValues.id}
                     })
                     .then(characterInfo => {
-                        res.status(200).json({characterInfo : characterInfo})
+                        res.status(200).json({characterInfo : characterInfo, userInfo : userInfo.dataValues.id})
                     })
                 }
               });
