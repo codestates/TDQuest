@@ -28,7 +28,7 @@ module.exports = {
                 const characterInfo = character.create({
                     user_id : data.dataValues.id
                 })
-            res.status(200).json({characterInfo: characterInfo, userInfo : data})
+            res.status(200).json({ message : "회원가입 성공"})
         })
         }
     },
