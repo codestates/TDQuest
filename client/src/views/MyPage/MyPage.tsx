@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { color_primary_green_light } from "../../components/CommonStyle";
+import {
+  color_primary_green_light,
+  color_context_brown,
+  fontSize_body_laptop,
+  color_white,
+  color_context_beige,
+} from "../../components/CommonStyle";
 import Loading from "../../components/Loading";
 import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
@@ -70,6 +76,56 @@ function MyPage() {
     console.log("유저 정보 삭제");
   };
 
+  const BottomContentContainer = styled.div`
+    display: flex;
+    width: 90%;
+    height: 500px;
+    margin-top: 15px;
+    justify-content: space-between;
+  `;
+
+  const MyDoneListContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+  `;
+
+  const AchievementsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+  `;
+
+  const TitleContainer = styled.div`
+    width: 100%;
+    height: 45px;
+    background-color: ${color_context_brown};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h3 {
+      font-size: ${fontSize_body_laptop};
+      font-family: "Fredoka One", cursive;
+      color: ${color_white};
+    }
+  `;
+
+  const ContentContainer = styled.div`
+    display: grid;
+    width: 100%;
+    height: 90%;
+    grid-template-columns: 0.9fr 1fr;
+    align-self: center;
+    justify-self: center;
+    background-color: ${color_context_beige};
+    h3 {
+      font-size: ${fontSize_body_laptop};
+      height: 1.5rem;
+      font-family: "OpenSans";
+      text-align: center;
+    }
+  `;
+
   return (
     <div>
       {loading ? (
@@ -125,6 +181,20 @@ function MyPage() {
               />
             </HelperBearContainer>
           </UserInfoContainer>
+          <BottomContentContainer>
+            <MyDoneListContainer>
+              <TitleContainer>
+                <h3>My Done Lists</h3>
+              </TitleContainer>
+              <ContentContainer></ContentContainer>
+            </MyDoneListContainer>
+            <AchievementsContainer>
+              <TitleContainer>
+                <h3>Achievements</h3>
+              </TitleContainer>
+              <ContentContainer></ContentContainer>
+            </AchievementsContainer>
+          </BottomContentContainer>
         </MyPageContainer>
       )}
     </div>
