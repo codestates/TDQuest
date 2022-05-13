@@ -1,5 +1,9 @@
 const { character } = require('../models')
 const { todo_list } = require("../models")
+const { damage_log } = require('../models')
+const { monster } = require("../models")
+const { raid } = require("../models")
+
 module.exports = {
     getCharacter : async (req, res) => {
             const characterInfo = await character.findOne({
@@ -61,6 +65,52 @@ module.exports = {
                             { where : { user_id : req.query.user_id }})
                         res.status(200).json({characterInfo : characterInfo})
                 })
+            }
+            // raid 버튼을 눌렀을 시
+            if (req.body.raid_id) {
+                try {
+                    await damage_log.increment(
+                        { log : 0.5 },
+                        { where : {
+                            user_id : req.body.user_id,
+                            raid_id : req.body.raid_id}})
+
+                    await raid.increment(
+                        { hit_damage : 0.5},
+                        { where : {
+                            id : req.body.raid_id}})
+                    await monster.decrement(
+                        { hp : 0.5},
+                        { where : {
+                            id : req.body.monster_id}})
+                        
+                    await monster.finById(req.body.monster_id)
+                    .then(async monsterInfo => {
+                        if (monsterInfo.dataValues.hp === 0) {
+                            const characterArray = await character.findAll({
+                                include : {
+                                    model : user,
+                                    include : {
+                                        model : damage_log,
+                                        where : { raid_id : req.body.raid_id} //raid 참가한 인원
+                                            }
+                                        }
+                                    })
+                                const monsterInfo =  await monster.findOne({
+                                    where : {id : req.body.raid_id}
+                                })
+                                characterArray.map(el => {
+                                    character.increment({
+                                        level : monsterInfo.dataValues.reward
+                                        },
+                                        {where : { id : el.dataValues.id}})})
+                          }
+                        })
+                        res.status(200).json({message : '데미지를 넣었습니다.'})
+                        }
+                        catch {
+                            res.status(404).json({message : "Not Found"})
+                        }
             }
         // 취소할 떄
         else {

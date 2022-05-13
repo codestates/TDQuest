@@ -11,11 +11,11 @@ module.exports = {
             let ranker = []
             data.map((el, idx) => {  // 한 유저 객체
                 const stat = el.status_phy + el.status_int + el.status_spi
-                if (max < stat) {
+                if (max < stat) { //최댓값을 구하고, 
                     max = stat
                 }
-                return stat
-            }) // data는 각 스탯을 더한 값으로 바뀜
+                return stat //다 더한 값으로 바꾸기
+            }) // 같은 값이 있을 수 있기 때문에 최대값과 같은 요소
             .forEach((el , idx) => {
                 if (el === max) {
                     ranker.push(idx+1)
@@ -25,7 +25,6 @@ module.exports = {
                 const rankerUser = await character.findOne({
                     where : { id : el }
                 })
-                console.log(rankerUser)
                 return rankerUser
                 }
             )
@@ -33,15 +32,22 @@ module.exports = {
         })
     },
     statusRank : async (req, res) => {
-        const statusRank =  await character.findAll({
-            order: [req.params.status, 'DESC'],
-        }, {limit : 5})
-
-        if (statusRank) {
-            res.status(200).json({statusRank : statusRank})
+        const statusRank = null;
+        if (req.query.kind === "status_phy") {
+            statusRank = await character.findAll({
+                order: [["status_phy", "DESC"]],
+            }, {limit : 5})    
         }
-        else {
-            res.status(404).json({message : "Not Found"})
+        else if (req.query.kind === "status_int") {
+            const statusRank =  await character.findAll({
+                order: [["status_int", "DESC"]],
+            }, {limit : 5})    
         }
+        else if (req.query.kind === "status_spi") {
+            const statusRank =  await character.findAll({
+                order: [["status_spi", "DESC"]],
+            }, {limit : 5})    
+        }
+        res.status(200).json({statusRank: statusRank})
     },
 }
