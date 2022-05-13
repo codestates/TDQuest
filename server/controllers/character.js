@@ -105,6 +105,9 @@ module.exports = {
                                         },
                                         {where : { id : el.dataValues.id}})})
                           }
+                          // moster 테이블 삭제?
+                          // 끝낫다는 표시를 해야되나?
+                          // raid_id 삭제?
                         })
                         res.status(200).json({message : '데미지를 넣었습니다.'})
                         }
