@@ -16,7 +16,7 @@ module.exports = {
                 }
                 else {
                     await character.findOne({
-                        where : { id : userInfo.dataValues.id}
+                        where : { user_id : userInfo.dataValues.id}
                     })
                     .then(characterInfo => {
                         res.status(200).json({characterInfo : characterInfo})
