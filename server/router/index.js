@@ -15,7 +15,7 @@ const userInfo = require("../controllers/userInfo");
 
 //character
 router.get("/character", character.getCharacter);
-router.patch("/character", character.updateStatus);
+router.put("/character", character.updateStatus);
 
 //log
 router.post("/log/in", log.login);
@@ -31,15 +31,13 @@ router.get("/google/callback", google.callback);
 
 //monster
 router.get("/monster", monster.getMonster);
-router.put("/monster", monster.updateMonster);
 
 //raids
 router.post("/raids/invite", raids.inviteRaids);
-router.post("/raids/attack", raids.attack)
 
 //rank
 router.get("/rank", rank.All);
-router.get("/rank/:status", rank.statusRank);
+router.get("/rank/status", rank.statusRank);
 
 //sign
 router.post("/sign/in", sign.signIn);

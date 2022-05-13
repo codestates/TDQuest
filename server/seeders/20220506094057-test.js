@@ -147,21 +147,35 @@ module.exports = {
     monster_id : monsterId
   }]);
 
-  const damage_log_Id1 = await queryInterface.bulkInsert('damage_log', [{
+  const damage_log_Id1 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
     raid_id : raidsId,
     user_id : userId1
   }]);
-  const damage_log_Id2 = await queryInterface.bulkInsert('damage_log', [{
+  const damage_log_Id2 = await queryInterface.bulkInsert('damage_logs', [{
+    log: 40,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    raid_id : raidsId,
+    user_id : userId1
+  }]);
+  const damage_log_Id3 = await queryInterface.bulkInsert('damage_logs', [{
+    log: 0,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    raid_id : raidsId,
+    user_id : userId1
+  }]);
+  const damage_log_Id4 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
     raid_id : raidsId,
     user_id : userId2
   }]);
-  const damage_log_Id3 = await queryInterface.bulkInsert('damage_log', [{
+  const damage_log_Id5 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -176,6 +190,6 @@ module.exports = {
     await queryInterface.bulkDelete('raids', null, {});
     await queryInterface.bulkDelete('todo_lists', null, {});
     await queryInterface.bulkDelete('monsters', null, {});
-    await queryInterface.bulkDelete('damage_log', null, {});
+    await queryInterface.bulkDelete('damage_logs', null, {});
   }
 };
