@@ -5,14 +5,13 @@ const { redisSet } = require("../middleware/session")
 
 module.exports = {
     login: async (req, res) => {
-        
         await user.findOne({ where: { email: req.body.email}})
         .then(async userInfo => {
             req.session.key = userInfo.dataValues.email
             // redisSet("email", userInfo.dataValues.email)
             jwt.verify(userInfo.dataValues.password, process.env.ACCESS_SECRET, async (err, decoded) => {
-                if (err) {
-                    res.status(401).send({ message: 'not authorized' })
+                if (decoded.el !== req.body.password) {
+                 res.status(404).send({ message: "Wrong user password" });
                 }
                 else {
                     await character.findOne({
@@ -23,6 +22,9 @@ module.exports = {
                     })
                 }
               });
+        })
+        .catch(err => {
+            res.status(404).json({message : "Wrong user Id"})
         })
     },
 
