@@ -45,7 +45,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
+      totalExp: 100,
       status_phy: 150,
       status_int: 30,
       status_spi: 20,
@@ -57,7 +57,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
+      totalExp: 100,
       status_phy: 200,
       status_int: 0,
       status_spi: 0,
@@ -69,7 +69,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
+      totalExp: 100,
       status_phy: 500,
       status_int: 0,
       status_spi: 10,
@@ -81,7 +81,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
+      totalExp: 100,
       status_phy: 3000,
       status_int: 0,
       status_spi: 0,
@@ -93,7 +93,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
+      totalExp: 100,
       status_phy: 150,
       status_int: 10,
       status_spi: 10,

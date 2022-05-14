@@ -17,8 +17,18 @@ module.exports = {
                     await character.findOne({
                         where : { user_id : userInfo.dataValues.id}
                     })
-                    .then(characterInfo => {
-                        res.status(200).json({characterInfo : characterInfo, userInfo : userInfo.dataValues.id})
+                    .then(character => {
+                        const characterInfo = {...character.dataValues, 
+                            level : character.dataValues.totalExp / 100,
+                            exp : character.dataValues.totalExp % 100
+                        }
+                        res.status(200).json({characterInfo : characterInfo, 
+                            userInfo : { id : userInfo.dataValues.id,
+                                nickname : userInfo.dataValues.nickname,
+                                email : userInfo.dataValues.email,
+                                createdAt : userInfo.dataValues.createdAt,
+                                updatedAt : userInfo.dataValues.updatedAt
+                        }})
                     })
                 }
               });

@@ -11,7 +11,7 @@ module.exports = {
       image: {
         type: Sequelize.STRING(5000)
       },
-      level: {
+      totalExp: {
         type: Sequelize.INTEGER
       },
       status_phy: {
