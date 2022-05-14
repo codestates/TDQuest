@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   color_primary_green_light,
   color_secondary_beige,
+  color_context_beige,
 } from '../../components/CommonStyle';
 import {
   TodoContainer,
@@ -17,6 +18,7 @@ import {
 import Loading from '../../components/Loading';
 import Status from '../../components/Status';
 import HelperBear from '../../components/HelperBear';
+import TaskContainer from './TaskContainer';
 
 function TodoListPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -68,6 +70,11 @@ function TodoListPage() {
                 ></HelperBear>
               </ContentContainer>
             </RewardContainer>
+          </SectionContainer>
+          <SectionContainer>
+            <TaskContainer title="Today's To-do List" reqireInput={true} />
+            <TaskContainer title="Today's Done List" icon='flag.png' />
+            <TaskContainer title='My Routine To-do List' />
           </SectionContainer>
         </TodoContainer>
       )}
