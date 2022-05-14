@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
-const { verifyToken, makeAccessToken, makeRefreshToken } = require('../middleware/auth');
-const { existID, signID } = require("../middleware/authID")
+const { verifyToken, makeAccessToken, makeRefreshToken } = require('../../middleware/token');
+const { existID, signID } = require("./authID")
 
 module.exports = {
     kakao : async (req, res) => {

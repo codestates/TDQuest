@@ -1,6 +1,6 @@
-const { user } = require("../models")
+const { user } = require("../../models")
 
-module.exports = {
+module.exports = { //oauth ID 검증
     
     existID : async (email) => {
         const userInfo = await user.findOne({
@@ -9,13 +9,15 @@ module.exports = {
         if (userInfo) {
             return userInfo
         }
+        else {
+            
+        }
     },
 
     signID : async (userInfo) => {
         await user.create({
             email : userInfo.email,
-            name : userInfo.nickname
+            nickname : userInfo.nickname
         })
-        res.redirect("http://localhost:3000")
     }
 }

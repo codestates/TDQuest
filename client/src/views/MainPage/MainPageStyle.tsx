@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   fontSize_h1_laptop,
   fontSize_h1_tablet,
   fontSize_body_laptop,
   fontSize_body_tablet,
-} from '../../components/CommonStyle';
+} from "../../components/CommonStyle";
 
 // 고정 px들 반응형에 맞게 수정
 export const MainpageContainer = styled.div<{ bgColor: string }>`
@@ -28,10 +28,11 @@ export const LogoWrapper = styled.section`
 
   img {
     width: 94px;
+    image-rendering: pixelated;
   }
 
   h1 {
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     font-size: 94px;
   }
 
@@ -57,7 +58,7 @@ export const Wrapper = styled.section<{ bgColor: string; direction: string }>`
   display: flex;
   flex-direction: ${(props) => props.direction};
   justify-content: ${(props) =>
-    props.direction === 'column' ? 'space-around' : 'center'};
+    props.direction === "column" ? "space-around" : "center"};
   align-items: center;
   padding: 5%;
   height: 50vh;
@@ -94,7 +95,7 @@ export const DesCard = styled.section`
   text-align: center;
 
   h1 {
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     font-size: ${fontSize_h1_laptop};
   }
 
@@ -135,7 +136,7 @@ export const StatCard = styled.section`
   }
 
   h1 {
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     font-size: ${fontSize_h1_laptop};
     text-align: center;
   }
@@ -166,6 +167,7 @@ export const BearWrapper = styled.section`
   > img {
     width: 100px;
     margin-right: 2rem;
+    image-rendering: pixelated;
   }
 
   > span {
@@ -176,7 +178,7 @@ export const BearWrapper = styled.section`
     padding: 2rem;
 
     p {
-      font-family: 'Fredoka One', cursive;
+      font-family: "Fredoka One", cursive;
       font-size: 24px;
     }
   }

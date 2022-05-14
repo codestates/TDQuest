@@ -4,14 +4,12 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class ToDo_list extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
      static associate(models) {
       // define association here
       models.todo_list.belongsTo(models.user, {
+        foreignKey: 'user_id'
+      })
+      models.user.hasMany(models.todo_list, {
         foreignKey: 'user_id'
       })
     }
@@ -19,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   ToDo_list.init({
     content: DataTypes.STRING,
     kind: DataTypes.STRING,
-    is_complete: DataTypes.BOOLEAN
+    is_complete: {
+      type : DataTypes.BOOLEAN,
+      defaultValue : 0
+    }
   }, {
     sequelize,
     modelName: 'todo_list',

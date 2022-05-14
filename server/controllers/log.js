@@ -5,33 +5,32 @@ const { redisSet } = require("../middleware/session")
 
 module.exports = {
     login: async (req, res) => {
-    
         await user.findOne({ where: { email: req.body.email}})
-        .then(userInfo => {
+        .then(async userInfo => {
             req.session.key = userInfo.dataValues.email
             // redisSet("email", userInfo.dataValues.email)
-            jwt.verify(userInfo.dataValues.password, process.env.ACCESS_SECRET, (err, decoded) => {
-                if (err) {
-                    res.status(401).send({ message: 'not authorized' })
+            jwt.verify(userInfo.dataValues.password, process.env.ACCESS_SECRET, async (err, decoded) => {
+                if (decoded.el !== req.body.password) {
+                 res.status(404).send({ message: "Wrong user password" });
                 }
                 else {
-                    character.findOne({
-                        include : {
-                            model : user,
-                            where : { id : userInfo.dataValues.id }
-                        }
+                    await character.findOne({
+                        where : { user_id : userInfo.dataValues.id}
                     })
                     .then(characterInfo => {
-                        res.status(200).json({characterInfo : characterInfo})
+                        res.status(200).json({characterInfo : characterInfo, userInfo : userInfo.dataValues.id})
                     })
                 }
               });
+        })
+        .catch(err => {
+            res.status(404).json({message : "Wrong user Id"})
         })
     },
 
     logout : async (req, res) => {
         // res.clearCookie('accessToken');
         res.session.destroy()
-        return res.status(200).redirect('/')
+        return res.status(200)
     },
 }

@@ -15,6 +15,7 @@ type ButtonData = {
   height?: string;
   marginBottom?: string;
   deactive?: boolean;
+  onClick?: any;
 };
 
 const ButtonContainer = styled.button<ButtonData>`
@@ -62,6 +63,7 @@ function Button({
   height,
   marginBottom,
   deactive,
+  onClick,
 }: ButtonData) {
   return (
     <ButtonContainer
@@ -71,6 +73,7 @@ function Button({
       height={height}
       marginBottom={marginBottom}
       deactive={deactive}
+      onClick={onClick}
     >
       {text}
     </ButtonContainer>
