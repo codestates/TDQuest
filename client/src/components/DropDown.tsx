@@ -8,7 +8,6 @@ import {
   color_context_blue,
   fontSize_smallButton_laptop,
 } from './CommonStyle';
-import { is } from 'immer/dist/internal';
 
 const DropDownContainer = styled.div<{}>`
   background-color: ${color_primary_green_light};
@@ -39,26 +38,22 @@ const Item = styled.p<{}>`
 `;
 
 function DropDown() {
-  let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
-
   return (
     <DropDownContainer>
       <MenuItems>
-      {isLogin.states === "loggedIn"? (
-        <>
-          <Item>
-            <Link to={'/status'}>My Status</Link>
-          </Item>
-          <Item>
-            <Link to={'/todo'}>To-Do List</Link>
-          </Item>
-          <Item>
-            <Link to={'/raid'}>Boss Raid</Link>
-          </Item>
-          <Item>
-            <Link to={'/ranking'}>Ranking</Link>
-          </Item>
-          <Button
+        <Item>
+          <Link to={'/status'}>My Status</Link>
+        </Item>
+        <Item>
+          <Link to={'/todo'}>To-Do List</Link>
+        </Item>
+        <Item>
+          <Link to={'/raid'}>Boss Raid</Link>
+        </Item>
+        <Item>
+          <Link to={'/ranking'}>Ranking</Link>
+        </Item>
+        <Button
           width='100%'
           fontSize={fontSize_smallButton_laptop}
           padding='3px'
@@ -66,19 +61,13 @@ function DropDown() {
           height='100%'
           marginBottom='10px'
         ></Button>
-        </>
-      ) : null}
         <Button
           width='100%'
           fontSize={fontSize_smallButton_laptop}
           padding='3px'
-          text={isLogin === "loggedIn"? "Sign out" : "Sign In"}
+          text='Sign out'
           height='100%'
-          onClick={
-            isLogin === "loggedIn"? 
-            () => window.localStorage.removeItem("isLogin") :
-            () => window.location.assign("/sign")
-            }
+          onClick={()=> window.localStorage.removeItem("isLogin")}
         ></Button>
       </MenuItems>
     </DropDownContainer>
