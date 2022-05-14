@@ -30,9 +30,15 @@ module.exports = {
                 { status_phy : 0.5 },
                 { where : { user_id : req.query.user_id }})
                 .then(async data => {
-                    const characterInfo = await character.findOne(
+                    await character.findOne(
                         { where : { user_id : req.query.user_id }})
-                    res.status(200).json({characterInfo : characterInfo})
+                        .then(character => {
+                        const characterInfo = {...character.dataValues, 
+                            level : character.dataValues.totalExp / 100,
+                            exp : character.dataValues.totalExp % 100
+                        }
+                        res.status(200).json({characterInfo : characterInfo})
+                    })
                 })
               }
             }
@@ -41,9 +47,15 @@ module.exports = {
                 { status_int : 0.5 },
                 { where : { user_id : req.query.user_id }})
                 .then(async data => {
-                    const characterInfo = await character.findOne(
-                        { where : { user_id : req.query.user_id }})
+                    await character.findOne(
+                    { where : { user_id : req.query.user_id }})
+                    .then(character => {
+                    const characterInfo = {...character.dataValues, 
+                        level : character.dataValues.totalExp / 100,
+                        exp : character.dataValues.totalExp % 100
+                    }
                     res.status(200).json({characterInfo : characterInfo})
+                    })
                 })
             }
             else if (req.query.status === "spi") {
@@ -51,9 +63,15 @@ module.exports = {
                     { status_spi : 0.5 },
                     { where : { user_id : req.query.user_id }})
                     .then(async data => {
-                        const characterInfo = await character.findOne(
-                            { where : { user_id : req.query.user_id }})
+                        await character.findOne(
+                        { where : { user_id : req.query.user_id }})
+                        .then(character => {
+                        const characterInfo = {...character.dataValues, 
+                            level : character.dataValues.totalExp / 100,
+                            exp : character.dataValues.totalExp % 100
+                        }
                         res.status(200).json({characterInfo : characterInfo})
+                    })
                 })
             }
             else if (req.query.status === "etc") {
@@ -61,10 +79,15 @@ module.exports = {
                     { status_etc : 0.5 },
                     { where : { user_id : req.query.user_id }})
                     .then(async data => {
-                        const characterInfo = await character.findOne(
+                        await character.findOne(
                             { where : { user_id : req.query.user_id }})
-                        res.status(200).json({characterInfo : characterInfo})
-                })
+                            .then(character => {
+                            const characterInfo = {...character.dataValues, 
+                                level : character.dataValues.totalExp / 100,
+                                exp : character.dataValues.totalExp % 100
+                            }
+                            res.status(200).json({characterInfo : characterInfo})
+                        })})
             }
             // raid 버튼을 눌렀을 시
             if (req.body.raid_id) {
@@ -126,40 +149,48 @@ module.exports = {
                         { status_phy : 0.5 },
                         { where : { user_id : req.query.user_id }})
                         .then(async data => {
-                            const characterInfo = await character.findOne(
-                                { where : { user_id : req.query.user_id }})
+                            const characterInfo = {...character.dataValues, 
+                                level : character.dataValues.totalExp / 100,
+                                exp : character.dataValues.totalExp % 100
+                            }
                             res.status(200).json({characterInfo : characterInfo})
-                        })
+                            })
                 }
                 else if (req.query.status === "int") {
                     await character.decrement(
                         { status_int : 0.5 },
                         { where : { user_id : req.query.user_id }})
                         .then(async data => {
-                            const characterInfo = await character.findOne(
-                                { where : { user_id : req.query.user_id }})
+                            const characterInfo = {...character.dataValues, 
+                                level : character.dataValues.totalExp / 100,
+                                exp : character.dataValues.totalExp % 100
+                            }
                             res.status(200).json({characterInfo : characterInfo})
-                        })
+                            })
                 }
                 else if (req.query.status === "spi") {
                     await character.decrement(
                         { status_spi : 0.5 },
                         { where : { user_id : req.query.user_id }})
                         .then(async data => {
-                            const characterInfo = await character.findOne(
-                                { where : { user_id : req.query.user_id }})
+                            const characterInfo = {...character.dataValues, 
+                                level : character.dataValues.totalExp / 100,
+                                exp : character.dataValues.totalExp % 100
+                            }
                             res.status(200).json({characterInfo : characterInfo})
-                        })
+                            })
                 }
                 else if (req.query.status === "etc") {
                     await character.decrement(
                         { status_etc : 0.5 },
                         { where : { user_id : req.query.user_id }})
                         .then(async data => {
-                            const characterInfo = await character.findOne(
-                                { where : { user_id : req.query.user_id }})
+                            const characterInfo = {...character.dataValues, 
+                                level : character.dataValues.totalExp / 100,
+                                exp : character.dataValues.totalExp % 100
+                            }
                             res.status(200).json({characterInfo : characterInfo})
-                        })
+                            })
                 }
             }
           }
