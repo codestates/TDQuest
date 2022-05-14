@@ -13,6 +13,7 @@ import {
   color_context_beige_light,
   color_primary_green_light,
 } from '../../components/CommonStyle';
+import Button from '../../components/Button'
 
 function MainPage() {
   useEffect(() => {
@@ -146,6 +147,11 @@ function MainPage() {
             can.
           </p>
         </DesCard>
+      </Wrapper>
+
+      <Wrapper bgColor={color_context_beige_light} direction={'column'} type={'signup'}>
+        <h1 style={{marginBottom : "1rem"}}>Don't you have account yet?</h1>
+        <Button text='Sign Up' onClick={()=>{window.location.href = "/sign"}}/>
       </Wrapper>
     </MainpageContainer>
   );

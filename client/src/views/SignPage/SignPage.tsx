@@ -18,7 +18,7 @@ function SignPage() {
 
 
   return (
-  <div style={{display: "flex", justifyContent : "center", height: "100vh", alignContent: "center"}}>
+  <div style={{display: "flex", justifyContent : "center", height: "100%", alignContent: "center"}}>
     <InputBox state={inOrUp} handler={handleInOrUp}></InputBox>
   </div>
   )

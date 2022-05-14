@@ -67,6 +67,7 @@ function DropDown() {
           padding='3px'
           text='Sign out'
           height='100%'
+          onClick={()=> window.localStorage.removeItem("isLogin")}
         ></Button>
       </MenuItems>
     </DropDownContainer>
