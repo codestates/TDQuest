@@ -2,10 +2,6 @@ import styled from "styled-components";
 import {
   color_primary_green_light,
   color_context_gray,
-  color_context_brown,
-  color_white,
-  color_context_beige,
-  fontSize_body_laptop,
 } from "../../components/CommonStyle";
 
 export const MyPageContainer = styled.div<{ bgColor: string }>`
@@ -62,13 +58,6 @@ export const UserInfoDetailContainer = styled.div`
   flex: 2 0 0;
   max-width: 500px;
   min-width: 300px;
-  input {
-    width: 70%;
-    margin-bottom: 15px;
-    height: 20px;
-    border: 1px solid #2D9BF0;
-    background-color: white;
-  }
   .user_id_wrapper {
     display: flex;
     width: 70%;
@@ -104,60 +93,4 @@ export const HelperBearContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   flex: 3 0 0;
-`;
-
-export const BottomContentContainer = styled.div`
-  display: flex;
-  width: 90%;
-  height: 500px;
-  margin-top: 15px;
-  justify-content: space-between;
-`;
-
-export const MyDoneListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 48%;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-`;
-
-export const AchievementsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 48%;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-`;
-
-export const TitleContainer = styled.div`
-  width: 100%;
-  height: 45px;
-  background-color: ${color_context_brown};
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  h3 {
-    font-size: ${fontSize_body_laptop};
-    font-family: "Fredoka One", cursive;
-    color: ${color_white};
-  }
-`;
-
-export const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 90%;
-  align-items: center;
-  padding: 10px 0;
-  background-color: ${color_context_beige};
-  h3 {
-    font-size: ${fontSize_body_laptop};
-    height: 1.5rem;
-    font-family: "OpenSans";
-    text-align: center;
-  }
 `;

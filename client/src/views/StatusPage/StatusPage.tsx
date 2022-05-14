@@ -40,6 +40,8 @@ function StatusPage(): JSX.Element {
     }
   }, []);
 
+  console.log(userData);
+
   const {
     user_id,
     image,
@@ -49,6 +51,8 @@ function StatusPage(): JSX.Element {
     userLevel,
     userExp,
   } = userData;
+
+  console.log(userData);
 
   return (
     <div>
