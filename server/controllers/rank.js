@@ -21,49 +21,24 @@ module.exports = {
                     ranker.push(idx+1)
                 }
             })
-            ranker.map(el => { 
-                const rankerUser = character.findOne({
+            ranker.map(async el => {
+                const rankerUser = await character.findOne({
                     where : { id : el }
                 })
+                console.log(rankerUser)
                 return rankerUser
                 }
             )
             res.status(200).json({ranker : ranker})
         })
     },
-    phyRank : async (req, res) => {
-        const phyRank =  await user.findAll({
-            order: ['status_phy', 'DESC'],
+    statusRank : async (req, res) => {
+        const statusRank =  await character.findAll({
+            order: [req.params.status, 'DESC'],
         }, {limit : 5})
 
-        if (phyRank) {
-            res.status(200).json({phyRank : phyRank})
-        }
-        else {
-            res.status(404).json({message : "Not Found"})
-        }
-    },
-
-    intRank : async (req, res) => {
-        const intRank = await user.findAll({
-            order: ['status_int', 'DESC'],
-        }, {limit : 5})
-
-        if (phyRank) {
-            res.status(200).json({intRank : intRank})
-        }
-        else {
-            res.status(404).json({message : "Not Found"})
-        }
-    },
-
-    spiRank : async (req, res) => {
-        const splRank = await user.findAll({
-            order: ['status_spi', 'DESC'],
-        }, {limit : 5})
-
-        if (splRank) {
-            res.status(200).json({splRank : splRank})
+        if (statusRank) {
+            res.status(200).json({statusRank : statusRank})
         }
         else {
             res.status(404).json({message : "Not Found"})
