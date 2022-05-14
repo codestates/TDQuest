@@ -7,7 +7,7 @@ export const color_primary_deactivate = "#808080";
 // Button Hover color
 export const color_primary_green_medium = "#66CA81";
 
-// Header Menu item, todopage, statuspage, raidjoinpage, raidpage, rankingpage, mainpage
+// Header Menu item, todopage, statuspage, raidjoinpage, raidpage, rankingpage, mainpage, signpage
 export const color_primary_green_light = "#F2FFEC";
 
 export const color_secondary_beige = "#FBFBED";
