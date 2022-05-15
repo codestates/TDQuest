@@ -1,6 +1,6 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { color_primary_green_dark } from "./CommonStyle";
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+import { color_primary_green_dark } from './CommonStyle';
 
 const BgFade = keyframes`
     from {
@@ -89,7 +89,7 @@ const FooterBtn = styled.div<{ isConfirmed?: boolean }>`
   padding: 6px 12px;
   color: #fff;
   background-color: ${(props) =>
-    props.isConfirmed ? color_primary_green_dark : "#ccc"};
+    props.isConfirmed ? color_primary_green_dark : '#ccc'};
   border-radius: 5px;
   font-size: 15px;
   width: 200px;
@@ -116,19 +116,25 @@ function MsgModal({
   header,
   children,
   footer,
+  footer2,
   footerClick,
+  footerClick2,
   isConfirmed,
+  secondFooterBtn,
 }: {
   open: boolean;
   close: () => void;
   header: string;
   children: JSX.Element | React.ReactNode;
   footer?: string;
+  footer2?: string;
   footerClick?: () => void;
+  footerClick2?: () => void;
   isConfirmed?: boolean;
+  secondFooterBtn?: boolean;
 }) {
   return (
-    <div className={open ? "open_modal" : "close_modal"}>
+    <div className={open ? 'open_modal' : 'close_modal'}>
       {open ? (
         <ModalBackground onClick={close}>
           <ModalContainer
@@ -141,8 +147,15 @@ function MsgModal({
             <ModalMain>{children}</ModalMain>
             <Footer>
               <FooterBtn onClick={footerClick}>
-                {footer ? footer : "Confirm"}
+                {footer ? footer : 'Confirm'}
               </FooterBtn>
+              {secondFooterBtn ? (
+                <FooterBtn onClick={footerClick2} isConfirmed={true}>
+                  {footer2 ? footer2 : 'Confirm'}
+                </FooterBtn>
+              ) : (
+                ''
+              )}
             </Footer>
           </ModalContainer>
         </ModalBackground>

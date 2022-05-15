@@ -13,6 +13,7 @@ import {
   color_context_beige_light,
 } from '../../components/CommonStyle';
 import PlusIcon from '../../static/images/icons/icon_plus.svg';
+import MenuIcon from '../../static/images/icons/three-dots-icon.jpeg';
 
 const Container = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -43,8 +44,11 @@ const TitleContainer = styled.div`
 
 const ContentContainer = styled.div`
   display: flex;
-  justify-content: center;
-  padding: 10px 0;
+  /* justify-content: center; */
+  flex-direction: column;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  align-items: center;
   width: 100%;
 `;
 
@@ -77,13 +81,14 @@ const InputBox = styled.div`
   /* border-style: ridge; */
   display: grid;
   grid-template-columns: 1fr 30px;
-  height: 40px;
+  height: 50px;
   input {
     border: none;
     padding: 5px;
     font-size: ${fontSize_body_laptop};
     font-family: 'Fredoka One', cursive;
     outline: none;
+
     ::placeholder {
       color: ${color_context_beige};
     }
@@ -97,23 +102,59 @@ const InputIcon = styled.div`
   justify-content: center;
   align-items: center;
   img {
+    cursor: pointer;
     height: 30px;
+  }
+`;
+
+const Item = styled.div`
+  width: 85%;
+  border: none;
+  background-color: ${color_white};
+  min-height: 50px;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  /* display: grid;
+  grid-template-columns: 30px 1fr 30px;
+  align-items: center; */
+  img {
+    cursor: pointer;
+    height: 30px;
+  }
+  div {
+    width: 100%;
+    padding: 0 10px;
   }
 `;
 
 function TaskContainer({
   title,
-  icon,
-  reqireInput,
+  icon, // title 앞에 있는 아이콘
+  todoCreator, // task 생성을 위한 버튼과 input 창 생성 여부
+  itemModalBtn,
+  itemIcon,
+  openModalFunction,
+  itemBtnActionFunction, // task 아이템의 버튼을 클릭 했을때 동작되는 함수
+  itemCreateFunction,
 }: {
   title: string;
   icon?: string | undefined;
-  reqireInput?: boolean | undefined;
+  todoCreator?: boolean | undefined;
+  itemModalBtn?: boolean | undefined;
+  itemIcon?: any | undefined;
+  openModalFunction?: any | undefined;
+  itemBtnActionFunction?: any | undefined;
+  itemCreateFunction?: any | undefined;
 }) {
   const [category, setCategory] = useState('phy');
+  const [tastContent, setTastContent] = useState('');
 
   const categoryHandler = (el: string) => {
     setCategory(el);
+  };
+  const inputHandler = (el: string) => {
+    setTastContent(el);
   };
 
   return (
@@ -127,7 +168,7 @@ function TaskContainer({
         <h3>{title}</h3>
       </TitleContainer>
       <ContentContainer>
-        {reqireInput ? (
+        {todoCreator ? (
           <InputContainer>
             <IconBox>
               <Icon
@@ -173,15 +214,53 @@ function TaskContainer({
               </Icon>
             </IconBox>
             <InputBox>
-              <input placeholder='Add to-do'></input>
+              <input
+                placeholder='Add to-do'
+                value={tastContent}
+                onChange={(el) => {
+                  inputHandler(el.target.value);
+                }}
+              ></input>
               <InputIcon>
-                <img src={PlusIcon} alt='Plus' />
+                <img
+                  src={PlusIcon}
+                  alt='Plus'
+                  onClick={() => {
+                    itemCreateFunction(tastContent, category);
+                    setTastContent('');
+                  }}
+                />
               </InputIcon>
             </InputBox>
           </InputContainer>
         ) : (
           ''
         )}
+        <Item>
+          {itemModalBtn ? (
+            <img
+              src={MenuIcon}
+              alt='Menu'
+              onClick={() => {
+                openModalFunction('data', 'key');
+              }}
+            />
+          ) : (
+            ''
+          )}
+          <div>test</div>
+          {itemIcon ? (
+            <img
+              src={itemIcon}
+              alt='Menu'
+              onClick={() => {
+                itemBtnActionFunction();
+              }}
+            />
+          ) : (
+            ''
+          )}
+        </Item>
       </ContentContainer>
     </Container>
   );
