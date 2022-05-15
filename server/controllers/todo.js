@@ -1,5 +1,6 @@
 const { todo_list } = require("../models")
-
+const sequelize = require ('sequelize');
+const moment = require('moment')
 module.exports = {
     createTodo : async (req, res) => {
         await todo_list.create({
@@ -50,5 +51,31 @@ module.exports = {
             console.log(err)
         })
     },
-    // todoList를 완료시는 character에!
+    completeTodo : async (req, res) => {
+        if (req.body.time) {
+            await todo_list.findAll({
+                raw : true,
+                where: {user_id : req.query.user_id,
+                    updatedAt : {
+                        $eq: req.body.time
+                      }
+                }
+            })
+            .then(data => {
+                console.log(data)
+            })
+        }
+        else { 
+        await todo_list.findAll({
+            where : {user_id : req.query.user_id,
+                is_complete : 1
+            }
+        })
+        .then(todo_lists => {
+            res.status(200).json({todo_list : todo_lists})
+        })
+        .catch(err => {
+            console.log(err)
+        })}
+    }
 }

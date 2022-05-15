@@ -49,6 +49,7 @@ router.patch("/userInfo", userInfo.updateUser);
 
 //todo
 router.get("/todo", todo.getTodo);
+router.get("/todo/complete", todo.completeTodo)
 router.post("/todo", todo.createTodo);
 router.delete("/todo", todo.deleteTodo);
 router.patch("/todo", todo.updateTodo);
