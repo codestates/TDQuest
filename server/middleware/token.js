@@ -39,38 +39,40 @@ module.exports = {
         }
     },
 
-    checkAccessToken : async (req, res) => {
-        const auth = req.headers.authorization
 
-        if (!auth) {
-            res.status(401).json({message : '인증이 실패했습니다'})
+    checkAccessToken : async (req, res) => {
+        const token = req.headers.authorization.split(' ')[1];
+        const refreshToken = req.headers.refreshToken;
+
+        if (!token) {
+            res.status(401).json({message : 'not Auhtorized'})
         }
         else {
-            const token = auth.split(' ')[1];
-            const verify = verifyToken(token);
-            
-            await user.findOne({ where : {email : verify.email}})
-            .then(userInfo => {
-                next()
-            }) 
+            verifyToken(token)
+            .then(async verify => {
+                await user.findOne({ where : {email : verify.email}})
+                    .then(userInfo => {
+                        next()
+                    })    
+            })
             .catch(err => {
-                return err
+                if(error.name === 'TokenExpiredError'){
+                    jwt.verify(refreshToken, proccess.env.REFRESH_SECRET)
+                    .then(token => {
+                        const accessToken = makeAccessToken(req.body.email);
+                        res.status(200).cookie({refreshToken : req.headers.refreshToken})
+                        .json({accessToken : accessToken})
+                        next()
+                    })
+                }
+                if(error.name === 'JsonWebTokenError'){
+                    res.status(404).json({message: "Not Found"})
+                }
+                if(error.name === 'NotBeforeError'){
+                    console.log(error);
+                    res.status(404).json({message: "Not Found"})
+                }
             })
         }
     },
-
-    checkRefreshToken : async (req, res) => {
-        const { refreshToken } = req.cookies;
-        
-        const verifyAccessToken = verifyToken(refreshToken);
-        if(verifyAccessToken.email){
-          const accessToken = makeAccessToken(verifyAccessToken.email);
-          const refreshToken = makeRefreshToken(verifyAccessToken.email);
-  
-            res.cookie('refreshToken', refreshToken, {
-                // httpOnly: true
-            }).json({"accessToken" : accessToken})       
-        } 
-        return res.status(401).json({message : "인증 실패"})
-    }
 }   
