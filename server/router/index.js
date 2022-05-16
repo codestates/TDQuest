@@ -11,7 +11,7 @@ const rank = require("../controllers/rank");
 const sign = require("../controllers/sign");
 const todo = require("../controllers/todo");
 const userInfo = require("../controllers/userInfo");
-
+const {checkAccessToken} = require("../middleware/token")
 
 //character
 router.get("/character", character.getCharacter);
@@ -48,11 +48,11 @@ router.get("/userInfo", userInfo.getUser);
 router.patch("/userInfo", userInfo.updateUser);
 
 //todo
-router.get("/todo", todo.getTodo);
-router.get("/todo/complete", todo.completeTodo)
-router.post("/todo", todo.createTodo);
-router.delete("/todo", todo.deleteTodo);
-router.patch("/todo", todo.updateTodo);
+router.get("/todo", checkAccessToken ,todo.getTodo);
+router.get("/todo/complete", checkAccessToken, todo.completeTodo)
+router.post("/todo", checkAccessToken, todo.createTodo);
+router.delete("/todo", checkAccessToken, todo.deleteTodo);
+router.patch("/todo", checkAccessToken, todo.updateTodo);
 
 
 module.exports = router;
