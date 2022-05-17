@@ -17,3 +17,20 @@ export type UserDataType = {
   created_at: string;
   updated_at: string;
 };
+
+export type TodoListType = {
+  id: number;
+  user_id: number;
+  content: string;
+  kind: string;
+  is_complete: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TodoContentType = {
+  content: string;
+  kind?: string;
+  is_complete?: boolean;
+  created_at: string;
+};
