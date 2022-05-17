@@ -9,7 +9,11 @@ module.exports = {
             const characterInfo = await character.findOne({
                 where : {user_id : req.query.user_id}
             })
-            .then(characterInfo => {
+            .then(character => {
+                const characterInfo = {...character.dataValues, 
+                    level : character.dataValues.totalExp / 100,
+                    exp : character.dataValues.totalExp % 100
+                }
                 res.status(200).json({ characterInfo: characterInfo })
             })
             .catch(err => {
