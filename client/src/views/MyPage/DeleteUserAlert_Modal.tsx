@@ -59,7 +59,7 @@ export const ChangePasswordModal = () => {
   const [showAlert, setAlert] = useState(false);
 
   const handleChange_new = (e: React.FormEvent<HTMLInputElement>) => {
-    setNewPassword(e.currentTarget.value)
+    setNewPassword(e.currentTarget.value);
     if (newPassword === confirmPassword) {
       setAlert(true);
     } else {
@@ -67,8 +67,8 @@ export const ChangePasswordModal = () => {
     }
   };
 
-  const handleChange_confirm= (e: React.FormEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.currentTarget.value)
+  const handleChange_confirm = (e: React.FormEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.currentTarget.value);
     if (newPassword === confirmPassword) {
       setAlert(true);
     } else {
