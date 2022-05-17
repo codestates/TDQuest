@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import Button from './Button';
-import { Link } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import Button from "./Button";
+import { Link } from "react-router-dom";
 import {
   color_primary_green_dark,
   color_primary_green_light,
   color_context_blue,
   fontSize_smallButton_laptop,
-} from './CommonStyle';
+} from "./CommonStyle";
 
 const DropDownContainer = styled.div<{}>`
   background-color: ${color_primary_green_light};
@@ -42,31 +42,33 @@ function DropDown() {
     <DropDownContainer>
       <MenuItems>
         <Item>
-          <Link to={'/status'}>My Status</Link>
+          <Link to={"/status"}>My Status</Link>
         </Item>
         <Item>
-          <Link to={'/todo'}>To-Do List</Link>
+          <Link to={"/todo"}>To-Do List</Link>
         </Item>
         <Item>
-          <Link to={'/raid'}>Boss Raid</Link>
+          <Link to={"/raid"}>Boss Raid</Link>
         </Item>
         <Item>
-          <Link to={'/ranking'}>Ranking</Link>
+          <Link to={"/ranking"}>Ranking</Link>
         </Item>
+        <Link to={"/mypage"}>
+          <Button
+            width="100%"
+            fontSize={fontSize_smallButton_laptop}
+            padding="3px"
+            text="My page"
+            height="100%"
+            marginBottom="10px"
+          ></Button>
+        </Link>
         <Button
-          width='100%'
+          width="100%"
           fontSize={fontSize_smallButton_laptop}
-          padding='3px'
-          text='My page'
-          height='100%'
-          marginBottom='10px'
-        ></Button>
-        <Button
-          width='100%'
-          fontSize={fontSize_smallButton_laptop}
-          padding='3px'
-          text='Sign out'
-          height='100%'
+          padding="3px"
+          text="Sign out"
+          height="100%"
         ></Button>
       </MenuItems>
     </DropDownContainer>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Status from "../../components/Status";
+import Equipment from "./Equiments"
 import HelperBear from "../../components/HelperBear";
 import AboutStatus from "./AboutStatus";
 import TodoStatusIcon from "./TodoStatusIcon";
@@ -72,6 +73,7 @@ function StatusPage(): JSX.Element {
               <Status charData={userData}></Status>
             </StatusContainer>
             <MyInfoContainer>
+              <Equipment/>
               <MyToDoStatusWrapper>
                 <h3>My To-Do Status</h3>
                 <MyInfoWrapper>

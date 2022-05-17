@@ -74,10 +74,29 @@ export const StatusContainer = styled.div`
   }
 `;
 
+export const MyInfoContainer = styled.div`
+  background-color: ${color_secondary_beige};
+  border: 1px solid ${color_border_yellow};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 350px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  @media (max-width: 768px) {
+    width: auto;
+    height: auto;
+  }
+`;
+
 export const MyToDoStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 48%;
   h3 {
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
@@ -88,21 +107,6 @@ export const MyToDoStatusWrapper = styled.div`
   }
 `;
 
-export const MyInfoContainer = styled.div`
-  background-color: ${color_secondary_beige};
-  border: 1px solid ${color_border_yellow};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 350px;
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  @media (max-width: 768px) {
-    width: auto;
-  }
-`;
 
 export const MyInfoWrapper = styled.div`
   display: flex;

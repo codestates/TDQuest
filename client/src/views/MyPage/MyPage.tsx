@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import {
-  color_primary_green_light,
-  color_context_brown,
-  fontSize_body_laptop,
-  color_white,
-  color_context_beige,
-  color_context_beige_light,
-} from "../../components/CommonStyle";
+import { color_primary_green_light } from "../../components/CommonStyle";
 import Loading from "../../components/Loading";
 import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import Button from "../../components/Button";
 import MsgModal from "../../components/MsgModal";
-import DeleteUserAlert_Modal from "./DeleteUserAlert_Modal";
+import {
+  ChangePasswordModal,
+  DeleteUserAlertModal,
+} from "./DeleteUserAlert_Modal";
 import DoneContents from "./DoneContents";
 import {
   CharDataType,
@@ -47,6 +42,8 @@ function MyPage() {
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [userName, setUserName] = useState<string>("");
+  const [pwModal, setPwModal] = useState(false);
 
   useEffect(() => {
     if (loading) {
@@ -83,10 +80,20 @@ function MyPage() {
   };
   const closeModal = () => {
     setShowModal(false);
+    setPwModal(false);
   };
   const deletAccount = () => {
     // 유저 정보 삭제 관련 로직
     console.log("유저 정보 삭제");
+  };
+  const changePassword = () => {
+    console.log("유저 패스워드 변경");
+    setShowModal(false);
+  };
+
+  const changeName = (event: React.FormEvent<HTMLInputElement>) => {
+    setUserName(event.currentTarget.value);
+    console.log(userName);
   };
 
   return (
@@ -97,14 +104,16 @@ function MyPage() {
         </MyPageContainer>
       ) : (
         <MyPageContainer bgColor={color_primary_green_light}>
-          <MsgModal
-            header="❗️ Delete account"
-            open={showModal}
-            close={closeModal}
-            footerClick={deletAccount}
-          >
-            <DeleteUserAlert_Modal />
-          </MsgModal>
+          {pwModal ? null : (
+            <MsgModal
+              header="❗️ Delete account"
+              open={showModal}
+              close={closeModal}
+              footerClick={deletAccount}
+            >
+              <DeleteUserAlertModal />
+            </MsgModal>
+          )}
           <MyPageHeader>
             <div className="headerContainer">
               <img
@@ -120,17 +129,39 @@ function MyPage() {
             </CharContainer>
             <UserInfoDetailContainer>
               {onChange ? (
-                <input
-                  type="text"
-                  className="change_name"
-                  placeholder={user_id}
-                ></input>
+                <div className="change_userinfo_wrapper">
+                  <input
+                    type="text"
+                    className="change_name"
+                    placeholder={` ${user_id}`}
+                    onChange={changeName}
+                  ></input>
+                  <button
+                    className="change_pw_btn"
+                    onClick={() => {
+                      openModal();
+                      setPwModal(true);
+                    }}
+                  >
+                    Click to Change Password
+                  </button>
+                  {pwModal ? (
+                    <MsgModal
+                      header="❗️ Change Password"
+                      open={showModal}
+                      close={closeModal}
+                      footerClick={changePassword}
+                    >
+                      <ChangePasswordModal />
+                    </MsgModal>
+                  ) : null}
+                </div>
               ) : (
                 <div className="user_id_wrapper">
                   <h1>{user_id}</h1>
+                  <h2>{email}</h2>
                 </div>
               )}
-              <h2>{email}</h2>
               {!onChange ? (
                 <div className="ButtonContainer">
                   <Button text="Change info" onClick={handleChange} />
@@ -187,6 +218,7 @@ export default MyPage;
 // 필요 데이터
 {
   // user info - user name, email, password
+  // 유저 Name은 비밀번호가 없어도 변경가능하도록 API 구성 필요
   // user info에 total done lists(총 갯수만) 추가 필요
   // user todo done lists
   // done todo_list 삭제 요청
