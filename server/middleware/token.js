@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { user } = require('../models')
+const { promisify } = require('util');
+// const redisClient = require("../middleware/redis")
 
 module.exports = {
     
@@ -13,6 +15,7 @@ module.exports = {
 
     makeRefreshToken : (el) => {
         try {
+            // redisClient.set(el, refreshToken);
             return jwt.sign({el}, process.env.REFRESH_SECRET, { expiresIn: '7d' })
             
         } catch (error) {
@@ -57,6 +60,9 @@ module.exports = {
             })
             .catch(err => {
                 if(error.name === 'TokenExpiredError'){
+                    // const getAsync = promisify(redisClient.get).bind(redisClient);
+                    // const data = await getAsync(userId);
+                    // if (refreshToken === data) {
                     jwt.verify(refreshToken, proccess.env.REFRESH_SECRET)
                     .then(token => {
                         const accessToken = makeAccessToken(req.body.email);
@@ -64,6 +70,7 @@ module.exports = {
                         .json({accessToken : accessToken})
                         next()
                     })
+                    // }
                 }
                 if(error.name === 'JsonWebTokenError'){
                     res.status(404).json({message: "Not Found"})

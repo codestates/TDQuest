@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { user } = require('../models')
 const { character } = require('../models')
-const { redisSet } = require("../middleware/session")
+const { redisGet, redisSet, redisClient } = require("../middleware/redis")
 const {makeAccessToken, makeRefreshToken } = require("../middleware/token")
 
 module.exports = {
@@ -11,11 +11,9 @@ module.exports = {
             password : req.body.password
         }})
         .then(async userInfo => {
-            //req.session.key = userInfo.dataValues.email
-            // redisSet("email", userInfo.dataValues.email)
             const accessToken = await makeAccessToken(userInfo.dataValues.email)
             const refreshToken = await makeRefreshToken(userInfo.dataValues.email)
-            
+            // redisClient.set(user.id, refreshToken);
             await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
             })
