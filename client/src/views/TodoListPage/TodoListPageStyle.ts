@@ -51,6 +51,7 @@ export const SectionContainer = styled.div`
   display: grid;
   column-gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  margin-bottom: 20px;
 `;
 
 export const StatusContainer = styled.div<{ bgColor: string }>`

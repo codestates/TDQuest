@@ -32,6 +32,8 @@ export const color_context_beige_light = "#F9FCFF";
 // Text hover
 export const color_context_blue = "#194795";
 
+export const color_context_blue_light = '#30acda';
+
 // white
 export const color_white = "#FFFFFF";
 

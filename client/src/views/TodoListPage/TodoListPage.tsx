@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   color_primary_green_light,
   color_secondary_beige,
+  color_context_beige,
 } from '../../components/CommonStyle';
 import {
   TodoContainer,
@@ -17,9 +18,65 @@ import {
 import Loading from '../../components/Loading';
 import Status from '../../components/Status';
 import HelperBear from '../../components/HelperBear';
+import TaskContainer from './TaskContainer';
+import UncheckedIcon from '../../static/images/icons/unchecked.svg';
+import CheckedIcon from '../../static/images/icons/checked.svg';
+import MsgModal from '../../components/MsgModal';
+import TaskContent_modal from './TaskContent_Modal';
 
 function TodoListPage() {
   const [loading, setLoading] = useState<boolean>(false);
+  //--- modal 관련---//
+  const [selectedTastContent, setSelectedTastContent] = useState({
+    taskContent: '',
+    taskId: '',
+  });
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal(true);
+  };
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const deleteTask = () => {
+    // 태스크 삭제 관련 로직 ***
+    console.log('task 삭제');
+  };
+  const saveTask = () => {
+    // 태스크 내용 업데이트 관련 로직 ***
+    console.log('task 수정');
+  };
+  const openModalHandler = (taskContent: string, taskId: string) => {
+    // 특정 태스크 선택시 해당 태스크의 컨텐츠 내용과 태스크 아이디값을 가져온다
+    setSelectedTastContent({ taskContent: taskContent, taskId: taskId });
+    openModal();
+  };
+  // TaskContent_modal 로 보낼 함수
+  const selectedTastContentHandler = (taskContent: string) => {
+    setSelectedTastContent((prevState) => ({
+      ...prevState,
+      taskContent: taskContent,
+    }));
+  };
+  //--- modal 관련 ---//
+  //--- creating task 관련---//
+  const createTaskHander = (taskContent: string, category: string) => {
+    // 태스크 생성 관련 로직 ***
+    console.log(taskContent);
+    console.log(category);
+  };
+
+  //--- creating task 관련---//
+
+  const taskCompletedHandler = () => {
+    // 태스크 완료 관련 로직 ***
+    console.log('task 완료');
+  };
+
+  const taskCompletedCancelHander = () => {
+    // 태스크 완료 취소 관련 로직 ***
+    console.log('task complete 취소');
+  };
 
   return (
     <div>
@@ -29,6 +86,21 @@ function TodoListPage() {
         </TodoContainer>
       ) : (
         <TodoContainer bgColor={color_primary_green_light}>
+          <MsgModal
+            header='Task info'
+            open={showModal}
+            close={closeModal}
+            footerClick={deleteTask}
+            footerClick2={saveTask}
+            footer='Delete'
+            footer2='Save'
+            secondFooterBtn={true}
+          >
+            <TaskContent_modal
+              selectedTastContentHandler={selectedTastContentHandler}
+              selectedTastContent={selectedTastContent.taskContent}
+            ></TaskContent_modal>
+          </MsgModal>
           <TodoListPageHeader>
             <div className='headerContainer'>
               <img
@@ -68,6 +140,28 @@ function TodoListPage() {
                 ></HelperBear>
               </ContentContainer>
             </RewardContainer>
+          </SectionContainer>
+          <SectionContainer>
+            <TaskContainer
+              title="Today's To-do List"
+              todoCreator={true}
+              itemModalBtn={true}
+              itemIcon={UncheckedIcon}
+              openModalFunction={openModalHandler}
+              itemBtnActionFunction={taskCompletedHandler}
+              itemCreateFunction={createTaskHander}
+            />
+            <TaskContainer
+              title="Today's Done List"
+              icon='flag.png'
+              itemIcon={CheckedIcon}
+              itemBtnActionFunction={taskCompletedCancelHander}
+            />
+            <TaskContainer
+              title='My Routine To-do List'
+              itemIcon={CheckedIcon}
+              itemBtnActionFunction={taskCompletedCancelHander}
+            />
           </SectionContainer>
         </TodoContainer>
       )}
