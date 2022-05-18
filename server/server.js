@@ -15,18 +15,18 @@ const session = require('express-session');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(session({
-  secret: "secret",
-  saveUninitialized: false,
-  resave: false,
-  // store: new redisStore({client : redisClient})
-}))
+// app.use(session({
+//   secret: "secret",
+//   saveUninitialized: false,
+//   resave: false,
+//   // store: new redisStore({client : redisClient})
+// }))
 
 app.use(
   cors({
     origin: ["http://localhost:3000"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
 
