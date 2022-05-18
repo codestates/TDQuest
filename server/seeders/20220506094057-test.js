@@ -138,7 +138,7 @@ module.exports = {
     },
     {
       content : "백종원표 닭도리탕 만들기",
-      kind : "spl",
+      kind : "spi",
       is_complete : false,
       createdAt: new Date(),
       updatedAt: new Date(),
