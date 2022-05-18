@@ -85,7 +85,9 @@ module.exports = {
     completeTodo : async (req, res) => {
             if (req.body.is_complete === 1) { //완료버튼을 눌렀다면
                 await todo_list.update({is_complete : true},
-                    { where : { id : req.query.id}})
+                    { where : { id : req.query.id,
+                        is_complete : 0
+                    }})
 
                 if (req.query.status === "phy") {
                     await character.increment(
@@ -107,19 +109,18 @@ module.exports = {
                         { status_etc : 0.5 },
                         { where : { user_id : req.query.user_id }})
                 }
+
                 const todoInfo = await todo_list.findOne({
                     where : { id : req.query.id}
                 })
-                await character.findOne(
-                        { where : { user_id : req.query.user_id }})
-                        .then(character => {
-                        const characterInfo = {...character.dataValues, 
-                            level : character.dataValues.totalExp / 100,
-                            exp : character.dataValues.totalExp % 100
-                        }
-                        res.status(200).json({characterInfo : characterInfo,
-                            todoInfo : todoInfo
-                        })
+                await character.findOne({ where : { user_id : req.query.user_id }})
+                        .then(data => {
+                        const characterInfo = {...data.dataValues, 
+                            level : data.dataValues.totalExp / 100,
+                            exp : data.dataValues.totalExp % 100
+                            }
+                         res.status(200).json({characterInfo : characterInfo,
+                            todoInfo : todoInfo})
                 })
                 // raid 버튼을 눌렀을 시
                 if (req.body.raid_id) {
@@ -165,7 +166,9 @@ module.exports = {
             else {//취소할 떄
                 if (req.body.is_complete === 0) { //완료버튼을 눌렀다면
                     await todo_list.update({is_complete : false},
-                        { where : { id : req.query.id}})
+                        { where : { id : req.query.id,
+                            is_complete : 1
+                        }})
                     
                     if (req.query.status === "phy") {
                         await character.decrement(
@@ -192,10 +195,10 @@ module.exports = {
                     })
                     await character.findOne(
                             { where : { user_id : req.query.user_id }})
-                            .then(character => {
-                            const characterInfo = {...character.dataValues, 
-                                level : character.dataValues.totalExp / 100,
-                                exp : character.dataValues.totalExp % 100
+                            .then(data => {
+                            const characterInfo = {...data.dataValues, 
+                                level : data.dataValues.totalExp / 100,
+                                exp : data.dataValues.totalExp % 100
                             }
                             res.status(200).json({characterInfo : characterInfo,
                                 todoInfo : todoInfo
