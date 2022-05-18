@@ -15,7 +15,6 @@ const {checkAccessToken} = require("../middleware/token")
 
 //character
 router.get("/character", character.getCharacter);
-router.put("/character", character.updateStatus);
 
 //log
 router.post("/log/in", log.login);
@@ -49,10 +48,12 @@ router.patch("/userInfo", userInfo.updateUser);
 
 //todo
 router.get("/todo", checkAccessToken ,todo.getTodo);
-router.get("/todo/complete", checkAccessToken, todo.completeTodo)
 router.post("/todo", checkAccessToken, todo.createTodo);
-router.delete("/todo", checkAccessToken, todo.deleteTodo);
-router.patch("/todo", checkAccessToken, todo.updateTodo);
+router.delete("/todo", todo.deleteTodo);
+router.patch("/todo", todo.updateTodo);
+
+router.get("/todo/complete", todo.completeList)
+router.put("/todo/complete", todo.completeTodo)
 
 
 module.exports = router;
