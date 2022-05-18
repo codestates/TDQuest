@@ -8,8 +8,9 @@ module.exports = {
             content : req.body.content,
             user_id : req.body.user_id
         })
-        .then(success => {
-            res.status(201).json({message: "todo_list를 추가합니다"})
+        .then(todoInfo => {
+            console.log(todoInfo)
+            res.status(201).json({todoInfo : todoInfo, message: "todo_list를 추가합니다"})
         })
         .catch(err => {
             console.log(err)

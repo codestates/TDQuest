@@ -43,7 +43,7 @@ module.exports = {
     },
 
 
-    checkAccessToken : async (req, res) => {
+    checkAccessToken : async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const refreshToken = req.headers.refreshToken;
 
@@ -51,14 +51,14 @@ module.exports = {
             res.status(401).json({message : 'not Auhtorized'})
         }
         else {
-            verifyToken(token)
-            .then(async verify => {
-                await user.findOne({ where : {email : verify.email}})
+            const decoded = jwt.verify(token, process.env.ACCESS_SECRET)
+            if (decoded) {
+                await user.findOne({ where : {email : decoded.el}})
                     .then(userInfo => {
                         next()
-                    })    
-            })
-            .catch(err => {
+                    })
+            }
+            else  {
                 if(error.name === 'TokenExpiredError'){
                     // const getAsync = promisify(redisClient.get).bind(redisClient);
                     // const data = await getAsync(userId);
@@ -79,7 +79,7 @@ module.exports = {
                     console.log(error);
                     res.status(404).json({message: "Not Found"})
                 }
-            })
+            }
         }
     },
 }   
