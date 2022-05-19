@@ -18,7 +18,7 @@ module.exports = {
     callback : async (req, res) => {
         const {data} = await axios({ //token
             method: 'POST',
-            url: `${GOOGLE_AUTH_TOKEN_URL}`,
+            url: `${process.env.GOOGLE_TOKEN}`,
             headers:{
                 'content-type':'application/x-www-form-urlencoded;charset=utf-8'
             },
@@ -38,10 +38,8 @@ module.exports = {
             email: me.email,
             nickname: me.name,
             };
-          
-          const accessToken = makeAccessToken(userId.email)
-          const refreshToken = makeRefreshToken(userId.email)
-          const userInfo = await existID(userInfo.email);
+
+          const userInfo = await existID(userId.email);
            
           if(userInfo){
               await character.findOne({
@@ -52,8 +50,11 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
+
+          const accessToken = makeAccessToken(userInfo.dataValues.email)
+          const refreshToken = makeRefreshToken(userInfo.dataValues.email)
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo})
+                .json({characterInfo : characterInfo, accessToken : accessToken})
               })//{ httpOnly: true}
           }
           else{
@@ -67,10 +68,11 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
+          const accessToken = makeAccessToken(userInfo.dataValues.email)
+          const refreshToken = makeRefreshToken(userInfo.dataValues.email)
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo})
+                .json({characterInfo : characterInfo, access_token : access_token})
               }) //{ httpOnly: true}
             }
-      return res.status(200).json({message : "로그인 성공"})  
   }
 }

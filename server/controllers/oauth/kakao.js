@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
+const { character } = require("../../models")
 const { verifyToken, makeAccessToken, makeRefreshToken } = require('../../middleware/token');
 const { existID, signID } = require("./authID")
 
@@ -52,14 +53,16 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
+                const accessToken = makeAccessToken(userInfo.dataValues.email)
+                const refreshToken = makeRefreshToken(userInfo.dataValues.email)
+          
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo})
+                .json({characterInfo : characterInfo, accessToken : accessToken})
               })//{ httpOnly: true}
             } //{ httpOnly: true}
             
             else{
               const signUpUserId= await signID(userInfo);
-              const refreshToken = makeRefreshToken(signUpUserId);
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
@@ -68,10 +71,12 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
+                
+                const accessToken = makeAccessToken(signUpUserId.dataValues.email)
+                const refreshToken = makeRefreshToken(signUpUserId.dataValues.email)
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo})
+                .json({characterInfo : characterInfo, accessToken : accessToken})
               }) //{ httpOnly: true}
             }//{ httpOnly: true}
-    return res.redirect("http://localhost:3000")
   },
 }
