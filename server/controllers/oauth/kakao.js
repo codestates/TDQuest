@@ -36,24 +36,41 @@ module.exports = {
                 }
              });
 
-          const userInfo = {
+          const userId = {
                email: me.kakao_account.email,
                nickname: me.kakao_account.profile.nickname,
              };
 
-          const user_email = await existID(userInfo.email);
+          const userInfo = await existID(userId.email);
           
-            if(user_email){
-              const refreshToken = makeRefreshToken(user_email);
-              res.cookie('refreshToken', refreshToken)
-              .json({characterInfo : characterInfo})
+            if(userInfo){
+              await character.findOne({
+                where : { user_id : userInfo.dataValues.id}
+              })
+              .then(character => {
+                const characterInfo = {...character.dataValues, 
+                  level : character.dataValues.totalExp / 100,
+                  exp : character.dataValues.totalExp % 100
+                }
+                res.cookie('refreshToken', refreshToken)
+                .json({characterInfo : characterInfo})
+              })//{ httpOnly: true}
             } //{ httpOnly: true}
             
             else{
-             const characterId= await signID(userInfo);
-             const refreshToken = makeRefreshToken(signUpUserId);
-             res.status(200).cookie('refreshToken', refreshToken)
-             .json({characterId : characterId})
+              const signUpUserId= await signID(userInfo);
+              const refreshToken = makeRefreshToken(signUpUserId);
+              await character.findOne({
+                where : { user_id : userInfo.dataValues.id}
+              })
+              .then(character => {
+                const characterInfo = {...character.dataValues, 
+                  level : character.dataValues.totalExp / 100,
+                  exp : character.dataValues.totalExp % 100
+                }
+                res.cookie('refreshToken', refreshToken)
+                .json({characterInfo : characterInfo})
+              }) //{ httpOnly: true}
             }//{ httpOnly: true}
     return res.redirect("http://localhost:3000")
   },
