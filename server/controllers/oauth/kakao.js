@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
+const { character } = require("../../models")
 const { verifyToken, makeAccessToken, makeRefreshToken } = require('../../middleware/token');
 const { existID, signID } = require("./authID")
 
