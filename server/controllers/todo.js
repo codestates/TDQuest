@@ -58,7 +58,7 @@ module.exports = {
     completeList : async (req, res) => {
         console.log(req.query)
         if (req.query.time) {
-            if (req.query.is_complete === 1) {
+            if (req.query.is_complete === '1') {
             await todo_list.findAll({
                 raw : true,
                 where: {user_id : req.query.user_id,
