@@ -24,16 +24,11 @@ export const signIn = createAsyncThunk(
       console.log("response:", response);
       const isLogin = {status : "loggedIn", ...response.data};
       localStorage.setItem("isLogin", JSON.stringify(isLogin));
-      //
-      window.location.assign('/todo')
-      // 
       return isLogin
     }
     catch (err : any){
       console.log(err.response)
-      if (err.response.status === 404){
-        alert("입력하신 정보가 올바르지 않습니다")
-      }
+      return {status : 'failed'}
     }
   },
 );
