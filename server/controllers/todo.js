@@ -83,6 +83,7 @@ module.exports = {
     },
 
     completeTodo : async (req, res) => {
+        if (!req.body.raid_id) {
             if (req.body.is_complete === 1) { //완료버튼을 눌렀다면
                 await todo_list.update({is_complete : true},
                     { where : { id : req.query.id,
@@ -122,46 +123,6 @@ module.exports = {
                          res.status(200).json({characterInfo : characterInfo,
                             todoInfo : todoInfo})
                 })
-                // raid 버튼을 눌렀을 시
-                if (req.body.raid_id) {
-                        await damage_log.increment(
-                            { log : 0.5 },
-                            { where : {
-                                user_id : req.body.user_id,
-                                raid_id : req.body.raid_id}})
-    
-                        await raid.increment(
-                            { hit_damage : 0.5},
-                            { where : {
-                                id : req.body.raid_id}})
-                        await monster.decrement(
-                            { hp : 0.5},
-                            { where : {
-                                id : req.body.monster_id}})
-                            
-                        await monster.findOne({ where : {id : req.body.monster_id}})
-                        .then(async monsterInfo => {
-                            if (monsterInfo.dataValues.hp === 0) {
-                                const monsterInfo =  await monster.findOne({
-                                    where : {id : req.body.raid_id}
-                                })
-                                await character.update({ level : monsterInfo.dataValues.reward},
-                                    { include : {
-                                        model : user,
-                                          include : {
-                                            model : damage_log,
-                                              where : { raid_id : req.body.raid_id} //raid 참가한 인원
-                                                }
-                                            }
-                                        })
-                              // moster 테이블 삭제?
-                             //  끝낫다는 표시를 해야되나?
-                              // raid_id 삭제?
-                            res.status(200).json({message : '데미지를 넣었습니다.'})
-                            }})
-                        .catch(err => {
-                            res.status(404).json({message : 'Not Found'})
-                        })
             }
             else {//취소할 떄
                 if (req.body.is_complete === 0) { //완료버튼을 눌렀다면
@@ -207,5 +168,175 @@ module.exports = {
                 }
               }
             }
+
+
+
+    else { //레이드 참가시
+        if (req.body.is_complete === 1) { 
+            await todo_list.update({is_complete : true},
+                { where : { id : req.query.id,
+                    is_complete : 0
+                }})
+                if (req.query.status === "phy") {
+                    await character.increment(
+                    { status_phy : 0.5 },
+                    { where : { user_id : req.query.user_id }})
+                }
+                else if (req.query.status === "int") {
+                    await character.increment(
+                    { status_int : 0.5 },
+                    { where : { user_id : req.query.user_id }})
+                }
+                else if (req.query.status === "spi") {
+                    await character.increment(
+                        { status_spi : 0.5 },
+                        { where : { user_id : req.query.user_id }})
+                }
+                else if (req.query.status === "etc") {
+                    await character.increment(
+                        { status_etc : 0.5 },
+                        { where : { user_id : req.query.user_id }})
+                }
+
+            await damage_log.increment(
+                { log : 0.5 },
+                { where : {
+                    user_id : req.body.user_id,
+                    raid_id : req.body.raid_id}})
+            await raid.increment(
+                { hit_damage : 0.5},
+                { where : {
+                    id : req.body.raid_id}})
+            await monster.decrement(
+                { hp : 0.5},
+                { where : {
+                    id : req.body.monster_id}})
+
+        await monster.findOne({ where : {id : req.body.monster_id}})
+            .then(async monsterInfo => {
+                if (monsterInfo.dataValues.hp === 0) {
+                    const monsterInfo =  await monster.findOne({ where : {id : req.body.raid_id}})
+                    await character.findAll(
+                        { include : {
+                            model : user,
+                              include : {
+                                model : damage_log,
+                                  where : { raid_id : req.body.raid_id} //raid 참가한 인원
+                                    }
+                                }
+                            })
+                    .then(characterArray => {
+                        characterArray.forEach(el => {
+                            character.decrement({
+                                level : monsterInfo.dataValues.reward
+                                },
+                                {where : { id : el.dataValues.id}})})
+                    })
+                    const todoInfo = await todo_list.findOne({ where : { id : req.query.id}})
+                    const characterInfo = await character.findOne({ where : { user_id : req.query.user_id }})
+                            .then(data => {
+                                return {...data.dataValues, 
+                                        level : data.dataValues.totalExp / 100,
+                                        exp : data.dataValues.totalExp % 100
+                                        }})
+                    res.status(200).json({message : "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo :characterInfo})
+                }
+                else {
+                    const todoInfo = await todo_list.findOne({ where : { id : req.query.id}})
+                    const characterInfo = await character.findOne({ where : { user_id : req.query.user_id }})
+                            .then(data => {
+                                return {...data.dataValues, 
+                                        level : data.dataValues.totalExp / 100,
+                                        exp : data.dataValues.totalExp % 100
+                                        }})
+                    res.status(200).json({message : "데미지를 넣었습니다", todoInfo : todoInfo, characterInfo : characterInfo})
+                }
+            })
+                  // moster 테이블 삭제?
+                 //  끝낫다는 표시를 해야되나?
+                  // raid_id 삭제?
+        }
+        else { // 취소
+            await todo_list.update({is_complete : false},
+                { where : { id : req.query.id,
+                    is_complete : 1
+                }})
+                if (req.query.status === "phy") {
+                    await character.decrement(
+                    { status_phy : 0.5 },
+                    { where : { user_id : req.query.user_id }})
+                }
+                else if (req.query.status === "int") {
+                    await character.decrement(
+                    { status_int : 0.5 },
+                    { where : { user_id : req.query.user_id }})
+                }
+                else if (req.query.status === "spi") {
+                    await character.decrement(
+                        { status_spi : 0.5 },
+                        { where : { user_id : req.query.user_id }})
+                }
+                else if (req.query.status === "etc") {
+                    await character.decrement(
+                        { status_etc : 0.5 },
+                        { where : { user_id : req.query.user_id }})
+                }
+
+            await damage_log.decrement(
+                { log : 0.5 },
+                { where : {
+                    user_id : req.body.user_id,
+                    raid_id : req.body.raid_id}})
+            await raid.decrement(
+                { hit_damage : 0.5},
+                { where : {
+                    id : req.body.raid_id}})
+            await monster.decrement(
+                { hp : 0.5},
+                { where : {
+                    id : req.body.monster_id}})
+
+        await monster.findOne({ where : {id : req.body.monster_id}})
+            .then(async monsterInfo => {
+                if (monsterInfo.dataValues.hp === 0) {
+                    const monsterInfo =  await monster.findOne({ where : {id : req.body.raid_id}})
+                    await character.findAll(
+                        { include : {
+                            model : user,
+                              include : {
+                                model : damage_log,
+                                  where : { raid_id : req.body.raid_id} //raid 참가한 인원
+                                    }
+                                }
+                            })
+                    .then(characterArray => {
+                        characterArray.forEach(el => {
+                            character.decrement({
+                                level : monsterInfo.dataValues.reward
+                                },
+                                {where : { id : el.dataValues.id}})})
+                    })
+                    const todoInfo = await todo_list.findOne({ where : { id : req.query.id}})
+                    const characterInfo = await character.findOne({ where : { user_id : req.query.user_id }})
+                            .then(data => {
+                                return {...data.dataValues, 
+                                        level : data.dataValues.totalExp / 100,
+                                        exp : data.dataValues.totalExp % 100
+                                        }})
+                    res.status(200).json({message : "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo :characterInfo})
+                }
+                else {
+                    const todoInfo = await todo_list.findOne({ where : { id : req.query.id}})
+                    const characterInfo = await character.findOne({ where : { user_id : req.query.user_id }})
+                            .then(data => {
+                                return {...data.dataValues, 
+                                        level : data.dataValues.totalExp / 100,
+                                        exp : data.dataValues.totalExp % 100
+                                        }})
+                    res.status(200).json({message : "데미지를 넣었습니다", todoInfo : todoInfo, characterInfo : characterInfo})
+                }
+            })
+        }
     }
+  }
 }

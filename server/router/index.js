@@ -43,14 +43,14 @@ router.post("/sign/in", sign.signIn);
 router.delete("/sign/out", sign.signOut);
 
 //userInfo
-router.get("/userInfo", userInfo.getUser);
-router.patch("/userInfo", userInfo.updateUser);
+router.get("/userInfo", checkAccessToken, userInfo.getUser);
+router.patch("/userInfo", checkAccessToken, userInfo.updateUser);
 
 //todo
 router.get("/todo", checkAccessToken ,todo.getTodo);
 router.post("/todo", checkAccessToken, todo.createTodo);
-router.delete("/todo", todo.deleteTodo);
-router.patch("/todo", todo.updateTodo);
+router.delete("/todo", checkAccessToken, todo.deleteTodo);
+router.patch("/todo", checkAccessToken, todo.updateTodo);
 
 router.get("/todo/complete", todo.completeList)
 router.put("/todo/complete", todo.completeTodo)
