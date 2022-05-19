@@ -152,13 +152,34 @@ module.exports = {
                     })
             }
             else {//취소할 떄
-                console.log(req.body)
-                await todo_list.update({ is_complete: false },
-                    {
-                        where: {
-                            id: req.query.id,
-                            is_complete: 1
-                        }
+
+                    await todo_list.update({is_complete : false},
+                        { where : { id : req.query.id,
+                            is_complete : 1
+                        }})
+                    
+                    if (req.query.status === "phy") {
+                        await character.decrement(
+                            { status_phy : 0.5 },
+                            { where : { user_id : req.query.user_id }})
+                    }
+                    else if (req.query.status === "int") {
+                        await character.decrement(
+                            { status_int : 0.5 },
+                            { where : { user_id : req.query.user_id }})
+                    }
+                    else if (req.query.status === "spi") {
+                        await character.decrement(
+                            { status_spi : 0.5 },
+                            { where : { user_id : req.query.user_id }})
+                    }
+                    else if (req.query.status === "etc") {
+                        await character.decrement(
+                            { status_etc : 0.5 },
+                            { where : { user_id : req.query.user_id }})
+                    }
+                    const todoInfo = await todo_list.findOne({
+                        where : { id : req.query.id}
                     })
 
                 if (req.query.status === "phy") {

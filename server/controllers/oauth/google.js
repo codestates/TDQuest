@@ -41,9 +41,9 @@ module.exports = {
           
           const accessToken = makeAccessToken(userId.email)
           const refreshToken = makeRefreshToken(userId.email)
-          const userInfo = await existID(userId.email);
+          const userInfo = await existID(userInfo.email);
            
-          if(user_email){
+          if(userInfo){
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
