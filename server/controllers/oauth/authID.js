@@ -16,8 +16,7 @@ module.exports = { //oauth ID 검증
 
     signID : async (userInfo) => {
         await user.create({
-            email : userInfo.email,
-            nickname : userInfo.nickname
+            email : userInfo
         })
     }
 }

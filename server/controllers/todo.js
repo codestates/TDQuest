@@ -140,7 +140,6 @@ module.exports = {
                 })
             }
             else {//취소할 떄
-                console.log(req.body)
                     await todo_list.update({is_complete : false},
                         { where : { id : req.query.id,
                             is_complete : 1
