@@ -17,6 +17,9 @@ export const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
 `;
 
 export const Logo = styled.div`

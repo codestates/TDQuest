@@ -3,7 +3,7 @@ require('dotenv').config()
 module.exports = {
   development: {
     username: "root", //process.env.DATABASE_USER,
-    password: "password", //process.env.DATABASE_PASSWORD,
+    password: "", //process.env.DATABASE_PASSWORD,
     database: "tdquest", //process.env.DATABASE_NAME,
     host: "127.0.0.1", //process.env.DATABASE_HOST,
     dialect: "mysql",

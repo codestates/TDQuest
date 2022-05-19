@@ -21,6 +21,7 @@ export const TodoContainer = styled.div<{ bgColor: string }>`
   align-items: center;
   height: 100%;
   min-height: 90vh;
+  padding-top: 80px;
   @media (max-width: 768px) {
     height: auto;
   }
@@ -51,6 +52,7 @@ export const SectionContainer = styled.div`
   display: grid;
   column-gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  margin-bottom: 20px;
 `;
 
 export const StatusContainer = styled.div<{ bgColor: string }>`

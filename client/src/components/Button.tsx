@@ -16,6 +16,10 @@ type ButtonData = {
   marginBottom?: string;
   deactive?: boolean;
   onClick?: any;
+  //!
+  type?: any;
+  bgColor?: string;
+  //!
 };
 
 const ButtonContainer = styled.button<ButtonData>`
@@ -23,10 +27,14 @@ const ButtonContainer = styled.button<ButtonData>`
   font-size: ${(props) => props.fontSize || fontSize_bigButton_laptop};
   padding: ${(props) => props.padding || null};
   background-color: ${(props) => {
-    if (props.deactive === true) {
-      return color_primary_deactivate;
+    if (props.bgColor){
+      return props.bgColor;
+    } else {
+      if (props.deactive === true) {
+        return color_primary_deactivate;
+      }
+      return color_primary_green_dark;
     }
-    return color_primary_green_dark;
   }};
   font-family: "Fredoka One", cursive;
   height: ${(props) => props.height || "50px"};
@@ -45,8 +53,18 @@ const ButtonContainer = styled.button<ButtonData>`
       if (props.deactive === true) {
         return null;
       }
-      return color_primary_green_medium;
+      if (props.bgColor){
+        return null;
+      } else {
+        return color_primary_green_medium;
+      }
     }};
+
+    filter : ${(props) => {
+      if (props.bgColor){
+        return "brightness(110%)";
+      }
+    }}
   }
   min-width: 100px;
 `;
@@ -64,6 +82,8 @@ function Button({
   marginBottom,
   deactive,
   onClick,
+  type,
+  bgColor
 }: ButtonData) {
   return (
     <ButtonContainer
@@ -74,6 +94,8 @@ function Button({
       marginBottom={marginBottom}
       deactive={deactive}
       onClick={onClick}
+      type={type}
+      bgColor={bgColor}
     >
       {text}
     </ButtonContainer>
