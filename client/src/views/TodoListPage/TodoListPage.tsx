@@ -30,18 +30,35 @@ import {
   patchTodoListAsync,
   deleteTodoListAsync,
   todoStatusChangeAsync,
+  getCompletedTodoListAsync,
 } from '../../features/todolist/todolistSlice';
 
 function TodoListPage() {
   const loadingStatus = useSelector((state: any) => state.todoList.status);
-  const todoList = useSelector((state: any) => state.todoList.todo);
+  const todoList = useSelector((state: any) => state.todoList.todo); // todo list
+  const completedTodoList = useSelector(
+    (state: any) => state.todoList.completedTodo
+  ); // completed todo list
+
   const dispatch: any = useDispatch();
   const userId = '1'; // 유저 아이디 임의로 사용 // 로컬스토리지에서 가져와야됨
 
   useEffect(() => {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
     dispatch(getTodoListAsync({ user_id: userId, is_complete: 0 }));
+    dispatch(getCompletedTodoListAsync({ user_id: userId, time: getToday() }));
+    console.log(completedTodoList);
   }, []);
+
+  // 오늘 날짜 yyyy-mm-dd 형식으로 가져오는 함수
+  const getToday = (): string => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ('0' + (1 + date.getMonth())).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+
+    return year + '-' + month + '-' + day;
+  };
 
   //--- modal 관련---//
   const [selectedTaskContent, setSelectedTaskContent] = useState({
@@ -229,6 +246,7 @@ function TodoListPage() {
               icon='flag.png'
               itemIcon={CheckedIcon}
               itemBtnActionFunction={taskCompletedCancelHander}
+              todoList={completedTodoList}
             />
             <TaskContainer
               title='My Routine To-do List'

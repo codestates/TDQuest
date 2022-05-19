@@ -65,18 +65,19 @@ module.exports = {
     },
 
     completeList: async (req, res) => {
-        if (req.body.time) {
+        if (req.query.time) {
             await todo_list.findAll({
                 raw: true,
                 where: {
                     user_id: req.query.user_id,
                     updatedAt: {
-                        $eq: req.body.time
+                        $eq: req.query.time
                     }
                 }
             })
-                .then(data => {
-                    console.log(data)
+                .then(todo_lists => {
+                    console.log(todo_lists)
+                    res.status(200).json({ todoInfo: todo_lists })
                 })
         }
         else {
@@ -87,7 +88,7 @@ module.exports = {
                 }
             })
                 .then(todo_lists => {
-                    res.status(200).json({ todo_list: todo_lists })
+                    res.status(200).json({ todoInfo: todo_lists })
                 })
                 .catch(err => {
                     res.status(401).json({ message: 'Not Found' })

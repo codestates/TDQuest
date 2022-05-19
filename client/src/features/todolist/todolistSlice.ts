@@ -6,11 +6,13 @@ const url = 'http://localhost:3001';
 export interface todoListState {
   status: 'idle' | 'loading' | 'failed';
   todo: any;
+  completedTodo: any;
 }
 
 const initialState: todoListState = {
   status: 'idle',
   todo: {},
+  completedTodo: {},
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -98,13 +100,33 @@ export const deleteTodoListAsync = createAsyncThunk(
 );
 
 export const todoStatusChangeAsync = createAsyncThunk(
-  'character/status',
+  'todo/complete/status',
   async (arg: any) => {
     try {
       const data = axios
-        .put(`${url}/character?user_id=${arg.user_id}&status=${arg.kind}`, {
-          id: arg.id,
-          is_complete: arg.is_complete,
+        .put(
+          `${url}/todo/complete?user_id=${arg.user_id}&status=${arg.kind}&id=${arg.id}`,
+          {
+            is_complete: arg.is_complete,
+          }
+        )
+        .then((res) => {
+          return res.data;
+        });
+      return data;
+    } catch (error: any) {
+      console.log(`error:${error.response}`);
+    }
+  }
+);
+
+export const getCompletedTodoListAsync = createAsyncThunk(
+  'todo/complete',
+  async (arg: any) => {
+    try {
+      const data = axios
+        .get(`${url}/todo/complete`, {
+          params: { user_id: arg.user_id, time: arg.time },
         })
         .then((res) => {
           return res.data;
@@ -153,7 +175,13 @@ export const todolistSlice = createSlice({
         state.todo.todoInfo = tempArray;
       })
       .addCase(deleteTodoListAsync.fulfilled, (state, action) => {
-        // delete 했을때 삭제된 todoInfo
+        const targetId: number = action.payload.todoInfo.id;
+        const tempArray = state.todo.todoInfo;
+        const index: any = state.todo.todoInfo.findIndex(
+          (el: any) => el.id === targetId
+        );
+        tempArray.splice(index, index + 1);
+        state.todo.todoInfo = tempArray;
       })
       .addCase(patchTodoListAsync.fulfilled, (state, action) => {
         console.log('success');
@@ -163,7 +191,13 @@ export const todolistSlice = createSlice({
       .addCase(todoStatusChangeAsync.fulfilled, (state, action) => {
         console.log('success');
         console.log(action.payload);
+        const is_complete: boolean = action.payload.todoInfo.is_complete;
+        console.log(is_complete);
+
         // todo완료/취소 했을때 수정된 todoInfo
+      })
+      .addCase(getCompletedTodoListAsync.fulfilled, (state, action) => {
+        state.completedTodo = action.payload;
       });
   },
 });
