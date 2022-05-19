@@ -5,7 +5,8 @@ import {
   color_primary_green_light,
   fontSize_h1_mobile,
   fontSize_h2_mobile,
-  fontSize_body_mobile_small
+  fontSize_body_mobile_small,
+  fontSize_body_mobile_medium
 } from "./CommonStyle";
 
 export const InputBoxContainer = styled.div`
@@ -21,7 +22,6 @@ export const Headline = styled.div<{font?: string}>`
   font-family: ${(props)=>props.font || "Fredoka One"}, cursive;
   flex-direction: row;
   margin-bottom: 2rem;
-
 
   > h1 {
     font-size : 57px;
@@ -55,10 +55,16 @@ export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  > div {
+    width: 25rem;
+  }
 
   @media (max-width: 768px) {
     width : 12rem;
     padding : 2rem;
+    > div {
+      width : 12rem;
+    }
   }
 `
 
@@ -159,7 +165,47 @@ export const DontYouSign = styled.div`
   }
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonBox = styled.div`
   margin-top : 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
+export const OauthContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  Button {
+    margin-top : 1rem;
+    margin-bottom : 1rem;
+    width: 80%;
+    height : 2.5rem;
+
+    @media (max-width: 768px){
+      font-size : ${fontSize_body_mobile_small}
+    }
+  }
+
+  > span {
+    display: flex;
+    flex-basis: 2rem;
+    width: 80%;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.35);
+    font-size: ${fontSize_body_laptop_small};
+    margin: 8px 0px;
+  }
+
+  > span::before, > span::after {
+    content: " "; 
+    flex-grow: 1; 
+    background: rgba(0, 0, 0, 0.35); 
+    height : 1px;
+    font-size: 0px; 
+    line-height: 0px; 
+    margin: 0px 16px;
+  }
 `
