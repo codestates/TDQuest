@@ -140,7 +140,7 @@ module.exports = {
                 })
             }
             else {//취소할 떄
-                if (req.body.is_complete === 0) { //완료버튼을 눌렀다면
+                console.log(req.body)
                     await todo_list.update({is_complete : false},
                         { where : { id : req.query.id,
                             is_complete : 1
@@ -166,7 +166,7 @@ module.exports = {
                             { status_etc : 0.5 },
                             { where : { user_id : req.query.user_id }})
                     }
-                    const todoInfo = todo_list.findOne({
+                    const todoInfo = await todo_list.findOne({
                         where : { id : req.query.id}
                     })
                     await character.findOne(
@@ -180,7 +180,6 @@ module.exports = {
                                 todoInfo : todoInfo
                             })
                     })
-                }
               }
             }
 
