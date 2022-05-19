@@ -44,7 +44,7 @@ function DropDown() {
   return (
     <DropDownContainer>
       <MenuItems>
-      {isLogin.states === "loggedIn"? (
+      {isLogin.status === "loggedIn"? (
         <>
           <Item>
             <Link to={'/status'}>My Status</Link>
@@ -72,11 +72,14 @@ function DropDown() {
           width='100%'
           fontSize={fontSize_smallButton_laptop}
           padding='3px'
-          text={isLogin === "loggedIn"? "Sign out" : "Sign In"}
+          text={isLogin.status === "loggedIn"? "Sign out" : "Sign In"}
           height='100%'
           onClick={
-            isLogin === "loggedIn"? 
-            () => window.localStorage.removeItem("isLogin") :
+            isLogin.status === "loggedIn"? 
+            () => {
+              window.localStorage.removeItem("isLogin");
+              window.location.assign("/")
+            } :
             () => window.location.assign("/sign")
             }
         ></Button>

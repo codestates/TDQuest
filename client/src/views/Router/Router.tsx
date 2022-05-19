@@ -13,7 +13,6 @@ import RankingPage from '../RankingPage/RankingPage';
 
 function MainRouter() {
   let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
-  console.log(isLogin)
 
   return (
     <BrowserRouter>
