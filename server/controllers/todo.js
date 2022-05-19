@@ -152,54 +152,54 @@ module.exports = {
                     })
             }
             else {//취소할 떄
-                if (req.body.is_complete === 0) { //완료버튼을 눌렀다면
-                    await todo_list.update({ is_complete: false },
-                        {
-                            where: {
-                                id: req.query.id,
-                                is_complete: 1
-                            }
-                        })
-
-                    if (req.query.status === "phy") {
-                        await character.decrement(
-                            { status_phy: 0.5 },
-                            { where: { user_id: req.query.user_id } })
-                    }
-                    else if (req.query.status === "int") {
-                        await character.decrement(
-                            { status_int: 0.5 },
-                            { where: { user_id: req.query.user_id } })
-                    }
-                    else if (req.query.status === "spi") {
-                        await character.decrement(
-                            { status_spi: 0.5 },
-                            { where: { user_id: req.query.user_id } })
-                    }
-                    else if (req.query.status === "etc") {
-                        await character.decrement(
-                            { status_etc: 0.5 },
-                            { where: { user_id: req.query.user_id } })
-                    }
-                    const todoInfo = todo_list.findOne({
-                        where: { id: req.query.id }
+                console.log(req.body)
+                await todo_list.update({ is_complete: false },
+                    {
+                        where: {
+                            id: req.query.id,
+                            is_complete: 1
+                        }
                     })
-                    await character.findOne(
+
+                if (req.query.status === "phy") {
+                    await character.decrement(
+                        { status_phy: 0.5 },
                         { where: { user_id: req.query.user_id } })
-                        .then(data => {
-                            const characterInfo = {
-                                ...data.dataValues,
-                                level: data.dataValues.totalExp / 100,
-                                exp: data.dataValues.totalExp % 100
-                            }
-                            res.status(200).json({
-                                characterInfo: characterInfo,
-                                todoInfo: todoInfo
-                            })
-                        })
                 }
+                else if (req.query.status === "int") {
+                    await character.decrement(
+                        { status_int: 0.5 },
+                        { where: { user_id: req.query.user_id } })
+                }
+                else if (req.query.status === "spi") {
+                    await character.decrement(
+                        { status_spi: 0.5 },
+                        { where: { user_id: req.query.user_id } })
+                }
+                else if (req.query.status === "etc") {
+                    await character.decrement(
+                        { status_etc: 0.5 },
+                        { where: { user_id: req.query.user_id } })
+                }
+                const todoInfo = await todo_list.findOne({
+                    where: { id: req.query.id }
+                })
+                await character.findOne(
+                    { where: { user_id: req.query.user_id } })
+                    .then(data => {
+                        const characterInfo = {
+                            ...data.dataValues,
+                            level: data.dataValues.totalExp / 100,
+                            exp: data.dataValues.totalExp % 100
+                        }
+                        res.status(200).json({
+                            characterInfo: characterInfo,
+                            todoInfo: todoInfo
+                        })
+                    })
             }
         }
+
 
 
 
