@@ -43,8 +43,8 @@ router.post("/sign/in", sign.signIn);
 router.delete("/sign/out", sign.signOut);
 
 //userInfo
-router.get("/userInfo", userInfo.getUser);
-router.patch("/userInfo", userInfo.updateUser);
+router.get("/userInfo", checkAccessToken, userInfo.getUser);
+router.patch("/userInfo", checkAccessToken, userInfo.updateUser);
 
 //todo
 router.get("/todo", todo.getTodo);

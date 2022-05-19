@@ -17,8 +17,11 @@ module.exports = {
         await user.update({
             password : req.body.password,
         }, {where : { id: req.body.id}})
-        .then(success => {
-            res.status(200).json({message: '유저정보 수정'})
+        await user.findOne({
+            where : {id : req.body.id}
+        })
+        .then(userInfo => {
+            res.status(200).json({message: '유저정보 수정', userInfo : userInfo})
         })
         .catch(err => {
             console.log(err)
