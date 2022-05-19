@@ -33,7 +33,6 @@ import {
   getCompletedTodoListAsync,
 } from '../../features/todolist/todolistSlice';
 
-
 function TodoListPage() {
   const loadingStatus = useSelector((state: any) => state.todoList.status);
   const todoList = useSelector((state: any) => state.todoList.todo); // todo list
@@ -47,8 +46,13 @@ function TodoListPage() {
   useEffect(() => {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
     dispatch(getTodoListAsync({ user_id: userId, is_complete: 0 }));
-    dispatch(getCompletedTodoListAsync({ user_id: userId, time: getToday() }));
-    console.log(completedTodoList);
+    dispatch(
+      getCompletedTodoListAsync({
+        user_id: userId,
+        time: getToday(),
+        is_complete: 1,
+      })
+    );
   }, []);
 
   // 오늘 날짜 yyyy-mm-dd 형식으로 가져오는 함수

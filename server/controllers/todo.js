@@ -16,17 +16,9 @@ module.exports = {
             .catch(err => {
                 res.status(401).json({ message: 'Not Found' })
             })
-            .then(todoInfo => {
-                console.log(todoInfo)
-                res.status(201).json({ todoInfo: todoInfo, message: "todo_list를 추가합니다" })
-            })
-            .catch(err => {
-                console.log(err)
-            })
     }, //todolist 추가
 
     getTodo: async (req, res) => {
-        console.log('getTodo');
         const todoInfo = await todo_list.findAll({
             where: {
                 user_id: req.query.user_id,
@@ -54,7 +46,6 @@ module.exports = {
             kind: req.body.kind,
             content: req.body.content
         }, { where: { id: req.query.id } })
-
         await todo_list.findOne({ where: { id: req.query.id } })
             .then(todoInfo => {
                 res.status(200).json({ message: "수정되었습니다.", todoInfo: todoInfo })
@@ -65,6 +56,7 @@ module.exports = {
     },
 
     completeList: async (req, res) => {
+        console.log('completed list');
         console.log(req.query)
         if (req.query.time) {
             if (req.query.is_complete === '1') {
@@ -77,37 +69,41 @@ module.exports = {
                     }
                 })
                     .then(data => {
+                        console.log('test');
+                        console.log(data);
                         res.status(200).json({ todoInfo: data })
                     })
             }
             else {
+                console.log('else');
                 await todo_list.findAll({
                     raw: true,
                     where: {
                         user_id: req.query.user_id,
                         updatedAt: req.query.time,
-                        is_complete: 1
+                        is_complete: 0
                     }
                 })
                     .then(data => {
                         res.status(200).json({ todoInfo: data })
                     })
             }
-            else {
+        }
+        else {
             await todo_list.findAll({
-                raw: true,
                 where: {
                     user_id: req.query.user_id,
-                    updatedAt: req.query.time,
-                    is_complete: 0
+                    is_complete: 1
                 }
             })
-                .then(data => {
-                    res.status(200).json({ todoInfo: data })
+                .then(todo_lists => {
+                    res.status(200).json({ todo_list: todo_lists })
+                })
+                .catch(err => {
+                    res.status(401).json({ message: 'Not Found' })
                 })
         }
-    }
-},
+    },
 
     completeTodo: async (req, res) => {
         if (!req.body.raid_id) {
@@ -119,7 +115,6 @@ module.exports = {
                             is_complete: 0
                         }
                     })
-
                 if (req.query.status === "phy") {
                     await character.increment(
                         { status_phy: 0.5 },
@@ -140,7 +135,6 @@ module.exports = {
                         { status_etc: 0.5 },
                         { where: { user_id: req.query.user_id } })
                 }
-
                 const todoInfo = await todo_list.findOne({
                     where: { id: req.query.id }
                 })
@@ -206,6 +200,7 @@ module.exports = {
                 }
             }
         }
+
 
 
 

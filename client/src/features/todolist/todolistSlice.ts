@@ -126,7 +126,11 @@ export const getCompletedTodoListAsync = createAsyncThunk(
     try {
       const data = axios
         .get(`${url}/todo/complete`, {
-          params: { user_id: arg.user_id, time: arg.time },
+          params: {
+            user_id: arg.user_id,
+            time: arg.time,
+            is_complete: arg.is_complete,
+          },
         })
         .then((res) => {
           return res.data;
@@ -197,6 +201,8 @@ export const todolistSlice = createSlice({
         // todo완료/취소 했을때 수정된 todoInfo
       })
       .addCase(getCompletedTodoListAsync.fulfilled, (state, action) => {
+        console.log(action.payload);
+
         state.completedTodo = action.payload;
       });
   },
