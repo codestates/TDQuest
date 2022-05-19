@@ -45,15 +45,15 @@ module.exports = {
           
             if(user_email){
               const refreshToken = makeRefreshToken(user_email);
-              
-              res.cookie('refreshToken', refreshToken);
+              res.cookie('refreshToken', refreshToken)
+              .json({characterInfo : characterInfo})
             } //{ httpOnly: true}
             
             else{
-             const signUpUserId= await signID(userInfo);
+             const characterId= await signID(userInfo);
              const refreshToken = makeRefreshToken(signUpUserId);
-          
-             res.cookie('refreshToken', refreshToken);
+             res.status(200).cookie('refreshToken', refreshToken)
+             .json({characterId : characterId})
             }//{ httpOnly: true}
     return res.redirect("http://localhost:3000")
   },

@@ -113,6 +113,22 @@ module.exports = {
       user_id : userId1
     },
     {
+      content : "윗몸일으키기 100개",
+      kind : "phy",
+      is_complete : true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      user_id : userId1
+    },
+    {
+      content : "뜀걸음 100개",
+      kind : "phy",
+      is_complete : true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      user_id : userId1
+    },
+    {
       content : "공부 1시간",
       kind : "int",
       is_complete : true,

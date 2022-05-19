@@ -4,23 +4,11 @@ const cors = require("cors");
 const router = require("./router");
 const https = require("https");
 const fs = require('fs');
-const redis = require('redis');
-const session = require('express-session');
-// const redisStore = require('connect-redis')(session)
-// const redisClient = redis.createClient({
-//   host : "127.0.0.1",
-//   port : 6379,
-//   legacyMode: true
-// }); //aws 주소 바꾸기
+const cookieParser = require('cookie-parser');
 
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(session({
-//   secret: "secret",
-//   saveUninitialized: false,
-//   resave: false,
-//   // store: new redisStore({client : redisClient})
-// }))
 
 app.use(
   cors({
@@ -31,9 +19,8 @@ app.use(
 );
 
 app.use("/", router);
-const HTTPS_PORT = process.env.HTTPS_PORT || 3001;
+const HTTPS_PORT = 3001;
 let server;
-
 // if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
 
 //   const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");

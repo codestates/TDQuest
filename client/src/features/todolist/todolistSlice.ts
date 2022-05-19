@@ -5,7 +5,7 @@ const url = 'http://localhost:3001';
 
 export interface todoListState {
   status: 'idle' | 'loading' | 'failed';
-  todo: object;
+  todo: any;
 }
 
 const initialState: todoListState = {
@@ -25,6 +25,9 @@ export const getTodoListAsync = createAsyncThunk(
       const data = axios
         .get(`${url}/todo`, {
           params: { user_id: arg.user_id, is_complete: arg.is_complete },
+          // headers: {
+          //   Authorization: `token ${access_token}`,
+          // },
         })
         .then((res) => {
           return res.data;
@@ -95,7 +98,7 @@ export const deleteTodoListAsync = createAsyncThunk(
 );
 
 export const todoStatusChangeAsync = createAsyncThunk(
-  'delete/todo',
+  'character/status',
   async (arg: any) => {
     try {
       const data = axios
@@ -145,16 +148,22 @@ export const todolistSlice = createSlice({
         state.todo = action.payload;
       })
       .addCase(postTodoListAsync.fulfilled, (state, action) => {
-        console.log('success');
-        console.log(action.payload);
+        const tempArray = state.todo.todoInfo;
+        tempArray.push({ ...action.payload.todoInfo });
+        state.todo.todoInfo = tempArray;
+      })
+      .addCase(deleteTodoListAsync.fulfilled, (state, action) => {
+        // delete 했을때 삭제된 todoInfo
       })
       .addCase(patchTodoListAsync.fulfilled, (state, action) => {
         console.log('success');
         console.log(action.payload);
+        // 수정 했을때 수정된 todoInfo
       })
       .addCase(todoStatusChangeAsync.fulfilled, (state, action) => {
         console.log('success');
         console.log(action.payload);
+        // todo완료/취소 했을때 수정된 todoInfo
       });
   },
 });

@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     is_complete: {
       type : DataTypes.BOOLEAN,
       defaultValue : 0
+    },
+    updatedAt : {
+      type: DataTypes.DATEONLY
     }
   }, {
     sequelize,

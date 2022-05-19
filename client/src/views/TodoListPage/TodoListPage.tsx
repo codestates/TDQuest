@@ -37,6 +37,7 @@ function TodoListPage() {
   const todoList = useSelector((state: any) => state.todoList.todo);
   const dispatch: any = useDispatch();
   const userId = '1'; // 유저 아이디 임의로 사용 // 로컬스토리지에서 가져와야됨
+
   useEffect(() => {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
     dispatch(getTodoListAsync({ user_id: userId, is_complete: 0 }));
