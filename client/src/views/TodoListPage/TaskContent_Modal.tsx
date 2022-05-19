@@ -4,6 +4,7 @@ import {
   fontSize_body_laptop,
   color_context_blue_light,
 } from '../../components/CommonStyle';
+import CategoriesComponent from './CategoriesComponent';
 
 const TaskContent_Container = styled.div`
   display: flex;
@@ -29,22 +30,31 @@ const InputBox = styled.div`
 `;
 
 const TaskContent_Modal = ({
-  selectedTastContent,
-  selectedTastContentHandler,
+  selectedTaskContent,
+  selectedTaskKind,
+  selectedTaskContentHandler,
+  selectedTaskKindHandler,
 }: {
-  selectedTastContent: string;
-  selectedTastContentHandler: any;
+  selectedTaskContent: string;
+  selectedTaskKind: string;
+  selectedTaskContentHandler: any;
+  selectedTaskKindHandler: any;
 }) => {
   return (
     <TaskContent_Container>
       <InputBox>
+        <label>category</label>
+        <CategoriesComponent
+          category={selectedTaskKind}
+          categoryHandler={selectedTaskKindHandler}
+        ></CategoriesComponent>
         <label>To-do</label>
         <input
           type='text'
           placeholder='Edit to do'
-          value={selectedTastContent}
+          value={selectedTaskContent}
           onChange={(el) => {
-            selectedTastContentHandler(el.target.value);
+            selectedTaskContentHandler(el.target.value);
           }}
         />
       </InputBox>
