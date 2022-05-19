@@ -45,8 +45,8 @@ module.exports = {
         await todo_list.update({
             kind: req.body.kind,
             content: req.body.content
-        }, { where: { id: req.query.id } })
-        await todo_list.findOne({ where: { id: req.query.id } })
+        }, { where: { id: req.body.id } })
+        await todo_list.findOne({ where: { id: req.body.id } })
             .then(todoInfo => {
                 res.status(200).json({ message: "수정되었습니다.", todoInfo: todoInfo })
             })

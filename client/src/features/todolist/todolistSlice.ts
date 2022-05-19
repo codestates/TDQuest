@@ -174,11 +174,13 @@ export const todolistSlice = createSlice({
         state.todo = action.payload;
       })
       .addCase(postTodoListAsync.fulfilled, (state, action) => {
+        // todo 추가
         const tempArray = state.todo.todoInfo;
         tempArray.push({ ...action.payload.todoInfo });
         state.todo.todoInfo = tempArray;
       })
       .addCase(deleteTodoListAsync.fulfilled, (state, action) => {
+        // todo 삭제
         const targetId: number = action.payload.todoInfo.id;
         const tempArray = state.todo.todoInfo;
         const index: any = state.todo.todoInfo.findIndex(
@@ -188,21 +190,51 @@ export const todolistSlice = createSlice({
         state.todo.todoInfo = tempArray;
       })
       .addCase(patchTodoListAsync.fulfilled, (state, action) => {
-        console.log('success');
-        console.log(action.payload);
         // 수정 했을때 수정된 todoInfo
+        const tempArray = state.todo.todoInfo;
+        const targetId: number = action.payload.todoInfo.id;
+        const index: any = state.todo.todoInfo.findIndex(
+          (el: any) => el.id === targetId
+        );
+        tempArray[index] = action.payload.todoInfo;
+        state.todo.todoInfo = tempArray;
       })
       .addCase(todoStatusChangeAsync.fulfilled, (state, action) => {
-        console.log('success');
-        console.log(action.payload);
-        const is_complete: boolean = action.payload.todoInfo.is_complete;
-        console.log(is_complete);
-
         // todo완료/취소 했을때 수정된 todoInfo
+        const is_complete: boolean = action.payload.todoInfo.is_complete;
+        const targetId: number = action.payload.todoInfo.id;
+        // 추가해야할 부분 => 스토어의 케릭터 스탯 업데이트 ::
+
+        if (is_complete) {
+          // delete one from todo list
+          const todoArray = state.todo.todoInfo;
+          const index: any = state.todo.todoInfo.findIndex(
+            (el: any) => el.id === targetId
+          );
+          todoArray.splice(index, index + 1);
+          state.todo.todoInfo = todoArray;
+
+          // add one to completedTodo
+          const completedArray = state.completedTodo.todoInfo;
+          completedArray.push({ ...action.payload.todoInfo });
+          state.completedTodo.todoInfo = completedArray;
+        } else {
+          // delete one from completedTodo
+          const completedArray = state.completedTodo.todoInfo;
+          const index: any = state.completedTodo.todoInfo.findIndex(
+            (el: any) => el.id === targetId
+          );
+          completedArray.splice(index, index + 1);
+          state.completedTodo.todoInfo = completedArray;
+
+          // add one to todo list
+          const todoArray = state.todo.todoInfo;
+          todoArray.push({ ...action.payload.todoInfo });
+          state.todo.todoInfo = todoArray;
+        }
       })
       .addCase(getCompletedTodoListAsync.fulfilled, (state, action) => {
-        console.log(action.payload);
-
+        // 완료한 todo list 오늘 날짜 기준
         state.completedTodo = action.payload;
       });
   },

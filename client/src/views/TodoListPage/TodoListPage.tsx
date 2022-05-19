@@ -80,14 +80,12 @@ function TodoListPage() {
   };
   const deleteTask = () => {
     // 태스크 삭제 관련 로직 ***
-    console.log(selectedTaskContent.taskId);
-    console.log(selectedTaskContent.taskContent);
-    console.log('task 삭제');
     dispatch(
       deleteTodoListAsync({
         id: selectedTaskContent.taskId,
       })
     );
+    setShowModal(false);
   };
   const saveTask = () => {
     // 태스크 내용 업데이트 관련 로직 ***
@@ -98,6 +96,7 @@ function TodoListPage() {
         kind: selectedTaskContent.kind,
       })
     );
+    setShowModal(false);
   };
   const openModalHandler = (
     taskContent: string,
@@ -142,8 +141,6 @@ function TodoListPage() {
 
   const taskCompletedHandler = (itemId: number, category: string) => {
     // 태스크 완료 관련 로직 ***
-    console.log(itemId);
-    console.log('task 완료');
     // is_complete: 1 = completed / 0 = incompleted
     dispatch(
       todoStatusChangeAsync({
@@ -157,8 +154,6 @@ function TodoListPage() {
 
   const taskCompletedCancelHander = (itemId: number, category: string) => {
     // 태스크 완료 취소 관련 로직 ***
-    console.log(itemId);
-    console.log('task complete 취소');
     // is_complete: 1 = completed / 0 = incompleted
     dispatch(
       todoStatusChangeAsync({
