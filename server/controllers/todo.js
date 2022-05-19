@@ -67,7 +67,7 @@ module.exports = {
     completeList: async (req, res) => {
         console.log(req.query)
         if (req.query.time) {
-            if (req.query.is_complete === 1) {
+            if (req.query.is_complete === '1') {
                 await todo_list.findAll({
                     raw: true,
                     where: {
@@ -86,15 +86,28 @@ module.exports = {
                     where: {
                         user_id: req.query.user_id,
                         updatedAt: req.query.time,
-                        is_complete: 0
+                        is_complete: 1
                     }
                 })
                     .then(data => {
                         res.status(200).json({ todoInfo: data })
                     })
             }
+            else {
+            await todo_list.findAll({
+                raw: true,
+                where: {
+                    user_id: req.query.user_id,
+                    updatedAt: req.query.time,
+                    is_complete: 0
+                }
+            })
+                .then(data => {
+                    res.status(200).json({ todoInfo: data })
+                })
         }
-    },
+    }
+},
 
     completeTodo: async (req, res) => {
         if (!req.body.raid_id) {
