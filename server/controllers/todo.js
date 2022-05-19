@@ -56,16 +56,17 @@ module.exports = {
     },
 
     completeList : async (req, res) => {
-        if (req.body.time) {
+        console.log(req.query)
+        if (req.query.time) {
             await todo_list.findAll({
                 raw : true,
                 where: {user_id : req.query.user_id,
-                    updatedAt : {
-                        $eq: req.body.time}
+                    updatedAt : req.query.time,
+                    is_complete : 1
                 }
             })
             .then(data => {
-                console.log(data)
+                res.status(200).json({todoInfo : data})
             })
         }
         else { 
