@@ -21,10 +21,11 @@ module.exports = {
                     level : character.dataValues.totalExp / 100,
                     exp : character.dataValues.totalExp % 100
                 }
-                res.status(200).cookie('refreshToken', refreshToken)
+                res.status(200).cookie('accessToken', accessToken)
                 .json({characterInfo : characterInfo, 
                     userInfo : userInfo,
                     accessToken : accessToken,
+                    refreshToken : refreshToken
                     })
                 })
             })
