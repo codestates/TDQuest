@@ -3,19 +3,20 @@ const { damage_log } = require('../models')
 const { monster } = require("../models")
 const { raid } = require("../models")
 const { character } = require("../models")
+
 module.exports = {
     createTodo: async (req, res) => {
-        await todo_list.create({
-            kind: req.body.kind,
-            content: req.body.content,
-            user_id: req.body.user_id
-        })
-            .then(todoInfo => {
-                res.status(201).json({ todoInfo: todoInfo, message: "todo_list를 추가합니다" })
+        try {
+            const todoInfo = await todo_list.create({
+                kind: req.body.kind,
+                content: req.body.content,
+                user_id: req.body.user_id
             })
-            .catch(err => {
-                res.status(401).json({ message: 'Not Found' })
-            })
+            res.status(201).json({ todoInfo: todoInfo, message: "todo_list를 추가합니다" })
+        }
+        catch (err) {
+            res.status(401).json({ message: 'Not Found' })   
+        }
     }, //todolist 추가
 
     getTodo: async (req, res) => {
@@ -49,40 +50,22 @@ module.exports = {
             res.status(401).json({message: 'Not Found'})
         })
     },
-
-    completeList: async (req, res) => {
-        if (req.query.time) {
-            if (req.query.is_complete === '1') {
+    
+    completeList : async (req, res) => {
+        if (req.query.time) { // 특정 날짜
                 await todo_list.findAll({
                     raw: true,
                     where: {
                         user_id: req.query.user_id,
                         updatedAt: req.query.time,
-                        is_complete: 1
-                    }
-                })
-                    .then(data => {
-                        console.log('test');
-                        console.log(data);
-                        res.status(200).json({ todoInfo: data })
-                    })
-            }
-            else {
-                console.log('else');
-                await todo_list.findAll({
-                    raw: true,
-                    where: {
-                        user_id: req.query.user_id,
-                        updatedAt: req.query.time,
-                        is_complete: 0
+                        is_complete: req.query.is_complete
                     }
                 })
                     .then(data => {
                         res.status(200).json({ todoInfo: data })
                     })
-            }
         }
-        else {
+        else { // 완료한 모든 todo_list
             await todo_list.findAll({
                 where: {
                     user_id: req.query.user_id,
@@ -174,6 +157,7 @@ module.exports = {
                     const todoInfo = await todo_list.findOne({
                         where : { id : req.query.id}
                     })
+
                 await character.findOne(
                     { where: { user_id: req.query.user_id } })
                     .then(data => {

@@ -42,7 +42,7 @@ module.exports = {
                nickname: me.kakao_account.profile.nickname,
              };
 
-          const userInfo = await existID(userId.email);
+          const userInfo = await existID(userId.email, 'kakao');
           
             if(userInfo){
               await character.findOne({
