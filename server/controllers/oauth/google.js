@@ -39,9 +39,11 @@ module.exports = {
             nickname: me.name,
             };
 
-          const userInfo = await existID(userId.email);
+          const userInfo = await existID(userId.email, 'google');
            
           if(userInfo){
+            const accessToken = makeAccessToken(userInfo.dataValues.email)
+            const refreshToken = makeRefreshToken(userInfo.dataValues.email)
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
@@ -50,16 +52,13 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
-
-          const accessToken = makeAccessToken(userInfo.dataValues.email)
-          const refreshToken = makeRefreshToken(userInfo.dataValues.email)
                 res.cookie('refreshToken', refreshToken)
                 .json({characterInfo : characterInfo, accessToken : accessToken})
               })//{ httpOnly: true}
           }
           else{
-              const signUpUserId= await signID(userInfo);
-              const refreshToken = makeRefreshToken(signUpUserId);
+            try {
+              const signUpUserId = await signID(userInfo.dataValues.email, 'google');
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
@@ -68,11 +67,15 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
-          const accessToken = makeAccessToken(userInfo.dataValues.email)
-          const refreshToken = makeRefreshToken(userInfo.dataValues.email)
+                const accessToken = makeAccessToken(signUpUserId.dataValues.email)
+                const refreshToken = makeRefreshToken(signUpUserId.dataValues.email)
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo, access_token : access_token})
+                .json({characterInfo : characterInfo, accessToken : accessToken})
               }) //{ httpOnly: true}
             }
+            catch (err) {
+              res.status(400).json({message : err})
+            }
+          }
   }
 }

@@ -45,6 +45,8 @@ module.exports = {
           const userInfo = await existID(userId.email, 'kakao');
           
             if(userInfo){
+              const accessToken = makeAccessToken(userInfo.dataValues.email)
+              const refreshToken = makeRefreshToken(userInfo.dataValues.email)
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
@@ -53,16 +55,14 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
-                const accessToken = makeAccessToken(userInfo.dataValues.email)
-                const refreshToken = makeRefreshToken(userInfo.dataValues.email)
-          
                 res.cookie('refreshToken', refreshToken)
                 .json({characterInfo : characterInfo, accessToken : accessToken})
               })//{ httpOnly: true}
             } //{ httpOnly: true}
             
             else{
-              const signUpUserId= await signID(userInfo);
+              try {
+              const signUpUserId = await signID(userInfo.dataValues.email, 'kakao');
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
@@ -78,5 +78,9 @@ module.exports = {
                 .json({characterInfo : characterInfo, accessToken : accessToken})
               }) //{ httpOnly: true}
             }//{ httpOnly: true}
+            catch (err) {
+              res.status(400).json({message : err})
+            }
+          }
   },
 }

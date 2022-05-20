@@ -20,64 +20,74 @@ module.exports = {
     }, //todolist 추가
 
     getTodo: async (req, res) => {
-        const todoInfo = await todo_list.findAll({
-            where: {
-                user_id: req.query.user_id,
-                is_complete: req.query.is_complete
-            }
-        })
-        res.status(200).json({ todoInfo: todoInfo })
+        try {
+            const todoInfo = await todo_list.findAll({
+                where: {
+                    user_id: req.query.user_id,
+                    is_complete: req.query.is_complete
+                }
+            })
+            res.status(200).json({ todoInfo: todoInfo })
+        }
+        catch (err) {
+            res.status(400).json({message : err})
+        }
     }, // 완료되지않은 todolist 불러오기
 
     deleteTodo: async (req, res) => {
-        const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
-        await todo_list.destroy({
-            where: { id: req.query.id }
-        })
+        try {
+            const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
+            await todo_list.destroy({
+                where: { id: req.query.id }
+            })
+            res.status(200).json({todoInfo : todoInfo, message : "삭제했습니다."})
+        }
+        catch (err) {
+            res.status(400).json({message : err})
+        }
     }, 
     
     updateTodo : async (req, res) => {
-        await todo_list.update({
-            kind : req.body.kind,
-            content : req.body.content
-        }, {where : { id : req.body.id}})
-
-        await todo_list.findOne({ where : { id : req.body.id}})
-        .then(todoInfo => {
+        try {
+            await todo_list.update({
+                kind : req.body.kind,
+                content : req.body.content
+            }, {where : { id : req.body.id}})
+    
+            const todoInfo = await todo_list.findOne({ where : { id : req.body.id}})
             res.status(200).json({message : "수정되었습니다.", todoInfo : todoInfo})
-        })
-        .catch(err => {
+        }
+        catch (err) {
             res.status(401).json({message: 'Not Found'})
-        })
+        }
     },
     
     completeList : async (req, res) => {
-        if (req.query.time) { // 특정 날짜
-                await todo_list.findAll({
-                    raw: true,
-                    where: {
-                        user_id: req.query.user_id,
-                        updatedAt: req.query.time,
-                        is_complete: req.query.is_complete
-                    }
-                })
-                    .then(data => {
-                        res.status(200).json({ todoInfo: data })
+        try {
+            if (req.query.time) { // 특정 날짜
+                const todo_lists = await todo_list.findAll({
+                        raw: true,
+                        where: {
+                            user_id: req.query.user_id,
+                            updatedAt: req.query.time,
+                            is_complete: req.query.is_complete
+                        }
                     })
+                res.status(200).json({ todoInfo: todo_lists })
+            }
+            else { // 완료한 모든 todo_list
+                const todo_lists = await todo_list.findAll({
+                        where: {
+                            user_id: req.query.user_id,
+                            is_complete: 1
+                        }
+                    })
+                res.status(200).json({todo_lists : todo_lists})
+            }
+
         }
-        else { // 완료한 모든 todo_list
-            await todo_list.findAll({
-                where: {
-                    user_id: req.query.user_id,
-                    is_complete: 1
-                }
-            })
-                .then(todo_lists => {
-                    res.status(200).json({ todo_list: todo_lists })
-                })
-                .catch(err => {
-                    res.status(401).json({ message: 'Not Found' })
-                })
+        catch (err) {
+            res.status(400).json({message : err})
         }
     },
 

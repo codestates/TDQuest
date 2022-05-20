@@ -5,11 +5,11 @@ const {makeAccessToken, makeRefreshToken } = require("../middleware/token")
 
 module.exports = {
     login: async (req, res) => {
-        await user.findOne({
-            where: { email: req.body.email,
-            password : req.body.password
-        }})
-        .then(async userInfo => {
+        try {
+            const userInfo  = await user.findOne({
+                where: { email: req.body.email,
+                password : req.body.password
+            }})
             const accessToken = await makeAccessToken(userInfo.dataValues.email)
             const refreshToken = await makeRefreshToken(userInfo.dataValues.email)
            
@@ -26,16 +26,15 @@ module.exports = {
                     userInfo : userInfo,
                     accessToken : accessToken,
                     })
-                })
             })
-        .catch(err => {
+        }
+        catch (err) {
             res.status(404).json({message : "Wrong user Id"})
-        })
+        }
     },
 
     logout : async (req, res) => {
         res.clearCookie('accessToken');
-        //res.session.destroy()
         res.status(200).json({message : '로그아웃되었습니다.'})
     },
 }

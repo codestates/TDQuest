@@ -6,7 +6,6 @@ const { makeAccessToken } = require('../middleware/token');
 module.exports = {
     signIn : async (req, res) => {
         const { email, nickname, password } = req.body
-        const passwordToken = makeAccessToken(password)
 
         const isUser = await user.findOne({
             where : {email : email}
@@ -15,26 +14,24 @@ module.exports = {
             res.status(409).json({message: "이미 아이디가 있습니다."})
         }
         else {
-            await user.create({
-             email: email,
-             nickname: nickname,
-             password: passwordToken
-            })
-
-            await user.findOne({ where : {
-                email : req.body.email
-            }})
-            .then(data => {
-                const characterInfo = character.create({
-                    user_id : data.dataValues.id
+            try {
+                const userInfo = await user.create({
+                email: email,
+                nickname: nickname,
+                password: password
                 })
-            res.status(200).json({ message : "회원가입 성공"})
-        })
+                const characterInfo = await character.create({
+                user_id : userInfo.dataValues.id 
+                })
+                res.status(200).json({ message : "회원가입 성공"})
+            }
+            catch (err) {
+                res.status(400).json({message : err})
+            }
         }
     },
-
-  signOut: async (req, res) => {
-    user.destory({ where: { id: req.query.id } });
-    res.status(200);
+      signOut: async (req, res) => {
+        user.destory({ where: { id: req.query.id } });
+        res.status(200);
   },
 };
