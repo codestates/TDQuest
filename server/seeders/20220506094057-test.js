@@ -29,6 +29,7 @@ module.exports = {
       const userId4 = await queryInterface.bulkInsert('users', [
       {
         nickname: 'SinMinJun',
+        logintype : 'google',
         email: 'mj.irin1260@gmail.com',
         password: "123456",
         createdAt: new Date(),
@@ -37,6 +38,7 @@ module.exports = {
       const userId5 = await queryInterface.bulkInsert('users', [
       {
         nickname: 'KimSangHun',
+        logintype : 'kakao',
         email: 'mj.irin1260@gmail.com',
         password: "123456",
         createdAt: new Date(),

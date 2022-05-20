@@ -2,7 +2,8 @@ const { character } = require('../models')
 
 module.exports = {
     getCharacter : async (req, res) => {
-            const characterInfo = await character.findOne({
+        try {
+            await character.findOne({
                 where : {user_id : req.query.user_id}
             })
             .then(character => {
@@ -12,8 +13,9 @@ module.exports = {
                 }
                 res.status(200).json({ characterInfo: characterInfo })
             })
-            .catch(err => {
-                console.log(err)
-            })
+        }
+        catch (err) {
+            res.status(404).json({message : err})
+        }
     },
 }

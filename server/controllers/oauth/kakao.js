@@ -42,9 +42,11 @@ module.exports = {
                nickname: me.kakao_account.profile.nickname,
              };
 
-          const userInfo = await existID(userId.email);
+          const userInfo = await existID(userId.email, 'kakao');
           
             if(userInfo){
+              const accessToken = makeAccessToken(userInfo.dataValues.email)
+              const refreshToken = makeRefreshToken(userInfo.dataValues.email)
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
@@ -54,13 +56,13 @@ module.exports = {
                   exp : character.dataValues.totalExp % 100
                 }
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo})
+                .json({characterInfo : characterInfo, accessToken : accessToken})
               })//{ httpOnly: true}
             } //{ httpOnly: true}
             
             else{
-              const signUpUserId= await signID(userInfo);
-              const refreshToken = makeRefreshToken(signUpUserId);
+              try {
+              const signUpUserId = await signID(userInfo.dataValues.email, 'kakao');
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
@@ -69,10 +71,16 @@ module.exports = {
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
+                
+                const accessToken = makeAccessToken(signUpUserId.dataValues.email)
+                const refreshToken = makeRefreshToken(signUpUserId.dataValues.email)
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo})
+                .json({characterInfo : characterInfo, accessToken : accessToken})
               }) //{ httpOnly: true}
             }//{ httpOnly: true}
-    return res.redirect("http://localhost:3000")
+            catch (err) {
+              res.status(400).json({message : err})
+            }
+          }
   },
 }

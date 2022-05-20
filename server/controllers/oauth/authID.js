@@ -2,9 +2,11 @@ const { user } = require("../../models")
 
 module.exports = { //oauth ID 검증
     
-    existID : async (email) => {
+    existID : async (email, logintype) => {
         const userInfo = await user.findOne({
-            email : email
+            where : { email : email,
+                logintype : logintype
+            }
         })
         if (userInfo) {
             return userInfo
@@ -14,9 +16,10 @@ module.exports = { //oauth ID 검증
         }
     },
 
-    signID : async (userInfo) => {
+    signID : async (email, logintype) => {
         await user.create({
-            email : userInfo
+            email : email,
+            logintype : logintype 
         })
     }
 }

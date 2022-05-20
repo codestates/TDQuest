@@ -2,18 +2,19 @@ const { user } = require('../models')
 
 module.exports = {
     getUser : async (req, res) => {
-        await user.findOne({
-            where : {id : req.query.id}
-        })
-        .then(userInfo => {
+        try {
+            const userInfo = await user.findOne({
+                where : { id : req.query.id}
+            })
             res.status(200).json({userInfo: userInfo, message: '유저정보'})
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        }
+        catch(err)  {
+            res.status(404).json({message : err})
+        }
     },
     
     updateUser : async (req, res) => {
+
         if (req.body.nickname) {
             await user.update({
                 nickname : req.body.nickname

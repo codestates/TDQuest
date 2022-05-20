@@ -57,9 +57,10 @@ function InputBox({state, handler}: { state : boolean, handler : any }) {
       }
     }
   }
-
+  //const kakao_url = 'http://localhost:3001/kakao'
+  //const google_url = 'http://localhost:3001/google'
   const kakao_url = 'https://kauth.kakao.com/oauth/authorize?client_id=3554b2f431d5904cbc02157e94f32984&redirect_uri=http://localhost:3001/oauth/kakao/callback&response_type=code';
-  const google_url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=463082706031-birdaloui91n414cfq497aamjaavsjbm.apps.googleusercontent.com&redirect_uri=http://localhost:3001/user/auth/google/callback&response_type=code&include_granted_scopes=true&scope=https://www.googleapis.com/auth/userinfo.email'
+  const google_url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=463082706031-birdaloui91n414cfq497aamjaavsjbm.apps.googleusercontent.com&redirect_uri=http://localhost:3001/oauth/google/callback&response_type=code&include_granted_scopes=true&scope=https://www.googleapis.com/auth/userinfo.email'
   return (
     <InputBoxContainer>
       <Headline>
