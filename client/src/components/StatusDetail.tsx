@@ -5,7 +5,8 @@ type Data = {
   img: string;
   titleText: string;
   innerText?: string;
-  value: number;
+  //! 서버 측 코드 수정으로 인한 일시 수정
+  value: number | undefined;
   isExp?: boolean;
 };
 
@@ -30,7 +31,8 @@ const StatusTextContainer = styled.div<{ isExp?: boolean }>`
   }
 `;
 
-const StatusBar = styled.div<{ isExp?: boolean; value: number }>`
+//! 서버 측 코드 수정으로 인한 일시 수정
+const StatusBar = styled.div<{ isExp?: boolean; value?: number }>`
   margin-left: 5px;
   margin-right: 5px;
   border-radius: 3px;
@@ -59,7 +61,7 @@ function StatusDetail({
 }: Data): JSX.Element {
   return (
     <StatusImageContainer>
-      <img src={require(`../static/images/${img}.png`)} />
+      <img src={require(`../static/images/${img}.png`)} alt="statusImage" />
       <StatusTextContainer isExp={isExp}>
         <h1>{titleText}</h1>
         <h2>{innerText}</h2>
