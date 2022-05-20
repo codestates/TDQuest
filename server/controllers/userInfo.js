@@ -14,18 +14,27 @@ module.exports = {
     },
     
     updateUser : async (req, res) => {
-        try {
+
+        if (req.body.nickname) {
+            await user.update({
+                nickname : req.body.nickname
+            }, {where : { id: req.body.id}}).then(() => {
+                console.log("Changed User");
+                res.status(200).json({message: 'change user'})
+            })
+        } else {
             await user.update({
                 password : req.body.password,
             }, {where : { id: req.body.id}})
-
-            const userInfo = await user.findOne({
+            await user.findOne({
                 where : {id : req.body.id}
             })
-            res.status(200).json({message: '유저정보 수정', userInfo : userInfo})
-        }
-        catch (err) {
-            res.status(400).json({message : err})
+            .then(userInfo => {
+                res.status(200).json({message: '유저정보 수정', userInfo : userInfo})
+            })
+            .catch(err => {
+                console.log(err)
+            })    
         }
     },
 }

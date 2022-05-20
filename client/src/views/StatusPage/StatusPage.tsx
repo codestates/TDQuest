@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios, { AxiosRequestConfig } from "axios";
 import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import AboutStatus from "./AboutStatus";
@@ -20,8 +21,7 @@ import {
 import Loading from "../../components/Loading";
 // API REQUEST
 import {
-  getCharacterInfo,
-  dummyRes_getCharacterInfo,
+  TDQuestAPI,
 } from "../../API/tdquestAPI";
 // Types
 import { CharDataType } from "../../Types/generalTypes";
@@ -29,28 +29,24 @@ import { CharDataType } from "../../Types/generalTypes";
 function StatusPage(): JSX.Element {
   const [userData, setUserData] = useState<CharDataType>({} as CharDataType);
   const [loading, setLoading] = useState<boolean>(true);
+  const { id: user_id, nickname } = JSON.parse(
+    window.localStorage.getItem("isLogin") as string
+  ).userInfo;
+
   useEffect(() => {
     if (loading) {
-      setTimeout(() => {
-        const getcharacterData: any =
-          dummyRes_getCharacterInfo.data.characterInfo;
-        setUserData(getcharacterData);
-        setLoading(false);
-      }, 2000);
+      const getCharacterData = async () => {
+        await TDQuestAPI.get(`/character/?user_id=${user_id}`).then((res) => {
+          setUserData(res.data.characterInfo);
+          setLoading(false);
+          console.log(userData);
+        });
+      };
+      getCharacterData();
     }
   }, []);
 
-  console.log(userData);
-
-  const {
-    user_id,
-    image,
-    status_phy,
-    status_int,
-    status_spl,
-    userLevel,
-    userExp,
-  } = userData;
+  const { image, status_phy, status_int, status_spi, level, exp } = userData;
 
   console.log(userData);
 
@@ -73,7 +69,7 @@ function StatusPage(): JSX.Element {
           </StatusHeader>
           <SectionContainer>
             <StatusContainer>
-              <Status charData={userData}></Status>
+              <Status userName={nickname} charData={userData}></Status>
             </StatusContainer>
             <MyInfoContainer>
               <MyToDoStatusWrapper>

@@ -164,7 +164,7 @@ module.exports = {
                             { status_etc : 0.5 },
                             { where : { user_id : req.query.user_id }})
                     }
-                    const todoInfo = await todo_list.findOne({
+                    const todoInfo1 = await todo_list.findOne({
                         where : { id : req.query.id}
                     })
 

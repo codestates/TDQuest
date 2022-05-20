@@ -6,6 +6,7 @@ import {
   fontSize_body_laptop_small
 } from "../../components/CommonStyle";
 import { TodoContentType } from "../../Types/generalTypes";
+import { TDQuestAPI } from "../../API/tdquestAPI";
 
 const DoneContent = styled.div`
   width: 90%;
@@ -43,16 +44,22 @@ const DoneContent = styled.div`
   }
 `;
 
-function DoneContents({content, created_at}: TodoContentType) {
+function DoneContents({id, content, updatedAt, handleDeleteList}: TodoContentType) {
 
+  const handleClick = (id: number) => {
+    TDQuestAPI.delete(`todo/?id=${id}`).then((res) => res.data);
+  }
 
   return (
     <DoneContent>
       <div className="content_wrapper">
         <div className="content">{content}</div>
         <div className="created_contanier">
-          {created_at}
-          <button>⛔️</button>
+          {updatedAt}
+          <button onClick={()=>{
+            handleClick(id)
+            handleDeleteList(id);
+          }}>⛔️</button>
         </div>
       </div>
     </DoneContent>

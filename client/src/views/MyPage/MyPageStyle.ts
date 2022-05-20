@@ -45,6 +45,9 @@ export const UserInfoContainer = styled.div`
   width: 90%;
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const CharContainer = styled.div`
@@ -118,9 +121,13 @@ export const UserInfoDetailContainer = styled.div`
       min-width: 5px;
     }
   }
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
 `;
 
 export const HelperBearContainer = styled.div`
+  margin: 20px 0;
   display: flex;
   justify-content: flex-start;
   flex: 3 0 0;
@@ -133,6 +140,9 @@ export const BottomContentContainer = styled.div`
   min-height: 400px;
   margin: 15px 0;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const MyDoneListContainer = styled.div`
@@ -140,6 +150,9 @@ export const MyDoneListContainer = styled.div`
   flex-direction: column;
   width: 48%;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const AchievementsContainer = styled.div`
@@ -149,6 +162,9 @@ export const AchievementsContainer = styled.div`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const TitleContainer = styled.div`
