@@ -269,7 +269,7 @@ const dummyRes_getCharacterInfo = {
       level: 1250,
       status_phy: 50,
       status_int: 20,
-      status_spl: 30,
+      status_spi: 30,
       medal: 'medal',
       created_at: '2022-05-08',
       updated_at: '2022-05-08',

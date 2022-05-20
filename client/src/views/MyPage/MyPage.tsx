@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import cookies from "js-cookie";
 import { color_primary_green_light } from "../../components/CommonStyle";
 import Loading from "../../components/Loading";
 import Status from "../../components/Status";
@@ -30,10 +32,10 @@ import {
 } from "./MyPageStyle";
 // API REQUEST
 import {
-  dummyRes_getCharacterInfo,
-  dummyRes_getTodolist,
-  dummyRes_getUserInfo,
+  APIMAIN,
+  TDQuestAPI,
 } from "../../API/tdquestAPI";
+axios.defaults.withCredentials = true;
 
 function MyPage() {
   const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
@@ -42,38 +44,64 @@ function MyPage() {
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [userName, setUserName] = useState<string>("");
+  const [userName, setUserName] = useState({ nickname: "", email: "" });
   const [pwModal, setPwModal] = useState(false);
+
+  const LOCALSTORAGE = window.localStorage.getItem("isLogin") as string
+
+  const { id: user_id } = JSON.parse(LOCALSTORAGE).userInfo;
+  const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
 
   useEffect(() => {
     if (loading) {
-      const getcharacterData: any =
-        dummyRes_getCharacterInfo.data.characterInfo;
-      const getUserData: any = dummyRes_getUserInfo.data.userInfo;
-      const donelists: any = dummyRes_getTodolist.todoInfo;
-      setDonelist(donelists);
-      setUserData(getUserData);
-      setCharData(getcharacterData);
-      setLoading(false);
+      const getComleteTDList = async () => {
+        console.log(accessToken);
+        await axios.get(`${APIMAIN}/todo/complete/?user_id=${user_id}`, {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+          .then((res) => {
+            setDonelist(res.data.todo_list);
+            setLoading(false);
+          });
+      };
+      getComleteTDList();
+
+      const getUserData = async () => {
+        await axios.get(`${APIMAIN}/userinfo/?id=${user_id}`).then((res) => {
+          setUserName({
+            nickname: res.data.userInfo.nickname,
+            email: res.data.userInfo.email,
+          });
+        });
+      };
+      getUserData();
     }
   }, []);
 
+  console.log(donelist);
+
   // 캐릭터 창 렌더링을 위한 더미 Data
-  const {
-    user_id,
-    image,
-    status_phy,
-    status_int,
-    status_spl,
-    userLevel,
-    userExp,
-  } = charData;
+  const { image, status_phy, status_int, status_spi, userLevel, userExp } =
+    charData;
 
   const { nickname, email } = userData;
 
   const handleChange = () => {
     setOnChange(!onChange);
   };
+
+  const handleSaveChange = () => {
+    setOnChange(!onChange);
+    console.log('Changed UserName : ', userName.nickname);
+    TDQuestAPI.patch(`userInfo`, {
+      id: user_id,
+      nickname: userName.nickname,
+    })
+  }
 
   const openModal = () => {
     setShowModal(true);
@@ -92,8 +120,18 @@ function MyPage() {
   };
 
   const changeName = (event: React.FormEvent<HTMLInputElement>) => {
-    setUserName(event.currentTarget.value);
+    setUserName({ nickname: event.currentTarget.value, email: userName.email });
     console.log(userName);
+  };
+
+  const handleDeleteList = (id: number) => {
+    const tmpList = donelist.filter((el) => {
+      if (el.id === id) {
+        return false;
+      }
+      return true;
+    });
+    setDonelist(tmpList);
   };
 
   return (
@@ -104,6 +142,7 @@ function MyPage() {
         </MyPageContainer>
       ) : (
         <MyPageContainer bgColor={color_primary_green_light}>
+          {/* 유저 계정 삭제 확인 관련 모달 창 코드 */}
           {pwModal ? null : (
             <MsgModal
               header="❗️ Delete account"
@@ -133,7 +172,7 @@ function MyPage() {
                   <input
                     type="text"
                     className="change_name"
-                    placeholder={` ${user_id}`}
+                    placeholder={` ${userName.nickname}`}
                     onChange={changeName}
                   ></input>
                   <button
@@ -143,14 +182,16 @@ function MyPage() {
                       setPwModal(true);
                     }}
                   >
-                    Click to Change Password
+                    Change Password
                   </button>
+                  {/* 유저 비밀번호 수정 관련 모달 창 코드 */}
                   {pwModal ? (
                     <MsgModal
                       header="❗️ Change Password"
                       open={showModal}
                       close={closeModal}
                       footerClick={changePassword}
+                      noFooter={true}
                     >
                       <ChangePasswordModal />
                     </MsgModal>
@@ -158,8 +199,8 @@ function MyPage() {
                 </div>
               ) : (
                 <div className="user_id_wrapper">
-                  <h1>{user_id}</h1>
-                  <h2>{email}</h2>
+                  <h1>{userName.nickname}</h1>
+                  <h2>{userName.email}</h2>
                 </div>
               )}
               {!onChange ? (
@@ -170,7 +211,7 @@ function MyPage() {
                 </div>
               ) : (
                 <div className="ButtonContainer">
-                  <Button text="Save Change" onClick={handleChange} />
+                  <Button text="Save Change" onClick={handleSaveChange} />
                   <div className="button_margin"></div>
                   <Button text="Delete Account" onClick={openModal} />
                 </div>
@@ -193,8 +234,10 @@ function MyPage() {
                   return (
                     <DoneContents
                       key={idx}
+                      id={el.id}
                       content={el.content}
-                      created_at={el.created_at}
+                      updatedAt={el.updatedAt}
+                      handleDeleteList={handleDeleteList}
                     />
                   );
                 })}

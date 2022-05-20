@@ -14,6 +14,7 @@ import {
 } from "../../components/CommonStyle";
 
 export const StatusPageContainer = styled.div<{ bgColor: string }>`
+  padding-top: 80px;
   background-color: ${(props) => props.bgColor};
   display: flex;
   flex-direction: column;
