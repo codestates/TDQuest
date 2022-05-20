@@ -44,7 +44,10 @@ module.exports = {
 
 
     checkAccessToken: async (req, res, next) => {
-        const token = req.headers.authorization.split(' ')[1];
+        const token = req.cookies.accessToken;
+        //현재 req.headers.authorization을 읽어오는데 오류가 있음
+        //cookie에 accessToken을 보관하는 것은 보안 상 문제가 있어 추후 수정이 필요함
+        //const token = req.headers.authorization.split(' ')[1];
         const refreshToken = req.headers.refreshToken;
 
         if (!token) {
