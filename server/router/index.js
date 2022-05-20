@@ -44,7 +44,7 @@ router.delete("/sign/out", sign.signOut);
 
 //userInfo
 router.get("/userInfo", checkAccessToken, userInfo.getUser);
-router.patch("/userInfo", checkAccessToken, userInfo.updateUser);
+router.patch("/userInfo", userInfo.updateUser);
 
 //todo
 router.get("/todo", checkAccessToken ,todo.getTodo);

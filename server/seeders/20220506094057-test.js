@@ -6,6 +6,7 @@ module.exports = {
       {
       nickname: 'LeeHyunJun',
       email: 'lucky.hyunjun@gmail.com',
+      logintype : 'general',
       password: "123456",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -14,6 +15,7 @@ module.exports = {
       {
         nickname: 'JiSungHyun',
         email: 'jiji6027@gmail.com',
+        logintype : 'general',
         password: "123456",
         createdAt: new Date(),
         updatedAt: new Date()
@@ -22,6 +24,7 @@ module.exports = {
       {
         nickname: 'CHoiChoongMan',
         email: 'tastestar91@gmail.com',
+        logintype : 'general',
         password: "123456",
         createdAt: new Date(),
         updatedAt: new Date()
