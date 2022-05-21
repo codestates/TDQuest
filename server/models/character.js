@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       type : DataTypes.INTEGER,
       defaultValue : 0
     },
+    status_etc: {
+      type : DataTypes.INTEGER,
+      defaultValue : 0
+    },
     medal: DataTypes.STRING,
   }, {
     sequelize,
