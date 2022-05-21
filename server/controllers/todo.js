@@ -53,7 +53,6 @@ module.exports = {
         try { //미완료
             if (req.query.time) { //시간있을경우
                 const todo_lists = await todo_list.findAll({
-                    raw: true,
                     where: {
                         user_id: req.query.user_id,
                         updatedAt: req.query.time,
@@ -81,7 +80,6 @@ module.exports = {
         try {
             if (req.query.time) { // 특정 날짜
                 const todo_lists = await todo_list.findAll({
-                    raw: true,
                     where: {
                         user_id: req.query.user_id,
                         updatedAt: req.query.time,
@@ -90,7 +88,7 @@ module.exports = {
                 })
                 res.status(200).json({ todoInfo: todo_lists })
             }
-            else { // 완료한 모든 todo_list
+            else { // 
                 const todo_lists = await todo_list.findAll({
                     where: {
                         user_id: req.query.user_id,
