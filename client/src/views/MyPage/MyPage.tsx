@@ -252,14 +252,7 @@ function MyPage() {
               </TitleContainer>
               <ContentContainer></ContentContainer>
             </AchievementsContainer>
-          </BottomContentContainer>
-          <button
-            onClick={() => {
-              console.log("toast test");
-            }}
-          >
-            test
-          </button>
+          </BottomContentContainer>  
           {showToast ? <Toast text="✅ User Info Changed Complete!" /> : null}
         </MyPageContainer>
       )}
@@ -268,12 +261,3 @@ function MyPage() {
 }
 
 export default MyPage;
-
-// 필요 데이터
-{
-  // user info - user name, email, password
-  // 유저 Name은 비밀번호가 없어도 변경가능하도록 API 구성 필요
-  // user info에 total done lists(총 갯수만) 추가 필요
-  // user todo done lists
-  // done todo_list 삭제 요청
-}
