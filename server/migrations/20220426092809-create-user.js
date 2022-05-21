@@ -12,7 +12,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       logintype : {
-        type : Sequelize.STRING
+        type : Sequelize.STRING,
+        defaultValue : 'general'
       },
       email: {
         type: Sequelize.STRING
