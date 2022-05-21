@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import axios from "axios";
+import { Toast } from "../../components/Toast";
 import { TDQuestAPI } from "../../API/tdquestAPI";
 
 const ChangePw_Container = styled.div`
@@ -53,13 +53,14 @@ const ChangePW_Wrapper = styled.form`
 export const ChangePasswordModal = ({
   user_id,
   email,
-  close,
   saveChange,
+  setShowToast,
 }: {
   user_id: string;
   email: string;
   close: () => void;
   saveChange: () => void;
+  setShowToast: ()=> void;
 }) => {
   const [curPassword, setCurPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -112,6 +113,7 @@ export const ChangePasswordModal = ({
             }).then((res) => {
               saveChange();
               setShowCurPWAlert(false);
+              setShowToast();
             });
           }
         })
@@ -155,7 +157,7 @@ export const ChangePasswordModal = ({
         {showAlert ? <span>Input same Password!</span> : null}
         {showCurPWAlert ? <span>Check current Password!</span> : null}
       </ChangePW_Wrapper>
-      <Button text="Confirm" onClick={handleChangePwAction}></Button>
+      <Button text="Confirm" onClick={handleChangePwAction}></Button>   
     </ChangePw_Container>
   );
 };

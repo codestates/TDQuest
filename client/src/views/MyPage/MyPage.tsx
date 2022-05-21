@@ -7,6 +7,7 @@ import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import Button from "../../components/Button";
 import MsgModal from "../../components/MsgModal";
+import { Toast } from "../../components/Toast";
 import { DeleteUserAlertModal } from "./DeleteUserAlert_Modal";
 import { ChangePasswordModal } from "./ChangePWModal";
 import DoneContents from "./DoneContents";
@@ -39,13 +40,14 @@ function MyPage() {
   const [showModal, setShowModal] = useState(false);
   const [userInfo, setUserInfo] = useState({ nickname: "", email: "" });
   const [pwModal, setPwModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const LOCALSTORAGE = JSON.parse(
     window.localStorage.getItem("isLogin") as string
   );
 
   const { id: L_user_id, email: L_email } = LOCALSTORAGE.userInfo;
-  const accessToken = LOCALSTORAGE.accessToken;
+  //const accessToken = LOCALSTORAGE.accessToken;
 
   useEffect(() => {
     if (loading) {
@@ -78,6 +80,9 @@ function MyPage() {
   const handleChange = () => {
     setOnChange(!onChange);
     setShowModal(false);
+    if (showToast) {
+      setShowToast(false);
+    }
   };
 
   const handleSaveChange = async () => {
@@ -86,6 +91,8 @@ function MyPage() {
     await TDQuestAPI.patch(`userInfo`, {
       id: L_user_id,
       nickname: userInfo.nickname,
+    }).then((res) => {
+      setShowToast(true);
     });
   };
 
@@ -128,17 +135,6 @@ function MyPage() {
         </MyPageContainer>
       ) : (
         <MyPageContainer bgColor={color_primary_green_light}>
-          {/* 유저 계정 삭제 확인 관련 모달 창 코드 */}
-          {pwModal ? null : (
-            <MsgModal
-              header="❗️ Delete account"
-              open={showModal}
-              close={closeModal}
-              footerClick={deletAccount}
-            >
-              <DeleteUserAlertModal />
-            </MsgModal>
-          )}
           <MyPageHeader>
             <div className="headerContainer">
               <img
@@ -180,9 +176,26 @@ function MyPage() {
                       footerClick={changePassword}
                       noFooter={true}
                     >
-                      <ChangePasswordModal user_id={L_user_id} email={L_email} close={closeModal} saveChange={handleChange}/>
+                      <ChangePasswordModal
+                        user_id={L_user_id}
+                        email={L_email}
+                        close={closeModal}
+                        saveChange={handleChange}
+                        setShowToast={() => setShowToast(!showToast)}
+                      />
                     </MsgModal>
                   ) : null}
+                  {/* 유저 계정 삭제 확인 관련 모달 창 코드 */}
+                  {pwModal ? null : (
+                    <MsgModal
+                      header="❗️ Delete account"
+                      open={showModal}
+                      close={closeModal}
+                      footerClick={deletAccount}
+                    >
+                      <DeleteUserAlertModal />
+                    </MsgModal>
+                  )}
                 </div>
               ) : (
                 <div className="user_id_wrapper">
@@ -204,6 +217,7 @@ function MyPage() {
                 </div>
               )}
             </UserInfoDetailContainer>
+
             <HelperBearContainer>
               <HelperBear
                 width="220px"
@@ -239,6 +253,14 @@ function MyPage() {
               <ContentContainer></ContentContainer>
             </AchievementsContainer>
           </BottomContentContainer>
+          <button
+            onClick={() => {
+              console.log("toast test");
+            }}
+          >
+            test
+          </button>
+          {showToast ? <Toast text="✅ User Info Changed Complete!" /> : null}
         </MyPageContainer>
       )}
     </div>
