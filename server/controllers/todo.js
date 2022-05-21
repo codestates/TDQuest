@@ -20,21 +20,6 @@ module.exports = {
         }
     }, //todolist 추가
 
-    getTodo: async (req, res) => {
-        try {
-            const todoInfo = await todo_list.findAll({
-                where: {
-                    user_id: req.query.user_id,
-                    is_complete: req.query.is_complete
-                }
-            })
-            res.status(200).json({ todoInfo: todoInfo })
-        }
-        catch (err) {
-            res.status(400).json({ message: err })
-        }
-    }, // 완료되지않은 todolist 불러오기
-
     deleteTodo: async (req, res) => {
         try {
             const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
@@ -63,6 +48,35 @@ module.exports = {
         }
     },
 
+
+    incompleteList: async (req, res) => {
+        try { //미완료
+            if (req.query.time) { //시간있을경우
+                const todo_lists = await todo_list.findAll({
+                    raw: true,
+                    where: {
+                        user_id: req.query.user_id,
+                        updatedAt: req.query.time,
+                        is_complete: 0
+                    }
+                })
+                res.status(200).json({ todoInfo: todo_lists })
+            }
+            else { // 없을경우 
+                const todoInfo = await todo_list.findAll({
+                    where: {
+                        user_id: req.query.user_id,
+                        is_complete: 0
+                    }
+                })
+                res.status(200).json({ todoInfo: todoInfo })
+            }
+        }
+        catch (err) {
+            res.status(400).json({ message: err })
+        }
+    }, // 완료되지않은 todolist 불러오기
+
     completeList: async (req, res) => {
         try {
             if (req.query.time) { // 특정 날짜
@@ -71,7 +85,7 @@ module.exports = {
                     where: {
                         user_id: req.query.user_id,
                         updatedAt: req.query.time,
-                        is_complete: req.query.is_complete
+                        is_complete: 1
                     }
                 })
                 res.status(200).json({ todoInfo: todo_lists })
@@ -85,7 +99,6 @@ module.exports = {
                 })
                 res.status(200).json({ todo_lists: todo_lists })
             }
-
         }
         catch (err) {
             res.status(400).json({ message: err })
@@ -104,7 +117,6 @@ module.exports = {
                                 is_complete: 0
                             }
                         }, transaction)
-                    console.log(req.query.status)
                     if (req.query.status === "phy") {
                         await character.increment(
                             { status_phy: 0.5 },
