@@ -99,19 +99,19 @@ function Status({
               img="Physical"
               titleText="PHY"
               innerText="Physic"
-              value={status_phy}
+              value={Number(status_phy.toFixed(0))}
             />
             <StatusDetail
               img="Intelligence"
               titleText="INT"
               innerText="Intellig"
-              value={status_int}
+              value={Number(status_int.toFixed(0))}
             />
             <StatusDetail
               img="Spirit"
               titleText="SPI"
               innerText="Spirit"
-              value={status_spi}
+              value={Number(status_spi.toFixed(0))}
             />
             <StatusDetail
               img="Exp"
