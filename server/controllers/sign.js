@@ -4,34 +4,34 @@ const { character } = require("../models")
 const { makeAccessToken } = require('../middleware/token');
 
 module.exports = {
-    signIn : async (req, res) => {
+    signIn: async (req, res) => {
         const { email, nickname, password } = req.body
 
         const isUser = await user.findOne({
-            where : {email : email}
+            where: { email: email }
         })
         if (isUser) {
-            res.status(409).json({message: "이미 아이디가 있습니다."})
+            res.status(409).json({ message: "이미 아이디가 있습니다." })
         }
         else {
             try {
                 const userInfo = await user.create({
-                email: email,
-                nickname: nickname,
-                password: password
+                    email: email,
+                    nickname: nickname,
+                    password: password
                 })
                 const characterInfo = await character.create({
-                user_id : userInfo.dataValues.id 
+                    user_id: userInfo.dataValues.id
                 })
-                res.status(200).json({ message : "회원가입 성공"})
+                res.status(200).json({ message: "회원가입 성공" })
             }
             catch (err) {
-                res.status(400).json({message : err})
+                res.status(400).json({ message: err })
             }
         }
     },
-      signOut: async (req, res) => {
+    signOut: async (req, res) => {
         user.destory({ where: { id: req.query.id } });
         res.status(200);
-  },
+    },
 };
