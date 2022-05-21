@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       log: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        dataValue : 0
       },
       createdAt: {
         allowNull: false,
