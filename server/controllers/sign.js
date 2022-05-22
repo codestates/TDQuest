@@ -31,7 +31,12 @@ module.exports = {
         }
     },
     signOut: async (req, res) => {
-        user.destory({ where: { id: req.query.id } });
-        res.status(200);
+        try {
+            user.destroy({ where: { id: req.query.id } });
+            res.status(200).json({message : "삭제되었습니다"});    
+        }
+        catch(err) {
+            res.status(200).json({message : err})
+        }
     },
 };
