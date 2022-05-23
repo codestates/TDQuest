@@ -2,11 +2,12 @@ const jwt = require('jsonwebtoken')
 const { user } = require('../models')
 const { character } = require("../models")
 const { makeAccessToken } = require('../middleware/token');
+const bcrypt = require("bcrypt")
 
 module.exports = {
     signIn: async (req, res) => {
         const { email, nickname, password } = req.body
-
+        const hashPassword = await bcrypt.hash(password.toString(), 10);
         const isUser = await user.findOne({
             where: { email: email }
         })
@@ -18,7 +19,7 @@ module.exports = {
                 const userInfo = await user.create({
                     email: email,
                     nickname: nickname,
-                    password: password
+                    password: hashPassword
                 })
                 const characterInfo = await character.create({
                     user_id: userInfo.dataValues.id
@@ -32,7 +33,7 @@ module.exports = {
     },
     signOut: async (req, res) => {
         try {
-            user.destroy({ where: { id: req.query.id } });
+            user.destroy({ where: { id: req.query.id } })
             res.status(200).json({message : "삭제되었습니다"});    
         }
         catch(err) {
