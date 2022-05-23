@@ -24,6 +24,7 @@ export const signIn = createAsyncThunk(
       console.log("response:", response);
       const isLogin = {status : "loggedIn", ...response.data};
       localStorage.setItem("isLogin", JSON.stringify(isLogin));
+      localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
       return isLogin
     }
     catch (err : any){

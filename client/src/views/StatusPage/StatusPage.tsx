@@ -20,14 +20,13 @@ import {
 } from "./StatusPageStyle";
 import Loading from "../../components/Loading";
 // API REQUEST
-import {
-  TDQuestAPI,
-} from "../../API/tdquestAPI";
+import { TDQuestAPI } from "../../API/tdquestAPI";
 // Types
-import { CharDataType } from "../../Types/generalTypes";
+import { CharDataType, TodoListType } from "../../Types/generalTypes";
 
 function StatusPage(): JSX.Element {
   const [userData, setUserData] = useState<CharDataType>({} as CharDataType);
+  const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { id: user_id, nickname } = JSON.parse(
     window.localStorage.getItem("isLogin") as string
@@ -43,11 +42,23 @@ function StatusPage(): JSX.Element {
         });
       };
       getCharacterData();
+
+      const getComleteTDList = async () => {
+        console.log(user_id);
+        await TDQuestAPI.get(`todo/complete/?user_id=${user_id}`).then(
+          (res) => {
+            setDonelist(res.data.todo_lists);
+            setLoading(false);
+          }
+        );
+      };
+      getComleteTDList();
     }
   }, []);
 
   const { image, status_phy, status_int, status_spi, level, exp } = userData;
 
+  console.log(donelist);
   console.log(userData);
 
   return (
@@ -83,7 +94,10 @@ function StatusPage(): JSX.Element {
                         name="Physical"
                         size="25px"
                       />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "phy").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                     <MyInfo>
                       <TodoStatusIcon
@@ -91,7 +105,10 @@ function StatusPage(): JSX.Element {
                         name="Intelligence"
                         size="25px"
                       />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "int").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                     <MyInfo>
                       <TodoStatusIcon
@@ -99,11 +116,17 @@ function StatusPage(): JSX.Element {
                         name="Spirit"
                         size="25px"
                       />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "spi").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                     <MyInfo>
                       <TodoStatusIcon source="Exp.png" name="Exp" size="25px" />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "exp").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                   </MyInfoDetailWrapper>
                   <BearWrapper>
