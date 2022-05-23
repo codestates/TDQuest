@@ -105,8 +105,8 @@ module.exports = {
 
     completeTodo: async (req, res) => {
         const transaction = await sequelize.transaction();
-        if (!req.body.raid_id) {
-            if (req.body.is_complete === 1) { //완료버튼을 눌렀다면
+        if (!req.query.raid_id) {
+            if (req.query.is_complete === 1) { //완료버튼을 눌렀다면
                 try {
                     await todo_list.update({ is_complete: true },
                         {
@@ -233,7 +233,7 @@ module.exports = {
 
 
         else { //레이드 참가
-            if (req.body.is_complete === 1) {
+            if (req.query.is_complete === 1) {
                 try {
                     await todo_list.update({ is_complete: true },
                         {
