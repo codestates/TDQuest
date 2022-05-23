@@ -83,7 +83,8 @@ const ToastContainer = styled.div`
 
 const CloseButton = styled.button`
   border: none;
-  color: gray;
+  color: transparent;
+  text-shadow: 0 0 0 gray;
   background-color: transparent;
   position: absolute;
   top: 10px;
@@ -134,6 +135,6 @@ export function Toast({ text }: { text: string;}) {
   );
 }
 
-export const createToast = (text: string, time?: number) => {
-  Toast({ text });
-};
+// export const createToast = (text: string, time?: number) => {
+//   Toast({ text });
+// };

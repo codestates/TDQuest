@@ -163,6 +163,7 @@ export const AchievementsContainer = styled.div`
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   @media (max-width: 768px) {
+    margin-top: 20px;
     width: 100%;
   }
 `;
@@ -197,5 +198,12 @@ export const ContentContainer = styled.div`
     height: 1.5rem;
     font-family: "OpenSans";
     text-align: center;
+  }
+  &::-webkit-scrollbar {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #d0cfcf;
   }
 `;
