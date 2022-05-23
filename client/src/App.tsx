@@ -9,6 +9,7 @@ function App() {
   const userInfoRedux  = useAppSelector((state)=> state.sign)
   let localInfo = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
   const verified_userId = localInfo? localInfo.userInfo.id : false; 
+  axios.defaults.withCredentials = true;
 
   const InitializeUser = () => {
     if (verified_userId) {

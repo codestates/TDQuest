@@ -1,33 +1,40 @@
 const { user } = require('../models')
+const bcrypt = require("bcrypt")
 
 module.exports = {
-    getUser : async (req, res) => {
+    getUser: async (req, res) => {
         try {
             const userInfo = await user.findOne({
-                where : { id : req.query.id}
+                where: { id: req.query.id }
             })
-            res.status(200).json({userInfo: userInfo, message: '유저정보'})
+            res.status(200).json({ userInfo: userInfo, message: '유저정보' })
         }
-        catch(err)  {
-            res.status(404).json({message : err})
+        catch (err) {
+            res.status(404).json({ message: err })
         }
     },
-    
-    updateUser : async (req, res) => {
+
+    updateUser: async (req, res) => {
         try {
+            let hashPassword
+            if (req.body.password) {
+                hashPassword = await bcrypt.hash(req.body.password.toString(), process.env.BCRYPT)
+            }
             await user.update({
-                password : req.body.password,
-                nickname : req.body.nickname
-            }, 
-            {where : { id: req.body.id}})
-            
+                password: hashPassword,
+                nickname: req.body.nickname
+            },
+                { where: { id: req.query.id } })
+
             const userInfo = await user.findOne({
-                where : {id : req.body.id}
+                attributes: {exclude: 'password'},
+                where: { id: req.query.id }
             })
-            res.status(200).json({message: '유저정보 수정', userInfo : userInfo})
+            res.status(200).json({ message: '유저정보 수정', userInfo: userInfo })
         }
-        catch {
-            res.status(400).json({message : err})
+        catch (err) {
+            throw err
+            res.status(400).json({ message: err })
         }
     },
 }

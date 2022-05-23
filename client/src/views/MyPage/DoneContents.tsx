@@ -10,7 +10,7 @@ import { TDQuestAPI } from "../../API/tdquestAPI";
 
 const DoneContent = styled.div`
   width: 90%;
-  height: 35px;
+  min-height: 35px;
   margin: 5px 0;
   display: flex;
   align-items: center;

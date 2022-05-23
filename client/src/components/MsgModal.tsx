@@ -32,19 +32,24 @@ const ModalBackground = styled.div`
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.6);
   animation: ${BgFade} 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ModalContainer = styled.div`
   width: 90%;
   position: fixed;
-  top: 25%;
-  left: 35%;
   max-width: 450px;
   margin: 0 auto;
   background-color: white;
   overflow: hidden;
   border-radius: 5px;
   animation: ${ModalFade} 0.3s;
+  @media (max-width: 767px){
+    width: 90vw;
+    left: 5%;
+  }
 `;
 
 const Header = styled.div`

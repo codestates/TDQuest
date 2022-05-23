@@ -7,10 +7,9 @@ import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import Button from "../../components/Button";
 import MsgModal from "../../components/MsgModal";
-import {
-  ChangePasswordModal,
-  DeleteUserAlertModal,
-} from "./DeleteUserAlert_Modal";
+import { Toast } from "../../components/Toast";
+import { DeleteUserAlertModal } from "./DeleteUserAlert_Modal";
+import { ChangePasswordModal } from "./ChangePWModal";
 import DoneContents from "./DoneContents";
 import {
   CharDataType,
@@ -31,48 +30,41 @@ import {
   ContentContainer,
 } from "./MyPageStyle";
 // API REQUEST
-import {
-  APIMAIN,
-  TDQuestAPI,
-} from "../../API/tdquestAPI";
-axios.defaults.withCredentials = true;
+import { TDQuestAPI } from "../../API/tdquestAPI";
 
 function MyPage() {
   const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
-  const [userData, setUserData] = useState<UserDataType>({} as UserDataType);
   const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [userName, setUserName] = useState({ nickname: "", email: "" });
+  const [userInfo, setUserInfo] = useState({ nickname: "", email: "" });
   const [pwModal, setPwModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
-  const LOCALSTORAGE = window.localStorage.getItem("isLogin") as string
+  const LOCALSTORAGE = JSON.parse(
+    window.localStorage.getItem("isLogin") as string
+  );
 
-  const { id: user_id } = JSON.parse(LOCALSTORAGE).userInfo;
-  const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
+  const { id: L_user_id, email: L_email } = LOCALSTORAGE.userInfo;
+  //const accessToken = LOCALSTORAGE.accessToken;
 
   useEffect(() => {
     if (loading) {
       const getComleteTDList = async () => {
-        console.log(accessToken);
-        await axios.get(`${APIMAIN}/todo/complete/?user_id=${user_id}`, {
-          headers: {
-            authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        })
-          .then((res) => {
-            setDonelist(res.data.todo_list);
+        console.log(L_user_id);
+        await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`).then(
+          (res) => {
+            setDonelist(res.data.todo_lists);
             setLoading(false);
-          });
+          }
+        );
       };
       getComleteTDList();
 
       const getUserData = async () => {
-        await axios.get(`${APIMAIN}/userinfo/?id=${user_id}`).then((res) => {
-          setUserName({
+        await TDQuestAPI.get(`userinfo/?id=${L_user_id}`).then((res) => {
+          setUserInfo({
             nickname: res.data.userInfo.nickname,
             email: res.data.userInfo.email,
           });
@@ -80,28 +72,29 @@ function MyPage() {
       };
       getUserData();
     }
+
+    setCharData(LOCALSTORAGE.characterInfo);
   }, []);
 
-  console.log(donelist);
-
-  // 캐릭터 창 렌더링을 위한 더미 Data
-  const { image, status_phy, status_int, status_spi, userLevel, userExp } =
-    charData;
-
-  const { nickname, email } = userData;
-
+  // User Action 관련한 함수들
   const handleChange = () => {
     setOnChange(!onChange);
+    setShowModal(false);
+    if (showToast) {
+      setShowToast(false);
+    }
   };
 
-  const handleSaveChange = () => {
+  const handleSaveChange = async () => {
     setOnChange(!onChange);
-    console.log('Changed UserName : ', userName.nickname);
-    TDQuestAPI.patch(`userInfo`, {
-      id: user_id,
-      nickname: userName.nickname,
-    })
-  }
+    console.log("Changed UserName : ", userInfo.nickname);
+    await TDQuestAPI.patch(`userInfo`, {
+      id: L_user_id,
+      nickname: userInfo.nickname,
+    }).then((res) => {
+      setShowToast(true);
+    });
+  };
 
   const openModal = () => {
     setShowModal(true);
@@ -114,14 +107,14 @@ function MyPage() {
     // 유저 정보 삭제 관련 로직
     console.log("유저 정보 삭제");
   };
-  const changePassword = () => {
+  const changePassword = async () => {
     console.log("유저 패스워드 변경");
     setShowModal(false);
   };
 
   const changeName = (event: React.FormEvent<HTMLInputElement>) => {
-    setUserName({ nickname: event.currentTarget.value, email: userName.email });
-    console.log(userName);
+    setUserInfo({ nickname: event.currentTarget.value, email: userInfo.email });
+    console.log(userInfo);
   };
 
   const handleDeleteList = (id: number) => {
@@ -142,17 +135,6 @@ function MyPage() {
         </MyPageContainer>
       ) : (
         <MyPageContainer bgColor={color_primary_green_light}>
-          {/* 유저 계정 삭제 확인 관련 모달 창 코드 */}
-          {pwModal ? null : (
-            <MsgModal
-              header="❗️ Delete account"
-              open={showModal}
-              close={closeModal}
-              footerClick={deletAccount}
-            >
-              <DeleteUserAlertModal />
-            </MsgModal>
-          )}
           <MyPageHeader>
             <div className="headerContainer">
               <img
@@ -172,8 +154,9 @@ function MyPage() {
                   <input
                     type="text"
                     className="change_name"
-                    placeholder={` ${userName.nickname}`}
+                    placeholder={` ${userInfo.nickname}`}
                     onChange={changeName}
+                    autoComplete="off"
                   ></input>
                   <button
                     className="change_pw_btn"
@@ -193,14 +176,31 @@ function MyPage() {
                       footerClick={changePassword}
                       noFooter={true}
                     >
-                      <ChangePasswordModal />
+                      <ChangePasswordModal
+                        user_id={L_user_id}
+                        email={L_email}
+                        close={closeModal}
+                        saveChange={handleChange}
+                        setShowToast={() => setShowToast(!showToast)}
+                      />
                     </MsgModal>
                   ) : null}
+                  {/* 유저 계정 삭제 확인 관련 모달 창 코드 */}
+                  {pwModal ? null : (
+                    <MsgModal
+                      header="❗️ Delete account"
+                      open={showModal}
+                      close={closeModal}
+                      footerClick={deletAccount}
+                    >
+                      <DeleteUserAlertModal />
+                    </MsgModal>
+                  )}
                 </div>
               ) : (
                 <div className="user_id_wrapper">
-                  <h1>{userName.nickname}</h1>
-                  <h2>{userName.email}</h2>
+                  <h1>{userInfo.nickname}</h1>
+                  <h2>{userInfo.email}</h2>
                 </div>
               )}
               {!onChange ? (
@@ -217,6 +217,7 @@ function MyPage() {
                 </div>
               )}
             </UserInfoDetailContainer>
+
             <HelperBearContainer>
               <HelperBear
                 width="220px"
@@ -230,17 +231,19 @@ function MyPage() {
                 <h3>My Done Lists</h3>
               </TitleContainer>
               <ContentContainer>
-                {donelist.map((el, idx) => {
-                  return (
-                    <DoneContents
-                      key={idx}
-                      id={el.id}
-                      content={el.content}
-                      updatedAt={el.updatedAt}
-                      handleDeleteList={handleDeleteList}
-                    />
-                  );
-                })}
+                {!donelist
+                  ? null
+                  : donelist.map((el, idx) => {
+                      return (
+                        <DoneContents
+                          key={idx}
+                          id={el.id}
+                          content={el.content}
+                          updatedAt={el.updatedAt}
+                          handleDeleteList={handleDeleteList}
+                        />
+                      );
+                    })}
               </ContentContainer>
             </MyDoneListContainer>
             <AchievementsContainer>
@@ -249,7 +252,8 @@ function MyPage() {
               </TitleContainer>
               <ContentContainer></ContentContainer>
             </AchievementsContainer>
-          </BottomContentContainer>
+          </BottomContentContainer>  
+          {showToast ? <Toast text="✅ User Info Changed Complete!" /> : null}
         </MyPageContainer>
       )}
     </div>
@@ -257,12 +261,3 @@ function MyPage() {
 }
 
 export default MyPage;
-
-// 필요 데이터
-{
-  // user info - user name, email, password
-  // 유저 Name은 비밀번호가 없어도 변경가능하도록 API 구성 필요
-  // user info에 total done lists(총 갯수만) 추가 필요
-  // user todo done lists
-  // done todo_list 삭제 요청
-}

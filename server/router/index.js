@@ -50,7 +50,8 @@ router.patch("/userInfo", userInfo.updateUser);
 router.post("/todo", checkAccessToken, todo.createTodo);
 router.delete("/todo", checkAccessToken, todo.deleteTodo);
 router.patch("/todo", checkAccessToken, todo.updateTodo);
-router.get("/todo", todo.incompleteList);
+
+router.get("/todo/incomplete", todo.incompleteList);
 router.get("/todo/complete", todo.completeList)
 router.put("/todo/complete", todo.completeTodo)
 

@@ -16,7 +16,7 @@ module.exports = {
         defaultValue : 0
       },
       status_phy: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.INTEGER,
         defaultValue : 0
       },
       status_int: {
