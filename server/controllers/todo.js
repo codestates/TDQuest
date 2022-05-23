@@ -4,6 +4,7 @@ const { monster } = require("../models")
 const { raid } = require("../models")
 const { character } = require("../models")
 const { sequelize } = require("../models")
+const bcrypt = require("bcrypt")
 
 module.exports = {
     createTodo: async (req, res) => {

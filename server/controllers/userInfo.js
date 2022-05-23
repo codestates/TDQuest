@@ -1,4 +1,5 @@
 const { user } = require('../models')
+const bcrypt = require("bcrypt")
 
 module.exports = {
     getUser: async (req, res) => {
@@ -15,18 +16,24 @@ module.exports = {
 
     updateUser: async (req, res) => {
         try {
+            let hashPassword
+            if (req.body.password) {
+                hashPassword = await bcrypt.hash(req.body.password.toString(), process.env.BCRYPT)
+            }
             await user.update({
-                password: req.body.password,
+                password: hashPassword,
                 nickname: req.body.nickname
             },
-                { where: { id: req.body.id } })
+                { where: { id: req.query.id } })
 
             const userInfo = await user.findOne({
-                where: { id: req.body.id }
+                attributes: {exclude: 'password'},
+                where: { id: req.query.id }
             })
             res.status(200).json({ message: '유저정보 수정', userInfo: userInfo })
         }
-        catch {
+        catch (err) {
+            throw err
             res.status(400).json({ message: err })
         }
     },
