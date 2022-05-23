@@ -38,9 +38,9 @@ module.exports = {
             await todo_list.update({
                 kind: req.body.kind,
                 content: req.body.content
-            }, { where: { id: req.body.id } })
+            }, { where: { id: req.query.id } })
 
-            const todoInfo = await todo_list.findOne({ where: { id: req.body.id } })
+            const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
             res.status(200).json({ message: "수정되었습니다.", todoInfo: todoInfo })
         }
         catch (err) {
@@ -267,35 +267,35 @@ module.exports = {
                         { log: 0.5 },
                         {
                             where: {
-                                user_id: req.body.user_id,
-                                raid_id: req.body.raid_id
+                                user_id: req.query.user_id,
+                                raid_id: req.query.raid_id
                             }
                         }, transaction)
                     await raid.increment(
                         { hit_damage: 0.5 },
                         {
                             where: {
-                                id: req.body.raid_id
+                                id: req.query.raid_id
                             }
                         }, transaction)
                     await monster.decrement(
                         { hp: 0.5 },
                         {
                             where: {
-                                id: req.body.monster_id
+                                id: req.query.monster_id
                             }
                         }, transaction)
 
-                    const monsterInfo = await monster.findOne({ where: { id: req.body.monster_id } }, transaction)
+                    const monsterInfo = await monster.findOne({ where: { id: req.query.monster_id } }, transaction)
                     if (monsterInfo.dataValues.hp === 0) { // 몬스터를 잡았을 때
-                        const monsterInfo = await monster.findOne({ where: { id: req.body.raid_id } }, transaction)
+                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } }, transaction)
                         const characterArray = await character.findAll(
                             {
                                 include: {
                                     model: user,
                                     include: {
                                         model: damage_log,
-                                        where: { raid_id: req.body.raid_id } //raid 참가한 인원
+                                        where: { raid_id: req.query.raid_id } //raid 참가한 인원
                                     }
                                 }
                             }, transaction)
@@ -379,35 +379,35 @@ module.exports = {
                         { log: 0.5 },
                         {
                             where: {
-                                user_id: req.body.user_id,
-                                raid_id: req.body.raid_id
+                                user_id: req.query.user_id,
+                                raid_id: req.query.raid_id
                             }
                         }, transaction)
                     await raid.decrement(
                         { hit_damage: 0.5 },
                         {
                             where: {
-                                id: req.body.raid_id
+                                id: req.query.raid_id
                             }
                         }, transaction)
                     await monster.decrement(
                         { hp: 0.5 },
                         {
                             where: {
-                                id: req.body.monster_id
+                                id: req.query.monster_id
                             }
                         }, transaction)
 
-                    const monsterInfo = await monster.findOne({ where: { id: req.body.monster_id } }, transaction)
+                    const monsterInfo = await monster.findOne({ where: { id: req.query.monster_id } }, transaction)
                     if (monsterInfo.dataValues.hp === 0) {
-                        const monsterInfo = await monster.findOne({ where: { id: req.body.raid_id } })
+                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
                         const characterArray = await character.findAll(
                             {
                                 include: {
                                     model: user,
                                     include: {
                                         model: damage_log,
-                                        where: { raid_id: req.body.raid_id } //raid 참가한 인원
+                                        where: { raid_id: req.query.raid_id } //raid 참가한 인원
                                     }
                                 }
                             })

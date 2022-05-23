@@ -1,13 +1,12 @@
 const { damage_log } = require("../models")
 const { monster } = require("../models")
-const user = require("../models/user")
 
 module.exports = {
     inviteRaids: async (req, res) => {
         try {
             const damage_log_Info = await damage_log.create({
-                user_id: req.body.user_id,
-                raid_id: req.body.raid_id,
+                user_id: req.query.user_id,
+                raid_id: req.query.raid_id,
             })
             const monsterInfo = await monster.findOne({
                 include: {
@@ -15,7 +14,7 @@ module.exports = {
                     include: {
                         model: damage_log,
                         where: {
-                            raid_id: req.body.raid_id
+                            raid_id: req.query.raid_id
                         }
                     }
                 }
