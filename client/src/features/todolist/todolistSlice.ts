@@ -190,7 +190,7 @@ export const todolistSlice = createSlice({
         state.todo.todoInfo = tempArray;
       })
       .addCase(patchTodoListAsync.fulfilled, (state, action) => {
-        // 수정 했을때 수정된 todoInfo
+        // 수정 했을때
         const tempArray = state.todo.todoInfo;
         const targetId: number = action.payload.todoInfo.id;
         const index: any = state.todo.todoInfo.findIndex(
@@ -200,7 +200,7 @@ export const todolistSlice = createSlice({
         state.todo.todoInfo = tempArray;
       })
       .addCase(todoStatusChangeAsync.fulfilled, (state, action) => {
-        // todo완료/취소 했을때 수정된 todoInfo
+        // todo완료/취소 했을때
         const is_complete: boolean = action.payload.todoInfo.is_complete;
         const targetId: number = action.payload.todoInfo.id;
         // 추가해야할 부분 => 스토어의 케릭터 스탯 업데이트 ::

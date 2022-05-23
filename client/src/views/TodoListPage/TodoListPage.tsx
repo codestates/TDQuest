@@ -39,16 +39,43 @@ function TodoListPage() {
   const completedTodoList = useSelector(
     (state: any) => state.todoList.completedTodo
   ); // completed todo list
+  // todolist 기반 취득가능한 예상스텟 구하는 함수
+  const getExpectedStats = (el: any) => {
+    try {
+      return el.todoInfo.reduce(
+        (acc: any, cur: any, i: any) => {
+          if (cur.kind === 'phy') {
+            acc.phy += 0.5;
+          } else if (cur.kind === 'int') {
+            acc.int += 0.5;
+          } else if (cur.kind === 'spi') {
+            acc.spi += 0.5;
+          } else if (cur.kind === 'exp') {
+            acc.exp += 0.5;
+          }
+          return acc;
+        },
+        { phy: 0, int: 0, spi: 0, exp: 0 }
+      );
+    } catch (er) {
+      console.log(er);
+    }
+  };
+  const expectedStats = getExpectedStats(todoList);
+
+  const LOCALSTORAGE = window.localStorage.getItem('isLogin') as string;
+  const { id: user_id } = JSON.parse(LOCALSTORAGE).userInfo;
+  console.log(user_id);
+  // const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
 
   const dispatch: any = useDispatch();
-  const userId = '1'; // 유저 아이디 임의로 사용 // 로컬스토리지에서 가져와야됨
 
   useEffect(() => {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
-    dispatch(getTodoListAsync({ user_id: userId, is_complete: 0 }));
+    dispatch(getTodoListAsync({ user_id: user_id, is_complete: 0 }));
     dispatch(
       getCompletedTodoListAsync({
-        user_id: userId,
+        user_id: user_id,
         time: getToday(),
         is_complete: 1,
       })
@@ -130,7 +157,7 @@ function TodoListPage() {
     // 태스크 생성 관련 로직 ***
     dispatch(
       postTodoListAsync({
-        user_id: userId,
+        user_id: user_id,
         content: taskContent,
         kind: category,
       })
@@ -144,7 +171,7 @@ function TodoListPage() {
     // is_complete: 1 = completed / 0 = incompleted
     dispatch(
       todoStatusChangeAsync({
-        user_id: userId,
+        user_id: user_id,
         id: itemId,
         kind: category,
         is_complete: 1,
@@ -157,7 +184,7 @@ function TodoListPage() {
     // is_complete: 1 = completed / 0 = incompleted
     dispatch(
       todoStatusChangeAsync({
-        user_id: userId,
+        user_id: user_id,
         id: itemId,
         kind: category,
         is_complete: 0,
@@ -217,9 +244,10 @@ function TodoListPage() {
               <ContentContainer>
                 {/* 추후 todolist 태스크별 포인트 계산하여 표시 */}
                 <RewardInfo>
-                  <h3>PHY + 1.5 Points</h3>
-                  <h3>INT + 1.5 Points</h3>
-                  <h3>SPI + 1.5 Points</h3>
+                  <h3>PHY + {expectedStats.phy} Points</h3>
+                  <h3>INT + {expectedStats.int} Points</h3>
+                  <h3>SPI + {expectedStats.spi} Points</h3>
+                  <h3>EXP + {expectedStats.exp} Points</h3>
                 </RewardInfo>
                 <HelperBear
                   width='150px'
