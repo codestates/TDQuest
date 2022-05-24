@@ -88,8 +88,7 @@ function MyPage() {
   const handleSaveChange = async () => {
     setOnChange(!onChange);
     console.log("Changed UserName : ", userInfo.nickname);
-    await TDQuestAPI.patch(`userInfo`, {
-      id: L_user_id,
+    await TDQuestAPI.patch(`userInfo/?id=${L_user_id}`, {
       nickname: userInfo.nickname,
     }).then((res) => {
       setShowToast(true);
@@ -221,7 +220,7 @@ function MyPage() {
             <HelperBearContainer>
               <HelperBear
                 width="220px"
-                text="Your total done list : 1,050! Great job!"
+                text={`Your total done list : ${donelist.length}! Great job!`}
               />
             </HelperBearContainer>
           </UserInfoContainer>

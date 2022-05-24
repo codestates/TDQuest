@@ -107,8 +107,7 @@ export const ChangePasswordModal = ({
       })
         .then((res) => {
           if (res.status === 200) {
-            TDQuestAPI.patch(`userInfo`, {
-              id: user_id,
+            TDQuestAPI.patch(`userInfo/?id=${user_id}`, {
               password: newPassword,
             }).then((res) => {
               saveChange();
