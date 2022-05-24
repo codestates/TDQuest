@@ -49,7 +49,7 @@ router.patch("/userInfo", userInfo.updateUser);
 //todo
 router.post("/todo", checkAccessToken, todo.createTodo);
 router.delete("/todo", checkAccessToken, todo.deleteTodo);
-router.patch("/todo", checkAccessToken, todo.updateTodo);
+router.put("/todo", checkAccessToken, todo.updateTodo);
 
 router.get("/todo/incomplete", todo.incompleteList);
 router.get("/todo/complete", todo.completeList)
