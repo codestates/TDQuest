@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt")
 module.exports = {
     signIn: async (req, res) => {
         const { email, nickname, password } = req.body
-        const hashPassword = await bcrypt.hash(password.toString(), process.env.BCRYPT);
+        const hashPassword = await bcrypt.hash(password.toString(), Number(process.env.BCRYPT));
         const isUser = await user.findOne({
             where: { email: email }
         })
