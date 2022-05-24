@@ -1,8 +1,9 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
 const { user } = require('../../models')
+const { character } = require("../../models")
 const { verifyToken, makeAccessToken, makeRefreshToken} = require('../../middleware/token');
-const { existID, signID } = require("./authID")
+const { existID, signID } = require("./authID");
 
 module.exports = {
     google : async (req, res) => {
@@ -17,7 +18,7 @@ module.exports = {
     callback : async (req, res) => {
         const {data} = await axios({ //token
             method: 'POST',
-            url: `${GOOGLE_AUTH_TOKEN_URL}`,
+            url: `${process.env.GOOGLE_TOKEN}`,
             headers:{
                 'content-type':'application/x-www-form-urlencoded;charset=utf-8'
             },
@@ -33,24 +34,48 @@ module.exports = {
           const access_token = data['access_token'];
           const {data:me} = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
       
-          const userInfo = {
+          const userId = {
             email: me.email,
             nickname: me.name,
             };
 
-          const user_email = await existID(userInfo.email)
-            
-          if(user_email){
-              const accessToken = makeAccessToken(user_email);
-              const refreshToken = makeRefreshToken(user_email);
-              res.cookie('refreshToken', refreshToken);//{ httpOnly: true}
+          const userInfo = await existID(userId.email, 'google');
+           
+          if(userInfo){
+            const accessToken = makeAccessToken(userInfo.dataValues.email)
+            const refreshToken = makeRefreshToken(userInfo.dataValues.email)
+              await character.findOne({
+                where : { user_id : userInfo.dataValues.id}
+              })
+              .then(character => {
+                const characterInfo = {...character.dataValues, 
+                  level : character.dataValues.totalExp / 100,
+                  exp : character.dataValues.totalExp % 100
+                }
+                res.cookie('refreshToken', refreshToken)
+                .json({characterInfo : characterInfo, accessToken : accessToken})
+              })//{ httpOnly: true}
           }
           else{
-              const signUpUserId= await signID(userInfo);
-              const refreshToken = makeRefreshToken(signUpUserId);
-              res.cookie('refreshToken', refreshToken);//{ httpOnly: true}
-          
+            try {
+              const signUpUserId = await signID(userInfo.dataValues.email, 'google');
+              await character.findOne({
+                where : { user_id : userInfo.dataValues.id}
+              })
+              .then(character => {
+                const characterInfo = {...character.dataValues, 
+                  level : character.dataValues.totalExp / 100,
+                  exp : character.dataValues.totalExp % 100
+                }
+                const accessToken = makeAccessToken(signUpUserId.dataValues.email)
+                const refreshToken = makeRefreshToken(signUpUserId.dataValues.email)
+                res.cookie('refreshToken', refreshToken)
+                .json({characterInfo : characterInfo, accessToken : accessToken})
+              }) //{ httpOnly: true}
             }
-      return res.status(200).json({message : "로그인 성공"})  
+            catch (err) {
+              res.status(400).json({message : err})
+            }
+          }
   }
 }

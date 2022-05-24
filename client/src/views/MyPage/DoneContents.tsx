@@ -3,12 +3,14 @@ import styled from "styled-components";
 import {
   color_context_beige_light,
   fontSize_body_laptop,
+  fontSize_body_laptop_small
 } from "../../components/CommonStyle";
 import { TodoContentType } from "../../Types/generalTypes";
+import { TDQuestAPI } from "../../API/tdquestAPI";
 
 const DoneContent = styled.div`
   width: 90%;
-  height: 35px;
+  min-height: 35px;
   margin: 5px 0;
   display: flex;
   align-items: center;
@@ -20,15 +22,18 @@ const DoneContent = styled.div`
     justify-content: space-between;
     margin-left: 5px;
     .content {
-      font-size: ${fontSize_body_laptop};
+      font-size: ${fontSize_body_laptop_small};
       display: flex;
       align-items: center;
       flex: 5 0 0;
+      padding-left: 5px;
     }
     .created_contanier {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      color: gray;
+      font-size: ${fontSize_body_laptop_small};
       flex: 3 0 0;
       button {
         border: none;
@@ -39,14 +44,22 @@ const DoneContent = styled.div`
   }
 `;
 
-function DoneContents({content, created_at}: TodoContentType) {
+function DoneContents({id, content, updatedAt, handleDeleteList}: TodoContentType) {
+
+  const handleClick = (id: number) => {
+    TDQuestAPI.delete(`todo/?id=${id}`).then((res) => res.data);
+  }
+
   return (
     <DoneContent>
       <div className="content_wrapper">
         <div className="content">{content}</div>
         <div className="created_contanier">
-          {created_at}
-          <button>⛔️</button>
+          {updatedAt}
+          <button onClick={()=>{
+            handleClick(id)
+            handleDeleteList(id);
+          }}>⛔️</button>
         </div>
       </div>
     </DoneContent>
@@ -54,3 +67,5 @@ function DoneContents({content, created_at}: TodoContentType) {
 }
 
 export default DoneContents;
+
+// ToDoList 삭제 요청 (parmeter: content id)

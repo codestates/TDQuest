@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   character.init({
     image: DataTypes.STRING(5000),
-    level: {
+    totalExp: {
       type : DataTypes.INTEGER,
-      defaultValue : 1
+      defaultValue : 100
     },
     status_phy: {
       type : DataTypes.INTEGER,
@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue : 0
     },
     status_spi: {
+      type : DataTypes.INTEGER,
+      defaultValue : 0
+    },
+    status_etc: {
       type : DataTypes.INTEGER,
       defaultValue : 0
     },

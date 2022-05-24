@@ -52,7 +52,11 @@ export const LogoWrapper = styled.section`
   }
 `;
 
-export const Wrapper = styled.section<{ bgColor: string; direction: string }>`
+export const Wrapper = styled.section<{
+  bgColor: string; 
+  direction: string;
+  type? : string;
+  }>`
   background-color: ${(props) => props.bgColor};
   width: 100%;
   display: flex;
@@ -61,7 +65,8 @@ export const Wrapper = styled.section<{ bgColor: string; direction: string }>`
     props.direction === "column" ? "space-around" : "center"};
   align-items: center;
   padding: 5%;
-  height: 50vh;
+  height: ${(props) =>
+    props.type === "signup" ? "none" : "50vh"};;
 
   > div > img {
     width: 700px;

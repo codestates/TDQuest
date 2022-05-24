@@ -6,6 +6,7 @@ module.exports = {
       {
       nickname: 'LeeHyunJun',
       email: 'lucky.hyunjun@gmail.com',
+      logintype : 'general',
       password: "123456",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -14,6 +15,7 @@ module.exports = {
       {
         nickname: 'JiSungHyun',
         email: 'jiji6027@gmail.com',
+        logintype : 'general',
         password: "123456",
         createdAt: new Date(),
         updatedAt: new Date()
@@ -22,6 +24,7 @@ module.exports = {
       {
         nickname: 'CHoiChoongMan',
         email: 'tastestar91@gmail.com',
+        logintype : 'general',
         password: "123456",
         createdAt: new Date(),
         updatedAt: new Date()
@@ -29,6 +32,7 @@ module.exports = {
       const userId4 = await queryInterface.bulkInsert('users', [
       {
         nickname: 'SinMinJun',
+        logintype : 'google',
         email: 'mj.irin1260@gmail.com',
         password: "123456",
         createdAt: new Date(),
@@ -37,6 +41,7 @@ module.exports = {
       const userId5 = await queryInterface.bulkInsert('users', [
       {
         nickname: 'KimSangHun',
+        logintype : 'kakao',
         email: 'mj.irin1260@gmail.com',
         password: "123456",
         createdAt: new Date(),
@@ -45,10 +50,11 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
-      status_phy: 150,
-      status_int: 30,
-      status_spi: 20,
+      totalExp: 100,
+      status_phy: 150.5,
+      status_int: 30.5,
+      status_spi: 20.5,
+      status_etc: 50,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -57,10 +63,11 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
-      status_phy: 200,
+      totalExp: 100,
+      status_phy: 200.5,
       status_int: 0,
       status_spi: 0,
+      status_etc: 50,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -69,10 +76,11 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
-      status_phy: 500,
+      totalExp: 100,
+      status_phy: 500.5,
       status_int: 0,
       status_spi: 10,
+      status_etc: 50,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -81,10 +89,11 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
-      status_phy: 3000,
+      totalExp: 100,
+      status_phy: 3000.5,
       status_int: 0,
       status_spi: 0,
+      status_etc: 50,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -93,10 +102,11 @@ module.exports = {
 
     await queryInterface.bulkInsert('characters', [{
       image: 'test.jpg',
-      level: 100,
-      status_phy: 150,
+      totalExp: 100,
+      status_phy: 150.5,
       status_int: 10,
       status_spi: 10,
+      status_etc: 50,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -113,6 +123,22 @@ module.exports = {
       user_id : userId1
     },
     {
+      content : "윗몸일으키기 100개",
+      kind : "phy",
+      is_complete : true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      user_id : userId1
+    },
+    {
+      content : "뜀걸음 100개",
+      kind : "phy",
+      is_complete : true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      user_id : userId1
+    },
+    {
       content : "공부 1시간",
       kind : "int",
       is_complete : true,
@@ -122,7 +148,7 @@ module.exports = {
     },
     {
       content : "백종원표 닭도리탕 만들기",
-      kind : "spl",
+      kind : "spi",
       is_complete : false,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -147,21 +173,35 @@ module.exports = {
     monster_id : monsterId
   }]);
 
-  const damage_log_Id1 = await queryInterface.bulkInsert('damage_log', [{
+  const damage_log_Id1 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
     raid_id : raidsId,
     user_id : userId1
   }]);
-  const damage_log_Id2 = await queryInterface.bulkInsert('damage_log', [{
+  const damage_log_Id2 = await queryInterface.bulkInsert('damage_logs', [{
+    log: 40,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    raid_id : raidsId,
+    user_id : userId1
+  }]);
+  const damage_log_Id3 = await queryInterface.bulkInsert('damage_logs', [{
+    log: 0,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    raid_id : raidsId,
+    user_id : userId1
+  }]);
+  const damage_log_Id4 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
     raid_id : raidsId,
     user_id : userId2
   }]);
-  const damage_log_Id3 = await queryInterface.bulkInsert('damage_log', [{
+  const damage_log_Id5 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -176,6 +216,6 @@ module.exports = {
     await queryInterface.bulkDelete('raids', null, {});
     await queryInterface.bulkDelete('todo_lists', null, {});
     await queryInterface.bulkDelete('monsters', null, {});
-    await queryInterface.bulkDelete('damage_log', null, {});
+    await queryInterface.bulkDelete('damage_logs', null, {});
   }
 };

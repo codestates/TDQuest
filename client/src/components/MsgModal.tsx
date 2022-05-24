@@ -32,19 +32,24 @@ const ModalBackground = styled.div`
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.6);
   animation: ${BgFade} 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ModalContainer = styled.div`
   width: 90%;
   position: fixed;
-  top: 25%;
-  left: 35%;
   max-width: 450px;
   margin: 0 auto;
   background-color: white;
   overflow: hidden;
   border-radius: 5px;
   animation: ${ModalFade} 0.3s;
+  @media (max-width: 767px){
+    width: 90vw;
+    left: 5%;
+  }
 `;
 
 const Header = styled.div`
@@ -116,16 +121,24 @@ function MsgModal({
   header,
   children,
   footer,
+  footer2,
+  noFooter,
   footerClick,
+  footerClick2,
   isConfirmed,
+  secondFooterBtn,
 }: {
   open: boolean;
   close: () => void;
   header: string;
   children: JSX.Element | React.ReactNode;
   footer?: string;
+  footer2?: string;
+  noFooter?: boolean;
   footerClick?: () => void;
+  footerClick2?: () => void;
   isConfirmed?: boolean;
+  secondFooterBtn?: boolean;
 }) {
   return (
     <div className={open ? "open_modal" : "close_modal"}>
@@ -139,11 +152,20 @@ function MsgModal({
             <Header>{header}</Header>
             <HeaderBtn onClick={close}>&times;</HeaderBtn>
             <ModalMain>{children}</ModalMain>
-            <Footer>
-              <FooterBtn onClick={footerClick}>
-                {footer ? footer : "Confirm"}
-              </FooterBtn>
-            </Footer>
+            {noFooter ? null : (
+              <Footer>
+                <FooterBtn onClick={footerClick}>
+                  {footer ? footer : "Confirm"}
+                </FooterBtn>
+                {secondFooterBtn ? (
+                  <FooterBtn onClick={footerClick2} isConfirmed={true}>
+                    {footer2 ? footer2 : "Confirm"}
+                  </FooterBtn>
+                ) : (
+                  ""
+                )}
+              </Footer>
+            )}
           </ModalContainer>
         </ModalBackground>
       ) : null}

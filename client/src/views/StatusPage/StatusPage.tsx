@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios, { AxiosRequestConfig } from "axios";
 import Status from "../../components/Status";
 import HelperBear from "../../components/HelperBear";
 import AboutStatus from "./AboutStatus";
@@ -19,36 +20,46 @@ import {
 } from "./StatusPageStyle";
 import Loading from "../../components/Loading";
 // API REQUEST
-import {
-  getCharacterInfo,
-  dummyRes_getCharacterInfo,
-} from "../../API/tdquestAPI";
+import { TDQuestAPI } from "../../API/tdquestAPI";
 // Types
-import { CharDataType } from "../../Types/generalTypes";
+import { CharDataType, TodoListType } from "../../Types/generalTypes";
 
 function StatusPage(): JSX.Element {
-  const [userData, setUserData] = useState<CharDataType>({} as CharDataType);
+  const [userCharData, setUserData] = useState<CharDataType>({} as CharDataType);
+  const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { id: user_id, nickname } = JSON.parse(
+    window.localStorage.getItem("isLogin") as string
+  ).userInfo;
+
   useEffect(() => {
     if (loading) {
-      setTimeout(() => {
-        const getcharacterData: any =
-          dummyRes_getCharacterInfo.data.characterInfo;
-        setUserData(getcharacterData);
-        setLoading(false);
-      }, 2000);
+      const getCharacterData = async () => {
+        await TDQuestAPI.get(`/character/?user_id=${user_id}`).then((res) => {
+          setUserData(res.data.characterInfo);
+          setLoading(false);
+          console.log(userCharData);
+        });
+      };
+      getCharacterData();
+
+      const getComleteTDList = async () => {
+        console.log(user_id);
+        await TDQuestAPI.get(`todo/complete/?user_id=${user_id}`).then(
+          (res) => {
+            setDonelist(res.data.todo_lists);
+            setLoading(false);
+          }
+        );
+      };
+      getComleteTDList();
     }
   }, []);
 
-  const {
-    user_id,
-    image,
-    status_phy,
-    status_int,
-    status_spl,
-    userLevel,
-    userExp,
-  } = userData;
+  const { image, status_phy, status_int, status_spi, level, exp } = userCharData;
+
+  console.log(donelist);
+  console.log(userCharData);
 
   return (
     <div>
@@ -69,7 +80,7 @@ function StatusPage(): JSX.Element {
           </StatusHeader>
           <SectionContainer>
             <StatusContainer>
-              <Status charData={userData}></Status>
+              <Status userName={nickname} charData={userCharData}></Status>
             </StatusContainer>
             <MyInfoContainer>
               <MyToDoStatusWrapper>
@@ -83,7 +94,10 @@ function StatusPage(): JSX.Element {
                         name="Physical"
                         size="25px"
                       />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "phy").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                     <MyInfo>
                       <TodoStatusIcon
@@ -91,7 +105,10 @@ function StatusPage(): JSX.Element {
                         name="Intelligence"
                         size="25px"
                       />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "int").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                     <MyInfo>
                       <TodoStatusIcon
@@ -99,11 +116,17 @@ function StatusPage(): JSX.Element {
                         name="Spirit"
                         size="25px"
                       />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "spi").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                     <MyInfo>
                       <TodoStatusIcon source="Exp.png" name="Exp" size="25px" />
-                      <MyCompletedStatus>60 lists completed</MyCompletedStatus>
+                      <MyCompletedStatus>
+                        {donelist.filter((el) => el.kind === "exp").length}{" "}
+                        lists completed
+                      </MyCompletedStatus>
                     </MyInfo>
                   </MyInfoDetailWrapper>
                   <BearWrapper>

@@ -9,13 +9,21 @@ const DeleteUserAlert_Container = styled.div`
 
 const DeleteUserAlert_Msg = styled.div`
   font-size: 18px;
-  height: 150px;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  input {
+  .confirm_user_id {
     width: 100%;
+    height: 40px;
     margin-top: 50px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid gray;
+  }
+  .change_pw_input {
+    width: 100%;
     border-top: none;
     border-left: none;
     border-right: none;
@@ -23,7 +31,7 @@ const DeleteUserAlert_Msg = styled.div`
   }
 `;
 
-const DeleteUserAlert_Modal = (): JSX.Element => {
+export const DeleteUserAlertModal = (): JSX.Element => {
   const [userName, setUserName] = useState("");
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -41,10 +49,9 @@ const DeleteUserAlert_Modal = (): JSX.Element => {
           type="text"
           placeholder="Enter your user name"
           onChange={handleChange}
+          className="confirm_user_id"
         />
       </DeleteUserAlert_Msg>
     </DeleteUserAlert_Container>
   );
 };
-
-export default DeleteUserAlert_Modal;

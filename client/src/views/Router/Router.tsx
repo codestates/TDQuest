@@ -12,11 +12,15 @@ import RaidPage from '../RaidPage/RaidPage';
 import RankingPage from '../RankingPage/RankingPage';
 
 function MainRouter() {
+  let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
+
   return (
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path='/' element={<MainPage />} />
+        <Route path='/' element={(isLogin.status === "loggedIn")? <TodoListPage/> : <MainPage/>} />
+        {/* <Route path='/' element={<MainPage/>} /> */}
+        <Route path='/main' element={<MainPage/>} />
         <Route path='/todo' element={<TodoListPage />} />
         <Route path='/status' element={<StatusPage />} />
         <Route path='/sign' element={<SignPage />} />

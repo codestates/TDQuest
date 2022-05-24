@@ -11,17 +11,25 @@ module.exports = {
       image: {
         type: Sequelize.STRING(5000)
       },
-      level: {
-        type: Sequelize.INTEGER
+      totalExp: {
+        type: Sequelize.INTEGER,
+        defaultValue : 0
       },
       status_phy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue : 0
       },
       status_int: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue : 0
       },
       status_spi: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue : 0
+      },
+      status_etc : {
+        type: Sequelize.INTEGER,
+        defaultValue : 0
       },
       medal: {
         type: Sequelize.STRING
