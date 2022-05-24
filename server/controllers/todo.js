@@ -146,9 +146,9 @@ module.exports = {
                     }
                     const todoInfo = await todo_list.findOne({
                         where: { id: req.query.id }
-                    } ,transaction)
+                    }, transaction)
 
-                    const characterInfo = await character.findOne({ where: { user_id: req.query.user_id }}, transaction)
+                    const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } }, transaction)
                         .then(data => {
                             return {
                                 ...data.dataValues,
@@ -210,7 +210,7 @@ module.exports = {
                     }, transaction)
 
                     const characterInfo = await character.findOne(
-                        { where: { user_id: req.query.user_id }}, transaction)
+                        { where: { user_id: req.query.user_id } }, transaction)
                         .then(data => {
                             return {
                                 ...data.dataValues,
@@ -246,22 +246,22 @@ module.exports = {
                     if (req.query.status === "phy") {
                         await character.increment(
                             { status_phy: 0.5 },
-                            { where: { user_id: req.query.user_id }}, transaction)
+                            { where: { user_id: req.query.user_id } }, transaction)
                     }
                     else if (req.query.status === "int") {
                         await character.increment(
                             { status_int: 0.5 },
-                            { where: { user_id: req.query.user_id }}, transaction)
+                            { where: { user_id: req.query.user_id } }, transaction)
                     }
                     else if (req.query.status === "spi") {
                         await character.increment(
                             { status_spi: 0.5 },
-                            { where: { user_id: req.query.user_id }}, transaction)
+                            { where: { user_id: req.query.user_id } }, transaction)
                     }
                     else if (req.query.status === "etc") {
                         await character.increment(
                             { status_etc: 0.5 },
-                            { where: { user_id: req.query.user_id }}, transaction)
+                            { where: { user_id: req.query.user_id } }, transaction)
                     }
 
                     await damage_log.increment(

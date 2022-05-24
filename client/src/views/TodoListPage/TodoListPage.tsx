@@ -57,8 +57,9 @@ function TodoListPage() {
         },
         { phy: 0, int: 0, spi: 0, exp: 0 }
       );
+      return { phy: 0, int: 0, spi: 0, exp: 0 };
     } catch (er) {
-      console.log(er);
+      // console.log(er);
     }
   };
   const expectedStats = getExpectedStats(todoList);
@@ -244,10 +245,10 @@ function TodoListPage() {
               <ContentContainer>
                 {/* 추후 todolist 태스크별 포인트 계산하여 표시 */}
                 <RewardInfo>
-                  <h3>PHY + {expectedStats.phy} Points</h3>
-                  <h3>INT + {expectedStats.int} Points</h3>
-                  <h3>SPI + {expectedStats.spi} Points</h3>
-                  <h3>EXP + {expectedStats.exp} Points</h3>
+                  <h3>PHY + {expectedStats ? expectedStats.phy : 0} Points</h3>
+                  <h3>INT + {expectedStats ? expectedStats.int : 0} Points</h3>
+                  <h3>SPI + {expectedStats ? expectedStats.spi : 0} Points</h3>
+                  <h3>EXP + {expectedStats ? expectedStats.exp : 0} Points</h3>
                 </RewardInfo>
                 <HelperBear
                   width='150px'
