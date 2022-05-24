@@ -8,7 +8,7 @@ import HelperBear from "../../components/HelperBear";
 import Button from "../../components/Button";
 import MsgModal from "../../components/MsgModal";
 import { Toast } from "../../components/Toast";
-import { DeleteUserAlertModal } from "./DeleteUserAlert_Modal";
+import { DeleteUserAlertModal } from "./DeleteUserModal";
 import { ChangePasswordModal } from "./ChangePWModal";
 import DoneContents from "./DoneContents";
 import {
@@ -253,7 +253,7 @@ function MyPage() {
               <ContentContainer></ContentContainer>
             </AchievementsContainer>
           </BottomContentContainer>  
-          {showToast ? <Toast text="✅ User Info Changed Complete!" /> : null}
+          {showToast ? <Toast text="✅  User Info Changed Complete!" /> : null}
         </MyPageContainer>
       )}
     </div>
