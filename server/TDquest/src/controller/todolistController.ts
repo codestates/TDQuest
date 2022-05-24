@@ -184,9 +184,131 @@ export class todolistController {
                 await this.raidRepository.increment({id: request.body.raid_id}, "hit_damage", 0.5)
                 await this.monsterRepository.decrement({id: request.body.monster_id}, "hp", 0.5)
 
-                const monsterInfo = await this.monsterRepository
+                const monsterInfo = await this.monsterRepository.findOne(request.query.monster_id)
+                if (monsterInfo.hp === 0) {
+                    const monsterInfo = await this.monsterRepository.findOne(request.query.raid_id)
+                    const characterArray = await this.charactersRepository.find({
+                        where: { 
+                            user : {
+                                damage_log: {
+                                    raid: {
+                                        id: request.query.raid_id 
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    characterArray.forEach(el => {
+                        this.charactersRepository.decrement({id: el.id}, "level", monsterInfo.reward)
+                    })
+                    
+                    const todoInfo = await this.todolistRepository.findOne({user: {id: request.query.user_id}})
+                    const characterInfo = await this.charactersRepository.findOne({user: {id: request.query.user_id}})
+                    return Object.assign({
+                        message: "몬스터를 잡았습니다",
+                        todoInfo: todoInfo,
+                        characterInfo: {
+                            ...characterInfo,
+                            level: characterInfo.totalExp / 100,
+                            exp: characterInfo.totalExp % 100
+                        }
+                    })
+                } else {
+                    const todoInfo = await this.todolistRepository.findOne(request.query.id)
+                    const characterInfo = await this.charactersRepository.findOne({user: {id: request.query.user_id}})
+                    return Object.assign({
+                        message: "데미지를 입혔습니다",
+                        todoInfo: todoInfo,
+                        characterInfo: {
+                            ...characterInfo,
+                            level: characterInfo.totalExp / 100,
+                            exp: characterInfo.totalExp % 100
+                        }
+                    })
+                }
+                
+            } else {
+                await this.todolistRepository.update({id: request.query.id, is_complete: true}, {is_complete: false})
+                if (request.query.status === "phy") {
+                    await this.charactersRepository.decrement(
+                        { user: {id: request.query.user_id}}, 
+                        "status_phy", 
+                        0.5)
+                } else if (request.query.status === "int") {
+                    await this.charactersRepository.decrement(
+                        { user: {id: request.query.user_id}}, 
+                        "status_int", 
+                        0.5)
+                } else if (request.query.status === "spi") {
+                    await this.charactersRepository.decrement(
+                        { user: {id: request.query.user_id}}, 
+                        "status_spi", 
+                        0.5)
+                } else if (request.query.status === "etc") {
+                    await this.charactersRepository.decrement(
+                        { user: {id: request.query.user_id}}, 
+                        "status_etc", 
+                        0.5)
+                }
+                await this.damage_logRepository.decrement(
+                    { user: {id: request.query.user_id}, raid: {id: request.query.raid_id}},
+                    "log",
+                    0.5)
+                await this.raidRepository.decrement(
+                    {id: request.query.raid_id},
+                    "hit_damage",
+                    0.5)
+                await this.monsterRepository.decrement(
+                    {id: request.query.monster_id},
+                    "hp",
+                    0.5)
+                
+                const monsterInfo = await this.monsterRepository.findOne(request.query.monster_id)
+                if (monsterInfo.hp === 0) {
+                    const monsterInfo = await this.monsterRepository.findOne(request.query.raid_id)
+                    const characterArray = await this.charactersRepository.find({
+                        where: {
+                            user: {
+                                damage_log: {
+                                    raid: {
+                                        id: request.query.raid_id
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    characterArray.forEach(el => {
+                        this.charactersRepository.decrement(
+                            {id: el.id},
+                            "level",
+                            monsterInfo.reward
+                        )
+                    })
+                    const todoInfo = await this.todolistRepository.findOne(request.query.id)
+                    const characterInfo = await this.charactersRepository.findOne({user: {id: request.query.user_id}})
+                    return Object.assign({
+                        message: "몬스터를 잡았습니다",
+                        todoInfo: todoInfo,
+                        characterInfo: {
+                            ...characterInfo,
+                            level: characterInfo.totalExp / 100,
+                            exp: characterInfo.totalExp % 100
+                        }
+                    })
+                } else {
+                    const todoInfo = await this.todolistRepository.findOne(request.query.id)
+                    const characterInfo = await this.charactersRepository.findOne({user: {id: request.query.user_id}})
+                    return Object.assign({
+                        message: "데미지를 입혔습니다",
+                        todoInfo: todoInfo,
+                        characterInfo: {
+                            ...characterInfo,
+                            level: characterInfo.totalExp / 100,
+                            exp: characterInfo.totalExp % 100
+                        }
+                    })
+                }
             }
         }
     }
-
 }
