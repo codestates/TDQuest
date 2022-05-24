@@ -1,8 +1,6 @@
 import { getRepository } from "typeorm"
 import { NextFunction, Request, Response } from "express"
 import { user } from "../entity/user"
-import { ServerResponse } from "http"
-import { getMaxListeners } from "process"
 
 export class userController {
 
@@ -40,7 +38,7 @@ export class userController {
         }
     }
 
-    async signOut(request: Request, response: ServerResponse, next: NextFunction) {
+    async signOut(request: Request, response: Response, next: NextFunction) {
         return this.userRepository.delete(request.params.id)
     }
 
