@@ -41,6 +41,7 @@ function MyPage() {
   const [userInfo, setUserInfo] = useState({ nickname: "", email: "" });
   const [pwModal, setPwModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [netError, setNetError] = useState(false);
 
   const LOCALSTORAGE = JSON.parse(
     window.localStorage.getItem("isLogin") as string
@@ -53,22 +54,32 @@ function MyPage() {
     if (loading) {
       const getComleteTDList = async () => {
         console.log(L_user_id);
-        await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`).then(
-          (res) => {
+        await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`)
+          .then((res) => {
             setDonelist(res.data.todo_lists);
+            setNetError(false);
             setLoading(false);
-          }
-        );
+          })
+          .catch((err) => {
+            setNetError(true);
+            console.log(err);
+          });
       };
       getComleteTDList();
 
       const getUserData = async () => {
-        await TDQuestAPI.get(`userinfo/?id=${L_user_id}`).then((res) => {
-          setUserInfo({
-            nickname: res.data.userInfo.nickname,
-            email: res.data.userInfo.email,
+        await TDQuestAPI.get(`userinfo/?id=${L_user_id}`)
+          .then((res) => {
+            setNetError(false);
+            setUserInfo({
+              nickname: res.data.userInfo.nickname,
+              email: res.data.userInfo.email,
+            });
+          })
+          .catch((err) => {
+            setNetError(true);
+            console.log(err);
           });
-        });
       };
       getUserData();
     }
@@ -90,9 +101,15 @@ function MyPage() {
     console.log("Changed UserName : ", userInfo.nickname);
     await TDQuestAPI.patch(`userInfo/?id=${L_user_id}`, {
       nickname: userInfo.nickname,
-    }).then((res) => {
-      setShowToast(true);
-    });
+    })
+      .then((res) => {
+        setNetError(false);
+        setShowToast(true);
+      })
+      .catch((err) => {
+        setNetError(true);
+        setShowToast(true);
+      });
   };
 
   const openModal = () => {
@@ -251,8 +268,14 @@ function MyPage() {
               </TitleContainer>
               <ContentContainer></ContentContainer>
             </AchievementsContainer>
-          </BottomContentContainer>  
-          {showToast ? <Toast text="✅  User Info Changed Complete!" /> : null}
+          </BottomContentContainer>
+          {showToast ? (
+            netError ? (
+              <Toast text={`🚫 Network Error! \n Check your network settings`} />
+            ) : (
+              <Toast text="✅  User Info Changed Complete!" />
+            )
+          ) : null}
         </MyPageContainer>
       )}
     </div>
