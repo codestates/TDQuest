@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import MainRouter from "./views/Router/Router";
-import axios from "axios";
 import { useAppSelector } from "./app/hooks";
 import { TDQuestAPI } from "./API/tdquestAPI";
 
 function App() {
+  const LOCALSTORAGE = window.localStorage;
   const userInfoRedux = useAppSelector((state) => state.sign);
-  let localInfo = window.localStorage.getItem("isLogin")
-    ? JSON.parse(window.localStorage.getItem("isLogin") || "")
+  let localInfo = LOCALSTORAGE.getItem("isLogin")
+    ? JSON.parse(LOCALSTORAGE.getItem("isLogin") || "")
     : false;
   const verified_userId = localInfo ? localInfo.userInfo.id : false;
-  axios.defaults.withCredentials = true;
 
   const InitializeUser = async () => {
     if (verified_userId) {
@@ -26,7 +25,7 @@ function App() {
         })
         .catch((err) => {
           console.log("Initialize err :", err);
-          window.localStorage.removeItem("isLogin");
+          LOCALSTORAGE.removeItem("isLogin");
         });
     }
   };

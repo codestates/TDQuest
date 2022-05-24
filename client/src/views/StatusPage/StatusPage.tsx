@@ -23,6 +23,7 @@ import Loading from "../../components/Loading";
 import { TDQuestAPI } from "../../API/tdquestAPI";
 // Types
 import { CharDataType, TodoListType } from "../../Types/generalTypes";
+import { useAppSelector } from "../../app/hooks";
 
 function StatusPage(): JSX.Element {
   const [userCharData, setUserData] = useState<CharDataType>({} as CharDataType);
@@ -31,7 +32,8 @@ function StatusPage(): JSX.Element {
   const { id: user_id, nickname } = JSON.parse(
     window.localStorage.getItem("isLogin") as string
   ).userInfo;
-
+  const CharData = useAppSelector((state) => state.chracter)
+  console.log('Redux CharDATA', CharData);
   useEffect(() => {
     if (loading) {
       const getCharacterData = async () => {
