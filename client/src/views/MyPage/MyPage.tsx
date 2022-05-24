@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import cookies from "js-cookie";
 import { color_primary_green_light } from "../../components/CommonStyle";
 import Loading from "../../components/Loading";
 import Status from "../../components/Status";
@@ -31,6 +29,12 @@ import {
 } from "./MyPageStyle";
 // API REQUEST
 import { TDQuestAPI } from "../../API/tdquestAPI";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  getUserData,
+  modifyNickname,
+} from "../../features/userinfo/userInfoSlice";
 
 function MyPage() {
   const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
@@ -42,6 +46,9 @@ function MyPage() {
   const [pwModal, setPwModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [netError, setNetError] = useState(false);
+
+  const userData = useAppSelector((state) => state.MyPageInfo);
+  const dispatch = useAppDispatch();
 
   const LOCALSTORAGE = JSON.parse(
     window.localStorage.getItem("isLogin") as string
@@ -67,25 +74,39 @@ function MyPage() {
       };
       getComleteTDList();
 
-      const getUserData = async () => {
-        await TDQuestAPI.get(`userinfo/?id=${L_user_id}`)
-          .then((res) => {
+      // const getUserData = async () => {
+      //   await TDQuestAPI.get(`userinfo/?id=${L_user_id}`)
+      //     .then((res) => {
+      //       setNetError(false);
+      //       setUserInfo({
+      //         nickname: res.data.userInfo.nickname,
+      //         email: res.data.userInfo.email,
+      //       });
+      //     })
+      //     .catch((err) => {
+      //       setNetError(true);
+      //       console.log(err);
+      //     });
+      // };
+      // getUserData();
+      dispatch(getUserData(L_user_id)).then((res) => {
+        switch (res.type) {
+          case "userinfo/pending":
+            return setLoading(true);
+          case "userinfo/fulfilled": {
             setNetError(false);
-            setUserInfo({
-              nickname: res.data.userInfo.nickname,
-              email: res.data.userInfo.email,
-            });
-          })
-          .catch((err) => {
-            setNetError(true);
-            console.log(err);
-          });
-      };
-      getUserData();
+            setLoading(false);
+            break;
+          }
+          case "userinfo/rejected":
+            return setNetError(true);
+        }
+      });
     }
-
     setCharData(LOCALSTORAGE.characterInfo);
   }, []);
+
+  console.log(userData);
 
   // User Action 관련한 함수들
   const handleChange = () => {
@@ -99,17 +120,39 @@ function MyPage() {
   const handleSaveChange = async () => {
     setOnChange(!onChange);
     console.log("Changed UserName : ", userInfo.nickname);
-    await TDQuestAPI.patch(`userInfo/?id=${L_user_id}`, {
-      nickname: userInfo.nickname,
-    })
-      .then((res) => {
-        setNetError(false);
-        setShowToast(true);
-      })
-      .catch((err) => {
-        setNetError(true);
-        setShowToast(true);
-      });
+    // await TDQuestAPI.patch(`userInfo/?id=${L_user_id}`, {
+    //   nickname: userInfo.nickname,
+    // })
+    //   .then((res) => {
+    //     setNetError(false);
+    //     setShowToast(true);
+    //   })
+    //   .catch((err) => {
+    //     setNetError(true);
+    //     setShowToast(true);
+    //   });
+
+    dispatch(
+      modifyNickname({ user_id: L_user_id, nickname: userInfo.nickname })
+    ).then((res) => {
+      console.log(res);
+      switch (res.type) {
+        case "modifyNickname/pending":
+          return setLoading(true);
+        case "modifyNickname/fulfilled": {
+          setLoading(false);
+          console.log("닉네임 수정 성공");
+          setNetError(false);
+          setShowToast(true);
+          break;
+        }
+        case "modifyNickname/rejected": {
+          setLoading(false);
+          setNetError(true);
+          setShowToast(true);
+        }
+      }
+    });
   };
 
   const openModal = () => {
@@ -170,7 +213,7 @@ function MyPage() {
                   <input
                     type="text"
                     className="change_name"
-                    placeholder={` ${userInfo.nickname}`}
+                    placeholder={` ${userData.nickname}`}
                     onChange={changeName}
                     autoComplete="off"
                   ></input>
@@ -215,8 +258,8 @@ function MyPage() {
                 </div>
               ) : (
                 <div className="user_id_wrapper">
-                  <h1>{userInfo.nickname}</h1>
-                  <h2>{userInfo.email}</h2>
+                  <h1>{userData.nickname}</h1>
+                  <h2>{userData.email}</h2>
                 </div>
               )}
               {!onChange ? (
@@ -271,7 +314,9 @@ function MyPage() {
           </BottomContentContainer>
           {showToast ? (
             netError ? (
-              <Toast text={`🚫 Network Error! \n Check your network settings`} />
+              <Toast
+                text={`🚫 Network Error! \n Check your network settings`}
+              />
             ) : (
               <Toast text="✅  User Info Changed Complete!" />
             )

@@ -28,11 +28,13 @@ export interface CharDataType {
 
 
 export type UserDataType = {
-  id: number;
+  id?: number;
   nickname: string;
   email: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
+  loading? : boolean;
+  error? : boolean | string;
 };
 
 export type TodoListType = {
