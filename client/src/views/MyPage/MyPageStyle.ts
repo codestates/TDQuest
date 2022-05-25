@@ -68,6 +68,11 @@ export const UserInfoDetailContainer = styled.div`
   .change_userinfo_wrapper {
     width: 70%;
     justify-content: flex-start;
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     .change_name {
       width: 80%;
       height: 30px;

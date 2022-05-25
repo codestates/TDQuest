@@ -29,7 +29,6 @@ import {
 } from "./MyPageStyle";
 // API REQUEST
 import { TDQuestAPI } from "../../API/tdquestAPI";
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   getUserData,
@@ -42,7 +41,8 @@ function MyPage() {
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [userInfo, setUserInfo] = useState({ nickname: "", email: "" });
+  const [curNickName, setCurNickName] = useState("");
+  const [checkNickNameValidation, setNickNameValidation] = useState("");
   const [pwModal, setPwModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [netError, setNetError] = useState(false);
@@ -50,12 +50,12 @@ function MyPage() {
   const userData = useAppSelector((state) => state.MyPageInfo);
   const dispatch = useAppDispatch();
 
-  const LOCALSTORAGE = JSON.parse(
+  const LOCALSTORAGE = window.localStorage;
+  const LOCALSTORAGE_PASRED = JSON.parse(
     window.localStorage.getItem("isLogin") as string
   );
 
-  const { id: L_user_id, email: L_email } = LOCALSTORAGE.userInfo;
-  //const accessToken = LOCALSTORAGE.accessToken;
+  const { id: L_user_id, email: L_email } = LOCALSTORAGE_PASRED.userInfo;
 
   useEffect(() => {
     if (loading) {
@@ -74,21 +74,6 @@ function MyPage() {
       };
       getComleteTDList();
 
-      // const getUserData = async () => {
-      //   await TDQuestAPI.get(`userinfo/?id=${L_user_id}`)
-      //     .then((res) => {
-      //       setNetError(false);
-      //       setUserInfo({
-      //         nickname: res.data.userInfo.nickname,
-      //         email: res.data.userInfo.email,
-      //       });
-      //     })
-      //     .catch((err) => {
-      //       setNetError(true);
-      //       console.log(err);
-      //     });
-      // };
-      // getUserData();
       dispatch(getUserData(L_user_id)).then((res) => {
         switch (res.type) {
           case "userinfo/pending":
@@ -103,7 +88,7 @@ function MyPage() {
         }
       });
     }
-    setCharData(LOCALSTORAGE.characterInfo);
+    setCharData(LOCALSTORAGE_PASRED.characterInfo);
   }, []);
 
   console.log(userData);
@@ -117,23 +102,15 @@ function MyPage() {
     }
   };
 
-  const handleSaveChange = async () => {
+  // 유저 닉네임 수정 관련 함수 (버튼 클릭 시 실행)
+  const handleSaveChange = () => {
+    if (curNickName === "") {
+      return null;
+    }
     setOnChange(!onChange);
-    console.log("Changed UserName : ", userInfo.nickname);
-    // await TDQuestAPI.patch(`userInfo/?id=${L_user_id}`, {
-    //   nickname: userInfo.nickname,
-    // })
-    //   .then((res) => {
-    //     setNetError(false);
-    //     setShowToast(true);
-    //   })
-    //   .catch((err) => {
-    //     setNetError(true);
-    //     setShowToast(true);
-    //   });
 
     dispatch(
-      modifyNickname({ user_id: L_user_id, nickname: userInfo.nickname })
+      modifyNickname({ user_id: L_user_id, nickname: curNickName })
     ).then((res) => {
       console.log(res);
       switch (res.type) {
@@ -144,6 +121,8 @@ function MyPage() {
           console.log("닉네임 수정 성공");
           setNetError(false);
           setShowToast(true);
+          LOCALSTORAGE_PASRED.userInfo.nickname = curNickName;
+          LOCALSTORAGE.setItem("isLogin", JSON.stringify(LOCALSTORAGE_PASRED));
           break;
         }
         case "modifyNickname/rejected": {
@@ -162,18 +141,30 @@ function MyPage() {
     setShowModal(false);
     setPwModal(false);
   };
-  const deletAccount = () => {
-    // 유저 정보 삭제 관련 로직
-    console.log("유저 정보 삭제");
-  };
-  const changePassword = async () => {
-    console.log("유저 패스워드 변경");
-    setShowModal(false);
+  const changeName = (event: React.FormEvent<HTMLInputElement>) => {
+    setCurNickName(event.currentTarget.value);
+    console.log(curNickName);
   };
 
-  const changeName = (event: React.FormEvent<HTMLInputElement>) => {
-    setUserInfo({ nickname: event.currentTarget.value, email: userInfo.email });
-    console.log(userInfo);
+  const transferNickName = (name: string) => {
+    setNickNameValidation(name);
+    deleteAccount();
+  };
+
+  const deleteAccount = async () => {
+    // 유저 정보 삭제 관련 로직
+    console.log("유저 정보 삭제")
+    console.log(checkNickNameValidation, userData.nickname);
+    if (checkNickNameValidation === userData.nickname) {
+      await TDQuestAPI.delete(`sign/out/?id=${L_user_id}`).then((res) => {
+        console.log(res.data.message);
+        LOCALSTORAGE.removeItem("isLogin");
+        LOCALSTORAGE.removeItem("accessToken");
+        LOCALSTORAGE.assign("/");
+      });
+    } else {
+      console.log("닉네임을 올바르게 입력하세요")
+    }
   };
 
   const handleDeleteList = (id: number) => {
@@ -232,7 +223,6 @@ function MyPage() {
                       header="❗️ Change Password"
                       open={showModal}
                       close={closeModal}
-                      footerClick={changePassword}
                       noFooter={true}
                     >
                       <ChangePasswordModal
@@ -250,9 +240,15 @@ function MyPage() {
                       header="❗️ Delete account"
                       open={showModal}
                       close={closeModal}
-                      footerClick={deletAccount}
+                      footerClick={deleteAccount}
+                      noFooter={true}
                     >
-                      <DeleteUserAlertModal />
+                      <DeleteUserAlertModal
+                        transferNickName={(name: string) =>
+                          transferNickName(name)
+                        }
+                        curNickName={userData.nickname}
+                      />
                     </MsgModal>
                   )}
                 </div>
