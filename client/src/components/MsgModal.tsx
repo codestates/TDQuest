@@ -135,7 +135,7 @@ function MsgModal({
   footer?: string;
   footer2?: string;
   noFooter?: boolean;
-  footerClick?: () => void;
+  footerClick?: any;
   footerClick2?: () => void;
   isConfirmed?: boolean;
   secondFooterBtn?: boolean;

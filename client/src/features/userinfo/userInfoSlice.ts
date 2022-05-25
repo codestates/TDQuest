@@ -54,6 +54,7 @@ export const myPageUserDataSlice = createSlice({
       .addCase(getUserData.fulfilled, (state, { payload }) => {
         state.nickname = payload.nickname;
         state.email = payload.email;
+        state.error = false;
         state.loading = false;
       })
       .addCase(getUserData.rejected, (state, { payload }) => {
@@ -61,10 +62,12 @@ export const myPageUserDataSlice = createSlice({
         state.error = true;
       })
       .addCase(modifyNickname.fulfilled, (state, { payload }) => {
-        console.log("닉네임수정성공시 페이로드", payload);
         state.nickname = payload.userInfo.nickname;
+        state.loading = false;
+        state.error = false;
       })
       .addCase(modifyNickname.rejected, (state, { payload }) => {
+        state.loading = false;
         state.error = true;
       });
   },

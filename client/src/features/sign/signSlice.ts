@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { UserDataType } from '../../Types/generalTypes';
 import axios from 'axios';
 
 const url = "http://localhost:3001"
 
 export interface SignUserInfo {
   status : string;
-  userInfo : object;
+  userInfo : UserDataType;
   characterInfo : object;
 }
 
 export const initialState: SignUserInfo = {
   status : '',
-  userInfo : {},
+  userInfo : {} as UserDataType,
   characterInfo : {},
 };
 
