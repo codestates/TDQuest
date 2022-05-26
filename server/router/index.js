@@ -33,7 +33,7 @@ router.get("/monster", monster.getMonster);
 
 //raids
 router.post("/raids/invite", raids.inviteRaids);
-
+router.get("/raids/damage_logs", raids.damage_logs)
 //rank
 router.get("/rank", rank.All);
 router.get("/rank/status", rank.statusRank);
