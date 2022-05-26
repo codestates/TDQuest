@@ -116,6 +116,7 @@ module.exports = {
                                 is_complete: 0
                             }
                         }, transaction)
+
                     if (req.query.status === "phy") {
                         await character.increment(
                             { status_phy: 0.5 },
