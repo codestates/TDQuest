@@ -3,6 +3,7 @@ import counterReducer from '../features/counter/counterSlice';
 import chracterReducer from '../features/character/characterSlice';
 import signReducer from '../features/sign/signSlice';
 import todoListReducer from '../features/todolist/todolistSlice';
+import myPageUserReducer from '../features/userinfo/userInfoSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     chracter: chracterReducer,
     sign: signReducer,
     todoList: todoListReducer,
+    MyPageInfo: myPageUserReducer,
   },
 });
 

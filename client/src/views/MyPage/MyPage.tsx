@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import cookies from "js-cookie";
 import { color_primary_green_light } from "../../components/CommonStyle";
 import Loading from "../../components/Loading";
 import Status from "../../components/Status";
@@ -31,6 +29,11 @@ import {
 } from "./MyPageStyle";
 // API REQUEST
 import { TDQuestAPI } from "../../API/tdquestAPI";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  getUserData,
+  modifyNickname,
+} from "../../features/userinfo/userInfoSlice";
 
 function MyPage() {
   const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
@@ -38,43 +41,57 @@ function MyPage() {
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [userInfo, setUserInfo] = useState({ nickname: "", email: "" });
+  const [curNickName, setCurNickName] = useState("");
+  const [checkNickNameValidation, setNickNameValidation] = useState("");
   const [pwModal, setPwModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [netError, setNetError] = useState(false);
 
-  const LOCALSTORAGE = JSON.parse(
+  const userData = useAppSelector((state) => state.MyPageInfo);
+  const dispatch = useAppDispatch();
+
+  const LOCALSTORAGE = window.localStorage;
+  const LOCALSTORAGE_PASRED = JSON.parse(
     window.localStorage.getItem("isLogin") as string
   );
 
-  const { id: L_user_id, email: L_email } = LOCALSTORAGE.userInfo;
-  //const accessToken = LOCALSTORAGE.accessToken;
+  const { id: L_user_id, email: L_email } = LOCALSTORAGE_PASRED.userInfo;
 
   useEffect(() => {
     if (loading) {
       const getComleteTDList = async () => {
         console.log(L_user_id);
-        await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`).then(
-          (res) => {
+        await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`)
+          .then((res) => {
             setDonelist(res.data.todo_lists);
+            setNetError(false);
             setLoading(false);
-          }
-        );
+          })
+          .catch((err) => {
+            setNetError(true);
+            console.log(err);
+          });
       };
       getComleteTDList();
 
-      const getUserData = async () => {
-        await TDQuestAPI.get(`userinfo/?id=${L_user_id}`).then((res) => {
-          setUserInfo({
-            nickname: res.data.userInfo.nickname,
-            email: res.data.userInfo.email,
-          });
-        });
-      };
-      getUserData();
+      dispatch(getUserData(L_user_id)).then((res) => {
+        switch (res.type) {
+          case "userinfo/pending":
+            return setLoading(true);
+          case "userinfo/fulfilled": {
+            setNetError(false);
+            setLoading(false);
+            break;
+          }
+          case "userinfo/rejected":
+            return setNetError(true);
+        }
+      });
     }
-
-    setCharData(LOCALSTORAGE.characterInfo);
+    setCharData(LOCALSTORAGE_PASRED.characterInfo);
   }, []);
+
+  console.log(userData);
 
   // User Action 관련한 함수들
   const handleChange = () => {
@@ -85,14 +102,35 @@ function MyPage() {
     }
   };
 
-  const handleSaveChange = async () => {
+  // 유저 닉네임 수정 관련 함수 (버튼 클릭 시 실행)
+  const handleSaveChange = () => {
+    if (curNickName === "") {
+      return null;
+    }
     setOnChange(!onChange);
-    console.log("Changed UserName : ", userInfo.nickname);
-    await TDQuestAPI.patch(`userInfo`, {
-      id: L_user_id,
-      nickname: userInfo.nickname,
-    }).then((res) => {
-      setShowToast(true);
+
+    dispatch(
+      modifyNickname({ user_id: L_user_id, nickname: curNickName })
+    ).then((res) => {
+      console.log(res);
+      switch (res.type) {
+        case "modifyNickname/pending":
+          return setLoading(true);
+        case "modifyNickname/fulfilled": {
+          setLoading(false);
+          console.log("닉네임 수정 성공");
+          setNetError(false);
+          setShowToast(true);
+          LOCALSTORAGE_PASRED.userInfo.nickname = curNickName;
+          LOCALSTORAGE.setItem("isLogin", JSON.stringify(LOCALSTORAGE_PASRED));
+          break;
+        }
+        case "modifyNickname/rejected": {
+          setLoading(false);
+          setNetError(true);
+          setShowToast(true);
+        }
+      }
     });
   };
 
@@ -103,18 +141,30 @@ function MyPage() {
     setShowModal(false);
     setPwModal(false);
   };
-  const deletAccount = () => {
-    // 유저 정보 삭제 관련 로직
-    console.log("유저 정보 삭제");
-  };
-  const changePassword = async () => {
-    console.log("유저 패스워드 변경");
-    setShowModal(false);
+  const changeName = (event: React.FormEvent<HTMLInputElement>) => {
+    setCurNickName(event.currentTarget.value);
+    console.log(curNickName);
   };
 
-  const changeName = (event: React.FormEvent<HTMLInputElement>) => {
-    setUserInfo({ nickname: event.currentTarget.value, email: userInfo.email });
-    console.log(userInfo);
+  const transferNickName = (name: string) => {
+    setNickNameValidation(name);
+    deleteAccount();
+  };
+
+  const deleteAccount = async () => {
+    // 유저 정보 삭제 관련 로직
+    console.log("유저 정보 삭제")
+    console.log(checkNickNameValidation, userData.nickname);
+    if (checkNickNameValidation === userData.nickname) {
+      await TDQuestAPI.delete(`sign/out/?id=${L_user_id}`).then((res) => {
+        console.log(res.data.message);
+        LOCALSTORAGE.removeItem("isLogin");
+        LOCALSTORAGE.removeItem("accessToken");
+        LOCALSTORAGE.assign("/");
+      });
+    } else {
+      console.log("닉네임을 올바르게 입력하세요")
+    }
   };
 
   const handleDeleteList = (id: number) => {
@@ -154,7 +204,7 @@ function MyPage() {
                   <input
                     type="text"
                     className="change_name"
-                    placeholder={` ${userInfo.nickname}`}
+                    placeholder={` ${userData.nickname}`}
                     onChange={changeName}
                     autoComplete="off"
                   ></input>
@@ -173,7 +223,6 @@ function MyPage() {
                       header="❗️ Change Password"
                       open={showModal}
                       close={closeModal}
-                      footerClick={changePassword}
                       noFooter={true}
                     >
                       <ChangePasswordModal
@@ -191,16 +240,22 @@ function MyPage() {
                       header="❗️ Delete account"
                       open={showModal}
                       close={closeModal}
-                      footerClick={deletAccount}
+                      footerClick={deleteAccount}
+                      noFooter={true}
                     >
-                      <DeleteUserAlertModal />
+                      <DeleteUserAlertModal
+                        transferNickName={(name: string) =>
+                          transferNickName(name)
+                        }
+                        curNickName={userData.nickname}
+                      />
                     </MsgModal>
                   )}
                 </div>
               ) : (
                 <div className="user_id_wrapper">
-                  <h1>{userInfo.nickname}</h1>
-                  <h2>{userInfo.email}</h2>
+                  <h1>{userData.nickname}</h1>
+                  <h2>{userData.email}</h2>
                 </div>
               )}
               {!onChange ? (
@@ -221,7 +276,7 @@ function MyPage() {
             <HelperBearContainer>
               <HelperBear
                 width="220px"
-                text="Your total done list : 1,050! Great job!"
+                text={`Your total done list : ${donelist.length}! Great job!`}
               />
             </HelperBearContainer>
           </UserInfoContainer>
@@ -252,8 +307,16 @@ function MyPage() {
               </TitleContainer>
               <ContentContainer></ContentContainer>
             </AchievementsContainer>
-          </BottomContentContainer>  
-          {showToast ? <Toast text="✅  User Info Changed Complete!" /> : null}
+          </BottomContentContainer>
+          {showToast ? (
+            netError ? (
+              <Toast
+                text={`🚫 Network Error! \n Check your network settings`}
+              />
+            ) : (
+              <Toast text="✅  User Info Changed Complete!" />
+            )
+          ) : null}
         </MyPageContainer>
       )}
     </div>

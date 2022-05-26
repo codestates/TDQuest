@@ -25,20 +25,19 @@ import { TDQuestAPI } from "../../API/tdquestAPI";
 import { CharDataType, TodoListType } from "../../Types/generalTypes";
 
 function StatusPage(): JSX.Element {
-  const [userData, setUserData] = useState<CharDataType>({} as CharDataType);
+  const [userCharData, setUserData] = useState<CharDataType>({} as CharDataType);
   const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { id: user_id, nickname } = JSON.parse(
     window.localStorage.getItem("isLogin") as string
   ).userInfo;
-
   useEffect(() => {
     if (loading) {
       const getCharacterData = async () => {
-        await TDQuestAPI.get(`/character/?user_id=${user_id}`).then((res) => {
+        await TDQuestAPI.get(`character/?user_id=${user_id}`).then((res) => {
           setUserData(res.data.characterInfo);
           setLoading(false);
-          console.log(userData);
+          console.log(userCharData);
         });
       };
       getCharacterData();
@@ -56,10 +55,10 @@ function StatusPage(): JSX.Element {
     }
   }, []);
 
-  const { image, status_phy, status_int, status_spi, level, exp } = userData;
+  const { image, status_phy, status_int, status_spi, level, exp } = userCharData;
 
   console.log(donelist);
-  console.log(userData);
+  console.log(userCharData);
 
   return (
     <div>
@@ -80,7 +79,7 @@ function StatusPage(): JSX.Element {
           </StatusHeader>
           <SectionContainer>
             <StatusContainer>
-              <Status userName={nickname} charData={userData}></Status>
+              <Status userName={nickname} charData={userCharData}></Status>
             </StatusContainer>
             <MyInfoContainer>
               <MyToDoStatusWrapper>

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 
+const RootToast = styled.div`
+  .display_none {
+    display: none;
+  }
+  white-space: pre-wrap;
+`;
+
 const PopOver = keyframes`
   0% {
     transform: rotateZ(0);
@@ -25,8 +32,8 @@ const PopOver = keyframes`
     transform: rotateZ(0);
     transform: translateX(0px); 
   }
-`
-const PopHide= keyframes`
+`;
+const PopHide = keyframes`
   from {
     opacity: 1;
     transform: translateX(0);
@@ -59,7 +66,7 @@ const Wiggle = keyframes`
   40%, 100% {
     transform: rotateZ(0);
   }
-`
+`;
 
 const ToastContainer = styled.div`
   .toast_wrapper {
@@ -89,7 +96,7 @@ const CloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
-`
+`;
 
 const ToastBody = styled.div`
   display: flex;
@@ -101,37 +108,35 @@ const ToastBody = styled.div`
   font-size: 15px;
 `;
 
-export function Toast({ text }: { text: string;}) {
+export function Toast({ text }: { text: string }) {
   const [showToast, setShowToast] = useState(true);
   const [hideToast, setHideToast] = useState(false);
 
   const handleClose = () => {
     setShowToast(false);
-  }
+  };
 
   const HideToast = (time: number) => {
     setTimeout(() => {
       setHideToast(true);
-    }, 4000)
+    }, 4000);
 
     setTimeout(() => {
       setShowToast(false);
     }, time);
   };
 
-  HideToast(5000);
+  HideToast(4900);
 
   return (
-    <div className="show_toast">
-      {showToast ? (
-        <ToastContainer>
-          <div className={`toast_wrapper ${hideToast ? "hide" : null}`}>
-            <CloseButton onClick={handleClose}>❌</CloseButton>
-            <ToastBody>{text}</ToastBody>
-          </div>
-        </ToastContainer>
-      ) : null}
-    </div>
+    <RootToast>
+      <ToastContainer className={`${showToast ? null : "display_none"}`}>
+        <div className={`toast_wrapper ${hideToast ? "hide" : null}`}>
+          <CloseButton onClick={handleClose}>❌</CloseButton>
+          <ToastBody>{text}</ToastBody>
+        </div>
+      </ToastContainer>
+    </RootToast>
   );
 }
 

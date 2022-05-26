@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Button from "../../components/Button";
 
 const DeleteUserAlert_Container = styled.div`
   display: flex;
@@ -29,16 +30,33 @@ const DeleteUserAlert_Msg = styled.div`
     border-right: none;
     border-bottom: 1px solid gray;
   }
+  .alert_msg {
+    margin: 10px 0;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .buttonContainer{
+    display: flex;
+    margin: 10px 0;
+    justify-content: center;
+  }
 `;
 
-export const DeleteUserAlertModal = (): JSX.Element => {
+export const DeleteUserAlertModal = ({
+  transferNickName,
+  curNickName,
+}: {
+  transferNickName: any;
+  curNickName: string;
+}): JSX.Element => {
   const [userName, setUserName] = useState("");
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setUserName(e.currentTarget.value);
+    console.log("current Target: ", e.currentTarget.value);
+    console.log("cur user", userName);
   };
-
-  console.log(userName);
 
   return (
     <DeleteUserAlert_Container>
@@ -48,9 +66,20 @@ export const DeleteUserAlertModal = (): JSX.Element => {
         <input
           type="text"
           placeholder="Enter your user name"
-          onChange={handleChange}
+          onChange={(e) => {
+            handleChange(e);
+          }}
           className="confirm_user_id"
         />
+        <p className="alert_msg">
+          {userName !== curNickName ? "Enter correct nickname" : null}
+        </p>
+        <div className="buttonContainer">
+          <Button
+            text="Confirm"
+            onClick={() => transferNickName(userName)}
+          ></Button>
+        </div>
       </DeleteUserAlert_Msg>
     </DeleteUserAlert_Container>
   );
