@@ -31,11 +31,10 @@ function StatusPage(): JSX.Element {
   const { id: user_id, nickname } = JSON.parse(
     window.localStorage.getItem("isLogin") as string
   ).userInfo;
-
   useEffect(() => {
     if (loading) {
       const getCharacterData = async () => {
-        await TDQuestAPI.get(`/character/?user_id=${user_id}`).then((res) => {
+        await TDQuestAPI.get(`character/?user_id=${user_id}`).then((res) => {
           setUserData(res.data.characterInfo);
           setLoading(false);
           console.log(userCharData);

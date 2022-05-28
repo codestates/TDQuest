@@ -18,7 +18,7 @@ module.exports = {
         try {
             let hashPassword
             if (req.body.password) {
-                hashPassword = await bcrypt.hash(req.body.password.toString(), process.env.BCRYPT)
+                hashPassword = await bcrypt.hash(req.body.password.toString(), Number(process.env.BCRYPT))
             }
             await user.update({
                 password: hashPassword,

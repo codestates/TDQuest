@@ -68,6 +68,11 @@ export const UserInfoDetailContainer = styled.div`
   .change_userinfo_wrapper {
     width: 70%;
     justify-content: flex-start;
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     .change_name {
       width: 80%;
       height: 30px;
@@ -136,7 +141,7 @@ export const HelperBearContainer = styled.div`
 export const BottomContentContainer = styled.div`
   display: flex;
   width: 90%;
-  height: auto;
+  height: 400px;
   min-height: 400px;
   margin: 15px 0;
   justify-content: space-between;
