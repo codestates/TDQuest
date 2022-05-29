@@ -19,8 +19,9 @@ import CategoriesComponent from './CategoriesComponent';
 const Container = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
   width: 100%;
-  min-height: 500px;
-  border: 1px solid ${color_border_yellow};
+  min-height: 400px;
+  max-height: 550px;
+  /* border: 1px solid ${color_border_yellow}; */
   display: grid;
   grid-template-rows: 40px 1fr;
   overflow: auto;
