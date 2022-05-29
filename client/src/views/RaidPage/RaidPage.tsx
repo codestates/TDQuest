@@ -1,5 +1,5 @@
 import { editableInputTypes } from "@testing-library/user-event/dist/types/utils";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, RefObject } from "react";
 import styled from "styled-components";
 import {
   color_primary_green_light,
@@ -274,55 +274,57 @@ export const DamageStatusContainer = styled.div`
 `;
 
 function RaidPage() {
-  const Effect = useRef<HTMLCanvasElement>(null);
-  const ctx = Effect.current?.getContext("2d");
-  console.log(Effect);
-  const CANVAS_WIDTH = Effect.current?.width as number;
-  const CANVAS_HEIGHT = Effect.current?.height as number;
+  const canvasRef: RefObject<HTMLCanvasElement> =
+    useRef<HTMLCanvasElement>(null);
 
-  console.log(CANVAS_WIDTH, CANVAS_HEIGHT);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    let CANVAS_WIDTH = canvas?.width as number;
+    let CANVAS_HEIGHT = canvas?.height as number;
+    const ctx = canvas?.getContext("2d");
+    
+    const effect13 = new Image();
+    effect13.src = require("../../static/images/monsters/effects/Effect13.png");
+    const spriteWidth = 32;
+    const spriteHeight = 32;
+    let frameX = 0;
+    let frameY = 0;
+    let effectFrame = 0;
+    let staggerFrame = 6;
 
-  const effect13 = new Image();
-  effect13.src = require("../../static/images/monsters/effects/Effect13.png");
-  const spriteWidth = 32;
-  const spriteHeight = 32;
-  let frameX = 0;
-  let frameY = 0;
-  let effectFrame = 0;
-  let staggerFrame = 6;
-
-  function animate() {
-    ctx?.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    ctx?.drawImage(
-      effect13,
-      frameX * spriteWidth,
-      frameY * spriteHeight,
-      spriteWidth,
-      spriteHeight,
-      30,
-      50,
-      spriteWidth,
-      spriteHeight
-    );
-    ctx?.drawImage(
-      effect13,
-      frameX * spriteWidth,
-      frameY * spriteHeight,
-      spriteWidth,
-      spriteHeight,
-      230,
-      70,
-      spriteWidth,
-      spriteHeight
-    );
-    if (effectFrame % staggerFrame == 0) {
-      if (frameX < 4) frameX++;
-      else frameX = 0;
+    function animateEffect(image: HTMLImageElement): number {
+      ctx?.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx?.drawImage(
+        image,
+        frameX * spriteWidth,
+        frameY * spriteHeight,
+        spriteWidth,
+        spriteHeight,
+        28,
+        50,
+        spriteWidth,
+        spriteHeight
+      );
+      ctx?.drawImage(
+        image,
+        frameX * spriteWidth,
+        frameY * spriteHeight,
+        spriteWidth,
+        spriteHeight,
+        230,
+        80,
+        spriteWidth,
+        spriteHeight
+      );
+      if (effectFrame % staggerFrame == 0) {
+        if (frameX < 4) frameX++;
+        else frameX = 0;
+      }
+      effectFrame++;
+      return requestAnimationFrame(() => animateEffect(image));
     }
-    effectFrame++;
-    requestAnimationFrame(animate);
-  }
-  animate();
+    animateEffect(effect13);
+  }, []);
 
   return (
     <RaidContainer bgColor={color_primary_green_light}>
@@ -347,7 +349,7 @@ function RaidPage() {
                 ></Monster>
                 <EffectsCanvas
                   id="monster_effects"
-                  ref={Effect}
+                  ref={canvasRef}
                 ></EffectsCanvas>
               </div>
             </MonsterWrapper>
