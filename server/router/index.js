@@ -47,7 +47,7 @@ router.get("/userInfo", checkAccessToken, userInfo.getUser);
 router.patch("/userInfo", userInfo.updateUser);
 
 //todo
-router.post("/todo", checkAccessToken, todo.createTodo);
+router.post("/todo", todo.createTodo);
 router.delete("/todo", checkAccessToken, todo.deleteTodo);
 router.put("/todo", checkAccessToken, todo.updateTodo);
 

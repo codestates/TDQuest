@@ -37,23 +37,18 @@ module.exports = {
     },
     statusRank: async (req, res) => {
         try {
-            const statusRank = null;
-            if (req.query.kind === "status_phy") {
-                statusRank = await character.findAll({
+                const phyRank = await character.findAll({
                     order: [["status_phy", "DESC"]],
                 }, { limit: 5 })
-            }
-            else if (req.query.kind === "status_int") {
-                const statusRank = await character.findAll({
+
+                const intRank = await character.findAll({
                     order: [["status_int", "DESC"]],
                 }, { limit: 5 })
-            }
-            else if (req.query.kind === "status_spi") {
-                const statusRank = await character.findAll({
+                
+                const spiRank = await character.findAll({
                     order: [["status_spi", "DESC"]],
                 }, { limit: 5 })
-            }
-            res.status(200).json({ statusRank: statusRank })
+            res.status(200).json({ phyRank : phyRank, intRank : intRank, spiRank : spiRank })
         }
         catch (err) {
             res.status(400).json({ message: err })
