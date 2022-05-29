@@ -141,7 +141,7 @@ export const HelperBearContainer = styled.div`
 export const BottomContentContainer = styled.div`
   display: flex;
   width: 90%;
-  height: auto;
+  height: 400px;
   min-height: 400px;
   margin: 15px 0;
   justify-content: space-between;
