@@ -1,6 +1,30 @@
+const cron = require("node-cron");
 const { damage_log } = require("../models")
 const { monster } = require("../models")
 const { user } = require("../models")
+const { raid } = require("../models")
+const number = require("./monsterInfo/monsterInfo")
+
+let count = 0
+cron.schedule('* * * Jan,Dec Sat', async () => {
+    await monster.create(
+        number[count]
+    )
+    await raid.create({
+        monser_id : count
+    })
+})
+
+cron.schedule('* * * Jan,Dec Mon', async () => {
+    await monster.destroy({
+        where : {id : count}
+    })
+    await raid.destroy({
+        where : {id : count}
+    })
+    count++
+})
+
 module.exports = {
     inviteRaids: async (req, res) => {
         try {
@@ -26,7 +50,7 @@ module.exports = {
             })
         }
         catch (err) {
-
+            console.log(err)
             res.status(404).json({ message: "Not Found" })
         }
     },
@@ -44,7 +68,6 @@ module.exports = {
             res.status(200).json({damage_log_Info : damage_log_Info})
         }
         catch (err) {
-            console.log(err)
             res.status(404).json({message : err})
         }
     }
