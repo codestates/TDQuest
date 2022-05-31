@@ -48,22 +48,25 @@ module.exports = {
                     order: [["status_phy", "DESC"]],
                     include : { model : user,
                         attributes: { exclude: 'password'}
-                    }
-                }, { limit: 5 })
+                    },
+                    limit: 5 
+                })
 
                 const intRank = await character.findAll({
                     order: [["status_int", "DESC"]],
                     include : { model : user,
                         attributes: { exclude: 'password'}
-                    }
-                }, { limit: 5 })
+                    },
+                    limit: 5
+                })
                 
                 const spiRank = await character.findAll({
                     order: [["status_spi", "DESC"]],
                     include : { model : user,
                         attributes: { exclude: 'password'}
-                    }
-                }, { limit: 5 })
+                    },
+                    limit: 5
+                })
             res.status(200).json({ phyRank : phyRank, intRank : intRank, spiRank : spiRank })
         }
         catch (err) {
