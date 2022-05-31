@@ -4,27 +4,39 @@ import { damageLogController } from "./controller/damageLogController"
 import { monsterController } from "./controller/monsterController"
 import { raidController } from "./controller/raidController"
 import { todolistController } from "./controller/todolistController"
+import { logController } from "./controller/log"
+import { rankController } from "./controller/rankController"
 
 export const Routes = [{
-    method: "put",
-    route: "/user",
+    method: "patch",
+    route: "/userInfo",
     controller: userController,
     action: "updateUser"
 }, {
     method: "get",
-    route: "/user/:id",
+    route: "/userInfo",
     controller: userController,
     action: "getUser"
 }, {
     method: "post",
-    route: "/user",
+    route: "/sign/in",
     controller: userController,
     action: "signIn"
 }, {
     method: "delete",
-    route: "/user/:id",
+    route: "/sign/out",
     controller: userController,
     action: "signOut"
+}, {
+    method: "post",
+    route: "/log/in",
+    controller: logController,
+    action: "login"
+}, {
+    method: "post",
+    route: "/log/out",
+    controller: logController,
+    action: "logout"
 }, {
     method: "get",
     route: "/character",
@@ -52,7 +64,7 @@ export const Routes = [{
     action: "completeTodo"
 }, {
     method: "get",
-    route: "/todo",
+    route: "/todo/incomplete",
     controller: todolistController,
     action: "inCompleteTodo"
 }, {
@@ -70,5 +82,20 @@ export const Routes = [{
     route: "/todo",
     controller: todolistController,
     action: "deleteTodo"
+}, {
+    method: "put",
+    route: "/todo/complete",
+    controller: todolistController,
+    action: "completeFunction"
+}, {
+    method: "get",
+    route: "/rank",
+    controller: rankController,
+    action: "all"
+}, {
+    method: "get",
+    route: "/rank/status",
+    controller: rankController,
+    action: "statusRank"
 }
 ]
