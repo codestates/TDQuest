@@ -22,5 +22,5 @@ app.use("/", router);
 const HTTPS_PORT = 3001;
 let server;
 server = app.listen(HTTPS_PORT);
-
+console.log(HTTPS_PORT)
 module.exports = server;

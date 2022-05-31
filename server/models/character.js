@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING(5000),
     totalExp: {
       type : DataTypes.INTEGER,
-      defaultValue : 100
+      defaultValue : 0
     },
     status_phy: {
       type : DataTypes.INTEGER,

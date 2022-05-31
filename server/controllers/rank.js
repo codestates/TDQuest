@@ -1,5 +1,5 @@
 const { character } = require("../models")
-
+const { user } = require("../models")
 module.exports = {
     All: async (req, res) => {
         try {
@@ -26,7 +26,10 @@ module.exports = {
             .then(async data => 
                 await Promise.all(ranker.map(async el => {
                 const rankerUser = await character.findOne({
-                    where: { id: el }
+                    where: { id: el },
+                    include : { model : user,
+                        attributes: { exclude: 'password'}
+                    }
                 }, { raw : true })
                 return rankerUser
             })))
@@ -35,7 +38,7 @@ module.exports = {
             )
         }
         catch (err) {
-            res.status(400).json({ message: err })
+            throw err
         }
     },
 
@@ -43,19 +46,28 @@ module.exports = {
         try {
                 const phyRank = await character.findAll({
                     order: [["status_phy", "DESC"]],
+                    include : { model : user,
+                        attributes: { exclude: 'password'}
+                    }
                 }, { limit: 5 })
 
                 const intRank = await character.findAll({
                     order: [["status_int", "DESC"]],
+                    include : { model : user,
+                        attributes: { exclude: 'password'}
+                    }
                 }, { limit: 5 })
                 
                 const spiRank = await character.findAll({
                     order: [["status_spi", "DESC"]],
+                    include : { model : user,
+                        attributes: { exclude: 'password'}
+                    }
                 }, { limit: 5 })
             res.status(200).json({ phyRank : phyRank, intRank : intRank, spiRank : spiRank })
         }
         catch (err) {
-            res.status(400).json({ message: err })
+            throw err
         }
     },
 }
