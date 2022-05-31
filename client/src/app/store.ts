@@ -4,6 +4,7 @@ import chracterReducer from '../features/character/characterSlice';
 import signReducer from '../features/sign/signSlice';
 import todoListReducer from '../features/todolist/todolistSlice';
 import myPageUserReducer from '../features/userinfo/userInfoSlice';
+import rankingReducer from '../features/ranking/rankingSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     sign: signReducer,
     todoList: todoListReducer,
     MyPageInfo: myPageUserReducer,
+    ranking: rankingReducer,
   },
 });
 

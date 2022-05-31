@@ -12,6 +12,7 @@ import {
   color_context_blue_light,
   color_context_beige_light,
 } from '../../components/CommonStyle';
+import crownIcon from '../../static/images/icons/Crown.png';
 
 const Container = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -64,8 +65,7 @@ const Item = styled.div`
   grid-template-columns: 30px 1fr 30px;
   align-items: center; */
   img {
-    cursor: pointer;
-    height: 30px;
+    height: 25px;
   }
   div {
     width: 100%;
@@ -82,6 +82,8 @@ function RankingListContainer({
   icon?: string | undefined;
   rankingList?: any | undefined;
 }) {
+  console.log(rankingList);
+
   return (
     <Container bgColor={color_context_beige}>
       <TitleContainer>
@@ -93,13 +95,14 @@ function RankingListContainer({
         <h3>{title}</h3>
       </TitleContainer>
       <ContentContainer>
-        {/* {rankingList.todoInfo.map((el: any) => (
-          <Item key={el.id}>
-            <div>{el.content}</div>
-          </Item>
-        ))} */}
-        <Item>user1</Item>
-        <Item>user2</Item>
+        {rankingList
+          ? rankingList.map((el: any, index: number) => (
+              <Item key={el.id}>
+                {index === 0 ? <img src={crownIcon} alt='icon' /> : ''}
+                <div>{el.user.nickname}</div>
+              </Item>
+            ))
+          : ''}
       </ContentContainer>
     </Container>
   );

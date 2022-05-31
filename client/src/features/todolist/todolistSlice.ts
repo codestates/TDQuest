@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import axios from 'axios';
-const url = 'http://localhost:3001';
+import { APIMAIN } from '../../API/tdquestAPI';
 
 export interface todoListState {
   status: 'idle' | 'loading' | 'failed';
@@ -25,7 +25,7 @@ export const getTodoListAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .get(`${url}/todo/incomplete`, {
+        .get(`${APIMAIN}/todo/incomplete`, {
           params: { user_id: arg.user_id, is_complete: arg.is_complete },
           // headers: {
           //   Authorization: `token ${access_token}`,
@@ -46,7 +46,7 @@ export const postTodoListAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .post(`${url}/todo`, {
+        .post(`${APIMAIN}/todo`, {
           user_id: arg.user_id,
           content: arg.content,
           kind: arg.kind,
@@ -62,11 +62,11 @@ export const postTodoListAsync = createAsyncThunk(
 );
 
 export const patchTodoListAsync = createAsyncThunk(
-  'patch/todo',
+  'put/todo',
   async (arg: any) => {
     try {
       const data = axios
-        .patch(`${url}/todo?id=${arg.id}`, {
+        .put(`${APIMAIN}/todo?id=${arg.id}`, {
           content: arg.content,
           kind: arg.kind,
         })
@@ -85,7 +85,7 @@ export const deleteTodoListAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .delete(`${url}/todo`, {
+        .delete(`${APIMAIN}/todo`, {
           params: { id: arg.id },
         })
         .then((res) => {
@@ -104,7 +104,7 @@ export const todoStatusChangeAsync = createAsyncThunk(
     try {
       const data = axios
         .put(
-          `${url}/todo/complete?user_id=${arg.user_id}&status=${arg.kind}&id=${arg.id}&is_complete=${arg.is_complete}`,
+          `${APIMAIN}/todo/complete?user_id=${arg.user_id}&status=${arg.kind}&id=${arg.id}&is_complete=${arg.is_complete}`,
           {
             // is_complete: arg.is_complete,
           }
@@ -124,7 +124,7 @@ export const getCompletedTodoListAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .get(`${url}/todo/complete`, {
+        .get(`${APIMAIN}/todo/complete`, {
           params: {
             user_id: arg.user_id,
             time: arg.time,

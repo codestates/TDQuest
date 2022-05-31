@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   RankingContainer,
   RankingPageHeader,
@@ -16,8 +17,34 @@ import {
   color_context_beige,
 } from '../../components/CommonStyle';
 import RankingListContainer from './RankingListContainer';
+import {
+  getRankingListAsync,
+  getTopRankerAsync,
+} from '../../features/ranking/rankingSlice';
+import crownIcon from '../../static/images/icons/Crown.png';
 
 function RankingPage() {
+  const dispatch: any = useDispatch();
+  const phyRankingList: any = useSelector(
+    (state: any) => state.ranking.rankingList.phyRank
+  );
+  const intRankingList: any = useSelector(
+    (state: any) => state.ranking.rankingList.intRank
+  );
+  const spiRankingList: any = useSelector(
+    (state: any) => state.ranking.rankingList.spiRank
+  );
+  const topRanker: any = useSelector((state: any) => state.ranking.top);
+  const topRankerTotalPoint = (arg: any) => {
+    return arg.status_phy + arg.status_int + arg.status_spi + arg.status_etc;
+  };
+
+  useEffect(() => {
+    // 유저가 작성한 todo 목록 가져오기 (incompleted task)
+    dispatch(getRankingListAsync());
+    dispatch(getTopRankerAsync());
+  }, []);
+
   return (
     <RankingContainer>
       <RankingPageHeader>
@@ -45,12 +72,19 @@ function RankingPage() {
             <h3>Top Ranking</h3>
           </TitleContainer>
           <ContentContainer>
-            {/* 추후 todolist 태스크별 포인트 계산하여 표시 */}
             <RewardInfo>
               <h3>left</h3>
             </RewardInfo>
             <div>
-              <h3>right</h3>
+              <h3>This week's best user</h3>
+              <p>
+                <img src={crownIcon} alt='crown'></img>
+                {topRanker.user ? topRanker.user.nickname : 'test'}
+              </p>
+              <p>
+                Total stats:{' '}
+                {topRanker.user ? topRankerTotalPoint(topRanker) : 0} points
+              </p>
             </div>
           </ContentContainer>
         </RewardContainer>
@@ -59,14 +93,17 @@ function RankingPage() {
         <RankingListContainer
           title='PHY Ranking'
           icon='Physical.png'
+          rankingList={phyRankingList}
         ></RankingListContainer>
         <RankingListContainer
           title='INT Ranking'
           icon='Intelligence.png'
+          rankingList={intRankingList}
         ></RankingListContainer>
         <RankingListContainer
           title='SPI Ranking'
           icon='Spirit.png'
+          rankingList={spiRankingList}
         ></RankingListContainer>
       </SectionContainer>
     </RankingContainer>
