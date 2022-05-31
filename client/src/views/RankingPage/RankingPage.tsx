@@ -38,6 +38,10 @@ function RankingPage() {
   const topRankerTotalPoint = (arg: any) => {
     return arg.status_phy + arg.status_int + arg.status_spi + arg.status_etc;
   };
+  const { id: user_id, nickname } = JSON.parse(
+    window.localStorage.getItem('isLogin') as string
+  ).userInfo;
+  const charInfo: any = useSelector((state: any) => state.sign.characterInfo);
 
   useEffect(() => {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
@@ -59,7 +63,8 @@ function RankingPage() {
       <SectionContainer>
         <StatusContainer bgColor={color_secondary_beige}>
           <Status
-            charData={dummyRes_getCharacterInfo.data.characterInfo}
+            userName={nickname}
+            charData={charInfo}
             direction='row'
           ></Status>
         </StatusContainer>
@@ -76,7 +81,7 @@ function RankingPage() {
               <h3>left</h3>
             </RewardInfo>
             <div>
-              <h3>This week's best user</h3>
+              <h3>Best user of this week</h3>
               <p>
                 <img src={crownIcon} alt='crown'></img>
                 {topRanker.user ? topRanker.user.nickname : 'test'}
@@ -92,16 +97,19 @@ function RankingPage() {
       <SectionContainer>
         <RankingListContainer
           title='PHY Ranking'
+          category='PHY'
           icon='Physical.png'
           rankingList={phyRankingList}
         ></RankingListContainer>
         <RankingListContainer
           title='INT Ranking'
+          category='INT'
           icon='Intelligence.png'
           rankingList={intRankingList}
         ></RankingListContainer>
         <RankingListContainer
           title='SPI Ranking'
+          category='SPI'
           icon='Spirit.png'
           rankingList={spiRankingList}
         ></RankingListContainer>

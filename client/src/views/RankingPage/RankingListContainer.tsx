@@ -61,15 +61,18 @@ const Item = styled.div`
   margin-top: 15px;
   display: flex;
   align-items: center;
-  /* display: grid;
-  grid-template-columns: 30px 1fr 30px;
-  align-items: center; */
+  display: grid;
+  grid-template-columns: 180px 1fr 100px;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
   img {
+    margin-right: 5px;
     height: 25px;
   }
   div {
     width: 100%;
-    padding: 0 10px;
+    text-align: right;
   }
 `;
 
@@ -77,13 +80,13 @@ function RankingListContainer({
   title,
   icon, // title 앞에 있는 아이콘
   rankingList,
+  category,
 }: {
   title: string;
   icon?: string | undefined;
   rankingList?: any | undefined;
+  category: string;
 }) {
-  console.log(rankingList);
-
   return (
     <Container bgColor={color_context_beige}>
       <TitleContainer>
@@ -98,8 +101,20 @@ function RankingListContainer({
         {rankingList
           ? rankingList.map((el: any, index: number) => (
               <Item key={el.id}>
-                {index === 0 ? <img src={crownIcon} alt='icon' /> : ''}
-                <div>{el.user.nickname}</div>
+                <p>
+                  {index === 0 ? <img src={crownIcon} alt='icon' /> : ''}
+                  {el.user.nickname}
+                </p>
+                <div>{category}</div>
+                <div>
+                  {category === 'PHY'
+                    ? el.status_phy
+                    : category === 'INT'
+                    ? el.status_int
+                    : el.status_spi}
+                  {'  '}
+                  point
+                </div>
               </Item>
             ))
           : ''}

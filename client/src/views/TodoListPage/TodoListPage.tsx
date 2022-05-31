@@ -65,9 +65,10 @@ function TodoListPage() {
   const expectedStats = getExpectedStats(todoList);
 
   const LOCALSTORAGE = window.localStorage.getItem('isLogin') as string;
-  const { id: user_id } = JSON.parse(LOCALSTORAGE).userInfo;
+  const { id: user_id, nickname } = JSON.parse(LOCALSTORAGE).userInfo;
   console.log(user_id);
   // const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
+  const charInfo: any = useSelector((state: any) => state.sign.characterInfo);
 
   const dispatch: any = useDispatch();
 
@@ -230,7 +231,8 @@ function TodoListPage() {
           <SectionContainer>
             <StatusContainer bgColor={color_secondary_beige}>
               <Status
-                charData={dummyRes_getCharacterInfo.data.characterInfo}
+                userName={nickname}
+                charData={charInfo}
                 direction='row'
               ></Status>
             </StatusContainer>
