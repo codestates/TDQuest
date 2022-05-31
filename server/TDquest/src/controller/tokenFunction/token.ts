@@ -1,16 +1,18 @@
-import jwt from 'jsonwebtoken'
+import * as jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import { getRepository } from 'typeorm'
 import { Request, Response, NextFunction } from 'express'
 import { user } from '../../entity/user'
 
-export class tokenFunction {
+export class TokenFunction {
   
   private userRepository = getRepository(user)
 
   async makeAccessToken (el: string) {
     try {
-      return jwt.sign({el}, String(process.env.ACCESS_SECRET), { expiresIn: '30m' })
+      const token = jwt.sign({el}, String(process.env.ACCESS_SECRET), { expiresIn: '30m' })
+      console.log(token)
+      return token
     }
     catch (error) {
       return 'error'
@@ -46,44 +48,44 @@ export class tokenFunction {
   }
   
     
-  async checkAccessToken (request: Request, response: Response, next: NextFunction, error: unknown) { 
-    const token: string = request.cookies.accessToken;
-    const refreshToken: string = request.headers.refreshToken;
+  // async checkAccessToken (request: Request, response: Response, next: NextFunction, error: unknown) { 
+  //   const token: string = request.cookies.accessToken;
+  //   const refreshToken: string = request.headers.refreshToken;
   
-    if (!token) {
-      return Object({
-        message: 'not Authorized'
-      })
-    } else {
-      const decoded = jwt.verify(token, String(process.env.ACCESS_SECRET))
-      if (decoded) {
-        const users = await this.userRepository.findOne({email: decoded.el})
-        .then(userInfo => {
-          next()
-        })
-      } else {
-        if (error === 'TokenExpiredError') {
-          jwt.verify(refreshToken, String(process.env.RESFRESH_SECRET))
-          .then(token => {
-            const accessToken = this.makeAccessToken(request.body.email);
-            response.cookie({refreshToken: request.headers.refreshToken})
-            return Object.assign({
-              accessToken: accessToken
-            })
-          })
-        }
-        if (error === 'NotBeforeError') {
-          console.log(error)
-          return Object.assign({
-            message: 'Not Found'
-          })
-        }
-        if (error === 'JsonWebTokenError') {
-          return Object.assign({
-            message: 'Not Found'
-          })
-        }
-      }
-    }
-  }
+  //   if (!token) {
+  //     return Object({
+  //       message: 'not Authorized'
+  //     })
+  //   } else {
+  //     const decoded = jwt.verify(token, String(process.env.ACCESS_SECRET))
+  //     if (decoded) {
+  //       const users = await this.userRepository.findOne({email: decoded})
+  //       .then(userInfo => {
+  //         next()
+  //       })
+  //     } else {
+  //       if (error === 'TokenExpiredError') {
+  //         jwt.verify(refreshToken, String(process.env.RESFRESH_SECRET))
+  //         .then(token => {
+  //           const accessToken = this.makeAccessToken(request.body.email);
+  //           response.cookie({refreshToken: request.headers.refreshToken})
+  //           return Object.assign({
+  //             accessToken: accessToken
+  //           })
+  //         })
+  //       }
+  //       if (error === 'NotBeforeError') {
+  //         console.log(error)
+  //         return Object.assign({
+  //           message: 'Not Found'
+  //         })
+  //       }
+  //       if (error === 'JsonWebTokenError') {
+  //         return Object.assign({
+  //           message: 'Not Found'
+  //         })
+  //       }
+  //     }
+  //   }
+  // }
 }

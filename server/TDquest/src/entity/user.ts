@@ -22,9 +22,6 @@ export class user {
     @OneToMany(() => damage_log, (damage_log) => damage_log.user)
     damage_logs: damage_log[]
 
-    @OneToMany(() => raid, (raid) => raid.user)
-    raids: raid[]
-
     @OneToMany(() => todo_list, (todo_list) => todo_list.user)
     todo_lists: todo_list[]
 
