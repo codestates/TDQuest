@@ -54,11 +54,6 @@ export const Routes = [{
     action: "all"
 }, {
     method: "get",
-    route: "/raid",
-    controller: raidController,
-    action: "all"
-}, {
-    method: "get",
     route: "/todo/complete",
     controller: todolistController,
     action: "completeTodo"
@@ -97,5 +92,15 @@ export const Routes = [{
     route: "/rank/status",
     controller: rankController,
     action: "statusRank"
+}, {
+    method: "get",
+    route: "/raids/damage_logs",
+    controller: raidController,
+    action: "damage_logs"
+}, {
+    method: "post",
+    route: "/raids/invite",
+    controller: raidController,
+    action: "inviteRaids"
 }
 ]
