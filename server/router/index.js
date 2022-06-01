@@ -33,7 +33,7 @@ router.get("/monster", monster.getMonster);
 
 //raids
 router.post("/raids/invite", raids.inviteRaids);
-
+router.get("/raids/damage_logs", raids.damage_logs)
 //rank
 router.get("/rank", rank.All);
 router.get("/rank/status", rank.statusRank);
@@ -47,7 +47,7 @@ router.get("/userInfo", checkAccessToken, userInfo.getUser);
 router.patch("/userInfo", userInfo.updateUser);
 
 //todo
-router.post("/todo", checkAccessToken, todo.createTodo);
+router.post("/todo", todo.createTodo);
 router.delete("/todo", checkAccessToken, todo.deleteTodo);
 router.put("/todo", checkAccessToken, todo.updateTodo);
 

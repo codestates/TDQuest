@@ -12,11 +12,11 @@ module.exports = {
                     email: req.body.email
                 }
             })
-            bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password, async (err, result) => {
-              if (err) {
-                  throw err
+            const hash = await  bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password)
+              if (!hash) {
+                res.status(404).json({ message: "Wrong user password" })
               }  
-              else  {
+              else {
                 const accessToken = await makeAccessToken(userInfo.dataValues.email)
                 const refreshToken = await makeRefreshToken(userInfo.dataValues.email)
     
@@ -45,7 +45,6 @@ module.exports = {
                             })
                     })
               }
-            })
         }
         catch (err) {
             res.status(404).json({ message: "Wrong user Id" })

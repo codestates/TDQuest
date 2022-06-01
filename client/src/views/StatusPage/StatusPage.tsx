@@ -58,7 +58,7 @@ function StatusPage(): JSX.Element {
   const { image, status_phy, status_int, status_spi, level, exp } = userCharData;
 
   console.log(donelist);
-  console.log(userCharData);
+  console.log("userCharData: ", userCharData);
 
   return (
     <div>

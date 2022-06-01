@@ -21,11 +21,11 @@ const initialState: todoListState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 export const getTodoListAsync = createAsyncThunk(
-  'get/todo',
+  'get/todo/incomplete',
   async (arg: any) => {
     try {
       const data = axios
-        .get(`${url}/todo`, {
+        .get(`${url}/todo/incomplete`, {
           params: { user_id: arg.user_id, is_complete: arg.is_complete },
           // headers: {
           //   Authorization: `token ${access_token}`,
@@ -66,8 +66,7 @@ export const patchTodoListAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .patch(`${url}/todo`, {
-          id: arg.id,
+        .patch(`${url}/todo?id=${arg.id}`, {
           content: arg.content,
           kind: arg.kind,
         })
@@ -105,9 +104,9 @@ export const todoStatusChangeAsync = createAsyncThunk(
     try {
       const data = axios
         .put(
-          `${url}/todo/complete?user_id=${arg.user_id}&status=${arg.kind}&id=${arg.id}`,
+          `${url}/todo/complete?user_id=${arg.user_id}&status=${arg.kind}&id=${arg.id}&is_complete=${arg.is_complete}`,
           {
-            is_complete: arg.is_complete,
+            // is_complete: arg.is_complete,
           }
         )
         .then((res) => {
@@ -190,7 +189,7 @@ export const todolistSlice = createSlice({
         state.todo.todoInfo = tempArray;
       })
       .addCase(patchTodoListAsync.fulfilled, (state, action) => {
-        // 수정 했을때 수정된 todoInfo
+        // 수정 했을때
         const tempArray = state.todo.todoInfo;
         const targetId: number = action.payload.todoInfo.id;
         const index: any = state.todo.todoInfo.findIndex(
@@ -200,7 +199,9 @@ export const todolistSlice = createSlice({
         state.todo.todoInfo = tempArray;
       })
       .addCase(todoStatusChangeAsync.fulfilled, (state, action) => {
-        // todo완료/취소 했을때 수정된 todoInfo
+        // todo완료/취소 했을때
+        console.log(action.payload.todoInfo);
+
         const is_complete: boolean = action.payload.todoInfo.is_complete;
         const targetId: number = action.payload.todoInfo.id;
         // 추가해야할 부분 => 스토어의 케릭터 스탯 업데이트 ::
