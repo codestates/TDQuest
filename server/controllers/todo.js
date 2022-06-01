@@ -140,7 +140,7 @@ module.exports = {
                     }
                     else if (req.query.status === "etc") {
                         await character.increment(
-                            { status_etc: 0.5 },
+                            { totalExp: 0.5 },
                             {
                                 where: { user_id: req.query.user_id },
                             }, transaction)
@@ -201,7 +201,7 @@ module.exports = {
                     }
                     else if (req.query.status === "etc") {
                         await character.decrement(
-                            { status_etc: 0.5 },
+                            { totalExp: 0.5 },
                             {
                                 where: { user_id: req.query.user_id }
                             }, transaction)
@@ -261,7 +261,7 @@ module.exports = {
                     }
                     else if (req.query.status === "etc") {
                         await character.increment(
-                            { status_etc: 0.5 },
+                            { totalExp: 0.5 },
                             { where: { user_id: req.query.user_id } }, transaction)
                     }
 
@@ -373,7 +373,7 @@ module.exports = {
                     }
                     else if (req.query.status === "etc") {
                         await character.decrement(
-                            { status_etc: 0.5 },
+                            { totalExp: 0.5 },
                             { where: { user_id: req.query.user_id } },
                             transaction)
                     }

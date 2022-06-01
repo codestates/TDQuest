@@ -11,7 +11,7 @@ module.exports = {
         const isUser = await user.findOne({
             where: { email: email }
         })
-        console.log(hashPassword)
+        
         if (isUser) {
             res.status(409).json({ message: "이미 아이디가 있습니다." })
         }
