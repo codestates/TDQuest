@@ -3,7 +3,6 @@ const axios = require('axios')
 const { user } = require('../../models')
 const { character } = require("../../models")
 const { verifyToken, makeAccessToken, makeRefreshToken} = require('../../middleware/token');
-const { existID, signID } = require("./authID");
 
 module.exports = {
     google : async (req, res) => {
@@ -38,9 +37,13 @@ module.exports = {
             email: me.email,
             nickname: me.name,
             };
-
-          const userInfo = await existID(userId.email, 'google');
-           
+          
+          const userInfo = await user.findOne({
+            where : {email : userId.email,
+              logintype : 'google'
+            }
+          });
+        
           if(userInfo){
             const accessToken = makeAccessToken(userInfo.dataValues.email)
             const refreshToken = makeRefreshToken(userInfo.dataValues.email)
@@ -58,19 +61,19 @@ module.exports = {
           }
           else{
             try {
-              const signUpUserId = await signID(userInfo.dataValues.email, 'google');
-              await character.findOne({
-                where : { user_id : userInfo.dataValues.id}
-              })
-              .then(character => {
-                const characterInfo = {...character.dataValues, 
-                  level : character.dataValues.totalExp / 100,
-                  exp : character.dataValues.totalExp % 100
-                }
-                const accessToken = makeAccessToken(signUpUserId.dataValues.email)
-                const refreshToken = makeRefreshToken(signUpUserId.dataValues.email)
-                res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo, accessToken : accessToken})
+              await user.create({emal : userId.email, logintype :'google'})
+              .then(async userInfo => {
+                await character.create({user_id : userInfo.dataValues.id})
+                .then(async character => {
+                  const characterInfo = {...character.dataValues, 
+                    level : character.dataValues.totalExp / 100,
+                    exp : character.dataValues.totalExp % 100
+                  }
+                  const accessToken = makeAccessToken(userInfo.dataValues.email)
+                  const refreshToken = makeRefreshToken(userInfo.dataValues.email)
+                  res.cookie('refreshToken', refreshToken)
+                  .json({characterInfo : characterInfo, accessToken : accessToken})
+                })
               }) //{ httpOnly: true}
             }
             catch (err) {

@@ -1,8 +1,8 @@
 const dotenv = require('dotenv');
 const axios = require('axios')
+const { user } = require("../../models")
 const { character } = require("../../models")
 const { verifyToken, makeAccessToken, makeRefreshToken } = require('../../middleware/token');
-const { existID, signID } = require("./authID")
 
 module.exports = {
     kakao : async (req, res) => {
@@ -38,12 +38,14 @@ module.exports = {
              });
 
           const userId = {
-               email: me.kakao_account.email,
                nickname: me.kakao_account.profile.nickname,
              };
+          const userInfo = await user.findOne({
+            where : {nickname : userId.nickname,
+              logintype : 'kakao'
+            }
+          })
 
-          const userInfo = await existID(userId.email, 'kakao');
-          
             if(userInfo){
               const accessToken = makeAccessToken(userInfo.dataValues.email)
               const refreshToken = makeRefreshToken(userInfo.dataValues.email)
@@ -62,21 +64,22 @@ module.exports = {
             
             else{
               try {
-              const signUpUserId = await signID(userInfo.dataValues.email, 'kakao');
-              await character.findOne({
-                where : { user_id : userInfo.dataValues.id}
-              })
-              .then(character => {
-                const characterInfo = {...character.dataValues, 
-                  level : character.dataValues.totalExp / 100,
-                  exp : character.dataValues.totalExp % 100
-                }
-                
-                const accessToken = makeAccessToken(signUpUserId.dataValues.email)
-                const refreshToken = makeRefreshToken(signUpUserId.dataValues.email)
-                res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo, accessToken : accessToken})
-              }) //{ httpOnly: true}
+                await user.create({nickname : userId.nickname, logintype : 'kakao'})
+                .then(async userInfo => {
+                  await character.create({user_id : userInfo.dataValues.id})
+                  .then(async character => {
+                    const characterInfo = {...character.dataValues, 
+                      level : character.dataValues.totalExp / 100,
+                      exp : character.dataValues.totalExp % 100
+                    }
+                    
+                    const accessToken = makeAccessToken(userInfo.dataValues.email)
+                    const refreshToken = makeRefreshToken(userInfo.dataValues.email)
+                    res.cookie('refreshToken', refreshToken)
+                    .json({characterInfo : characterInfo, accessToken : accessToken})
+                  
+                  })
+                }) //{ httpOnly: true}
             }//{ httpOnly: true}
             catch (err) {
               res.status(400).json({message : err})

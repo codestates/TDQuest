@@ -12,6 +12,7 @@ import {
   color_context_blue_light,
   color_context_beige_light,
 } from '../../components/CommonStyle';
+import crownIcon from '../../static/images/icons/Crown.png';
 
 const Container = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -60,16 +61,18 @@ const Item = styled.div`
   margin-top: 15px;
   display: flex;
   align-items: center;
-  /* display: grid;
-  grid-template-columns: 30px 1fr 30px;
-  align-items: center; */
+  display: grid;
+  grid-template-columns: 180px 1fr 100px;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
   img {
-    cursor: pointer;
-    height: 30px;
+    margin-right: 5px;
+    height: 25px;
   }
   div {
     width: 100%;
-    padding: 0 10px;
+    text-align: right;
   }
 `;
 
@@ -77,10 +80,12 @@ function RankingListContainer({
   title,
   icon, // title 앞에 있는 아이콘
   rankingList,
+  category,
 }: {
   title: string;
   icon?: string | undefined;
   rankingList?: any | undefined;
+  category: string;
 }) {
   return (
     <Container bgColor={color_context_beige}>
@@ -93,13 +98,26 @@ function RankingListContainer({
         <h3>{title}</h3>
       </TitleContainer>
       <ContentContainer>
-        {/* {rankingList.todoInfo.map((el: any) => (
-          <Item key={el.id}>
-            <div>{el.content}</div>
-          </Item>
-        ))} */}
-        <Item>user1</Item>
-        <Item>user2</Item>
+        {rankingList
+          ? rankingList.map((el: any, index: number) => (
+              <Item key={el.id}>
+                <p>
+                  {index === 0 ? <img src={crownIcon} alt='icon' /> : ''}
+                  {el.user.nickname}
+                </p>
+                <div>{category}</div>
+                <div>
+                  {category === 'PHY'
+                    ? el.status_phy
+                    : category === 'INT'
+                    ? el.status_int
+                    : el.status_spi}
+                  {'  '}
+                  point
+                </div>
+              </Item>
+            ))
+          : ''}
       </ContentContainer>
     </Container>
   );

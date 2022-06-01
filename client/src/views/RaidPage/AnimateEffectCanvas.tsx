@@ -10,7 +10,7 @@ export const Canvas = styled.canvas`
   image-rendering: pixelated;
 `;
 
-function AnimateEffectCanvas({image_X, image_Y}: {image_X?: string, image_Y?: string}) {
+function AnimateEffectCanvas({imageX, imageY}: {imageX?: string, imageY?: string}) {
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
 
@@ -20,10 +20,12 @@ function AnimateEffectCanvas({image_X, image_Y}: {image_X?: string, image_Y?: st
     let CANVAS_HEIGHT = canvas?.height as number;
     const ctx = canvas?.getContext("2d");
 
-    const image_X = new Image();
-    const image_Y = new Image();
-    image_X.src = require("../../static/images/monsters/effects/Thunder.png");
-    image_Y.src = require("../../static/images/monsters/effects/Fire2.png");
+    const image = new Image();
+    if (imageX && !imageY) {
+      image.src = require("../../static/images/monsters/effects/" + imageX + ".png");
+    } else if (!imageX && imageY) {
+      image.src = require("../../static/images/monsters/effects/" + imageY + ".png");
+    }
     const spriteWidth = 32;
     const spriteHeight = 32;
     const FireWidth = 32;
@@ -38,9 +40,9 @@ function AnimateEffectCanvas({image_X, image_Y}: {image_X?: string, image_Y?: st
     function animateEffect(image: HTMLImageElement): number {
       ctx?.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-      if (image_X && !image_Y) {
+      if (imageX && !imageY) {
         ctx?.drawImage(
-          image_X,
+          image,
           frameX * spriteWidth,
           frameY * spriteHeight,
           spriteWidth,
@@ -52,7 +54,7 @@ function AnimateEffectCanvas({image_X, image_Y}: {image_X?: string, image_Y?: st
         );
   
         ctx?.drawImage(
-          image_X,
+          image,
           frameX * spriteWidth,
           frameY * spriteHeight,
           spriteWidth,
@@ -64,17 +66,17 @@ function AnimateEffectCanvas({image_X, image_Y}: {image_X?: string, image_Y?: st
         );
       }
 
-      if (!image_X && image_Y) {
+      if (!imageX && imageY) {
         ctx?.drawImage(
-          image_X,
-          frameX * spriteWidth,
-          frameY * spriteHeight,
-          spriteWidth,
-          spriteHeight,
+          image,
+          frameX_column * FireWidth,
+          frameY_column * FireHeight,
+          FireWidth,
+          FireHeight,
           30,
           35,
-          spriteWidth,
-          spriteHeight
+          FireWidth,
+          FireHeight,
         );
         
         ctx?.drawImage(
@@ -90,8 +92,6 @@ function AnimateEffectCanvas({image_X, image_Y}: {image_X?: string, image_Y?: st
         );
       }
 
-
-
       if (effectFrame % staggerFrame == 0) {
         if (frameX < 6 || frameY_column < 4) {
           frameX++;
@@ -104,7 +104,7 @@ function AnimateEffectCanvas({image_X, image_Y}: {image_X?: string, image_Y?: st
       effectFrame++;
       return requestAnimationFrame(() => animateEffect(image));
     }
-    animateEffect(image_X);
+    animateEffect(image);
   }, []);
 
   return <Canvas ref={canvasRef}></Canvas>;

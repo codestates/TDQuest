@@ -18,8 +18,35 @@ import {
   DamageStatusContainer,
 } from "./RaidPageStyle";
 import AnimateEffectCanvas from "./AnimateEffectCanvas";
+import { TDQuestAPI } from "../../API/tdquestAPI";
+import { DamageLogType, DefaultUserDataType } from "../../Types/generalTypes";
+
+// 참가 중인 레이드 아이디를 받아옴
+const raid_id = 1;
 
 function RaidPage() {
+  const [ damage_log, setDamage_log ] = useState<DamageLogType[]>([{
+    id: 0,
+    log: 0,
+    createdAt: "",
+    updatedAt: "",
+    user_id: 0,
+    raid_id: 0,
+    user: DefaultUserDataType
+  }]);
+
+  useEffect(() => {
+    TDQuestAPI.get(`raids/damage_logs?raid_id=${raid_id}`).then((res) => {
+      const response = res.data.damage_log_Info;
+      setDamage_log(response);
+    })
+    console.log(damage_log);
+  }, []);
+
+  const SortLog: DamageLogType[] = [...damage_log];
+  SortLog.sort((a,b) => a.user_id < b.user_id ? -1 : a.user_id > b.user_id ? 1 : 0);
+  console.log(SortLog);
+
   return (
     <RaidContainer bgColor={color_primary_green_light}>
       <RaidPageHeader>
@@ -41,7 +68,7 @@ function RaidPage() {
                 <Monster
                   src={require("../../static/images/monsters/Phy_dragon2.png")}
                 ></Monster>
-                <AnimateEffectCanvas />
+                <AnimateEffectCanvas imageY="Fire2"/>
               </div>
             </MonsterWrapper>
             <MonsterInfoContainer>
