@@ -27,10 +27,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue : 0
       },
-      status_etc : {
-        type: Sequelize.INTEGER,
-        defaultValue : 0
-      },
       medal: {
         type: Sequelize.STRING
       },
