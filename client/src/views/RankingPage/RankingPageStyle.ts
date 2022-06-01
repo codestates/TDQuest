@@ -100,8 +100,20 @@ export const ContentContainer = styled.div`
   h3 {
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
+    font-family: 'Fredoka One', cursive;
+    text-align: center;
+  }
+  p {
+    font-size: ${fontSize_h3_laptop};
+    height: 2rem;
     font-family: 'OpenSans';
     text-align: center;
+    margin-bottom: 10px;
+    img {
+      image-rendering: pixelated;
+      width: 30px;
+      margin-right: 10px;
+    }
   }
 `;
 
