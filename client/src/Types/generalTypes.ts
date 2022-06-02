@@ -69,5 +69,9 @@ export type DamageLogType = {
   updatedAt: string;
   user_id: number;
   raid_id: number;
-  user?: LogUserDataType;
+  user: LogUserDataType;
 };
+
+export type Objtype = {
+  [key: string]: number;
+}
