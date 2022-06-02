@@ -48,12 +48,12 @@ router.patch("/userInfo", userInfo.updateUser);
 
 //todo
 router.post("/todo", todo.createTodo);
-router.delete("/todo", checkAccessToken, todo.deleteTodo);
-router.put("/todo", checkAccessToken, todo.updateTodo);
+router.delete("/todo", todo.deleteTodo);
+router.patch("/todo", todo.updateTodo);
 
 router.get("/todo/incomplete", todo.incompleteList);
 router.get("/todo/complete", todo.completeList)
-router.put("/todo/complete", todo.completeTodo)
+router.patch("/todo/complete", todo.completeTodo)
 
 
 module.exports = router;
