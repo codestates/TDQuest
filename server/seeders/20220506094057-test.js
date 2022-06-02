@@ -163,7 +163,6 @@ module.exports = {
   }]);
 
   const raidsId = await queryInterface.bulkInsert('raids', [{
-    hit_damage: 50,
     createdAt: new Date(),
     updatedAt: new Date(),
     monster_id : monsterId

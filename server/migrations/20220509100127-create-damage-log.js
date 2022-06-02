@@ -10,7 +10,7 @@ module.exports = {
       },
       log: {
         type: Sequelize.INTEGER,
-        dataValue : 0
+        dataValue : 1
       },
       createdAt: {
         allowNull: false,
