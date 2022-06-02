@@ -177,6 +177,8 @@ function MyPage() {
     setDonelist(tmpList);
   };
 
+  console.log(donelist);
+
   return (
     <div>
       {loading ? (
