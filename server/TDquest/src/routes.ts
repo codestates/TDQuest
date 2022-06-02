@@ -51,7 +51,7 @@ export const Routes = [{
     method: "get",
     route: "/monster",
     controller: monsterController,
-    action: "all"
+    action: "getMonster"
 }, {
     method: "get",
     route: "/todo/complete",
