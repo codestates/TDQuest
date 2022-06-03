@@ -15,6 +15,7 @@ import {
   TodoListType,
 } from "../../Types/generalTypes";
 import {
+  MyPageRoot,
   MyPageContainer,
   MyPageHeader,
   UserInfoContainer,
@@ -153,7 +154,7 @@ function MyPage() {
 
   const deleteAccount = async () => {
     // 유저 정보 삭제 관련 로직
-    console.log("유저 정보 삭제")
+    console.log("유저 정보 삭제");
     console.log(checkNickNameValidation, userData.nickname);
     if (checkNickNameValidation === userData.nickname) {
       await TDQuestAPI.delete(`sign/out/?id=${L_user_id}`).then((res) => {
@@ -163,7 +164,7 @@ function MyPage() {
         LOCALSTORAGE.assign("/");
       });
     } else {
-      console.log("닉네임을 올바르게 입력하세요")
+      console.log("닉네임을 올바르게 입력하세요");
     }
   };
 
@@ -177,8 +178,10 @@ function MyPage() {
     setDonelist(tmpList);
   };
 
+  console.log(donelist);
+
   return (
-    <div>
+    <MyPageRoot>
       {loading ? (
         <MyPageContainer bgColor={color_primary_green_light}>
           <Loading customText="Loading..." />
@@ -319,7 +322,7 @@ function MyPage() {
           ) : null}
         </MyPageContainer>
       )}
-    </div>
+    </MyPageRoot>
   );
 }
 

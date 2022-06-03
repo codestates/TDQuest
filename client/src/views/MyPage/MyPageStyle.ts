@@ -8,6 +8,10 @@ import {
   fontSize_body_laptop,
 } from "../../components/CommonStyle";
 
+export const MyPageRoot = styled.div`
+  height: auto;
+`;
+
 export const MyPageContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
   display: flex;
@@ -82,7 +86,7 @@ export const UserInfoDetailContainer = styled.div`
       background-color: transparent;
     }
     input::placeholder {
-      font-size:16px;
+      font-size: 16px;
     }
   }
   .change_pw_btn {
@@ -141,7 +145,6 @@ export const HelperBearContainer = styled.div`
 export const BottomContentContainer = styled.div`
   display: flex;
   width: 90%;
-  height: 400px;
   min-height: 400px;
   margin: 15px 0;
   justify-content: space-between;

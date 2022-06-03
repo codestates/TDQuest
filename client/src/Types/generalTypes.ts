@@ -11,30 +11,35 @@ export interface CharDataType {
   userExp?: number;
   userLevel?: number;
   userTitle?: string[];
-};
-
-// createdAt: "2022-05-18T16:27:49.000Z"
-// exp: 0
-// id: 1
-// image: null
-// level: 1
-// medal: null
-// status_int: 0
-// status_phy: 0
-// status_spi: 0
-// totalExp: 100
-// updatedAt: "2022-05-18T16:27:49.000Z"
-// user_id: 1
-
+}
 
 export type UserDataType = {
   id?: number;
   nickname: string;
   email: string;
+  logintype?: string;
   created_at?: string;
   updated_at?: string;
-  loading? : boolean;
-  error? : boolean | string;
+  loading?: boolean;
+  error?: boolean | string;
+};
+
+export type LogUserDataType = {
+  id: number;
+  nickname: string;
+  logintype: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const DefaultUserDataType = {
+  id: 0,
+  nickname: "",
+  logintype: "",
+  email: "",
+  createdAt: "",
+  updatedAt: "",
 };
 
 export type TodoListType = {
@@ -47,12 +52,26 @@ export type TodoListType = {
   updatedAt: string;
 };
 
-export interface TodoContentType {
+export type TodoContentType = {
   id: number;
   content: string;
   kind?: string;
   is_complete?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  handleDeleteList? : any;
+  handleDeleteList?: any;
 };
+
+export type DamageLogType = {
+  id: number;
+  log: number;
+  createdAt: string;
+  updatedAt: string;
+  user_id: number;
+  raid_id: number;
+  user: LogUserDataType;
+};
+
+export type Objtype = {
+  [key: string]: number;
+}

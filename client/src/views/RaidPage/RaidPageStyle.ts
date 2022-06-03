@@ -6,6 +6,7 @@ import {
   color_white,
   color_context_beige,
   fontSize_h2_laptop,
+  fontSize_h3_laptop
 } from "../../components/CommonStyle"
 
 export const RaidContainer = styled.div<{ bgColor: string }>`
@@ -202,7 +203,7 @@ export const TitleContainer = styled.div`
     image-rendering: pixelated;
   }
   h3 {
-    font-size: ${fontSize_body_laptop};
+    font-size: ${fontSize_h3_laptop};
     font-family: "Fredoka One", cursive;
     color: ${color_white};
   }
@@ -228,7 +229,7 @@ export const Contents = styled.div`
   display: flex;
   margin-bottom: 10px;
   width: 93%;
-  height: 36px;
+  height: 40px;
   justify-content: space-evenly;
   align-items: center;
   background-color: white;
@@ -244,9 +245,10 @@ export const Contents = styled.div`
     width: 20%;
     overflow: hidden;
     font-weight: bold;
+    height: 20px;
   }
   .damage_ratio_container {
-    width: 55%;
+    width: 53%;
     height: 20px;
     .damage_ratio {
       width: 95%;
@@ -256,6 +258,7 @@ export const Contents = styled.div`
     }
   }
   .damage_ratio {
+    width: 10%;
     font-family: "Fredoka One", cursive;
   }
 `;
@@ -267,6 +270,6 @@ export const DamageStatusContainer = styled.div`
   background-color: ${color_context_beige};
   box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-top: 20px;
+  padding-left: 10px;
 `;
