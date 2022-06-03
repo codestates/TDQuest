@@ -21,11 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   raid.init({
-    name: DataTypes.STRING,
-    hit_damage: {
-      type : DataTypes.INTEGER,
-      defaultValue : 0
-    },
+    
   }, {
     sequelize,
     modelName: 'raid',

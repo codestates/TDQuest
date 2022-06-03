@@ -3,6 +3,7 @@ const { user } = require('../models')
 const { character } = require('../models')
 const { makeAccessToken, makeRefreshToken } = require("../middleware/token")
 const bcrypt = require("bcrypt")
+const { damage_log } = require('../models')
 
 module.exports = {
     login: async (req, res) => {
@@ -19,9 +20,13 @@ module.exports = {
               else {
                 const accessToken = await makeAccessToken(userInfo.dataValues.email)
                 const refreshToken = await makeRefreshToken(userInfo.dataValues.email)
-    
+                
+                const damage_logInfo = await damage_log.findOne({
+                    where : { user_id : userInfo.dataValues.id}
+                })
+
                 await character.findOne({
-                    where: { user_id: userInfo.dataValues.id }
+                    where: { user_id: userInfo.dataValues.id },
                 })
                     .then(character => {
                         const characterInfo = {
@@ -40,6 +45,7 @@ module.exports = {
                                     createdAt : userInfo.createdAt,
                                     updatedAt : userInfo.updatedAt
                                 },
+                                damage_logInfo : damage_logInfo,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken
                             })
