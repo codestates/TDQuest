@@ -4,16 +4,9 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class monster extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
      static associate(models) {
       // define association here
-      models.monster.hasMany(models.raid, {
-        foreignKey: 'monster_id'
-      })
+
     }
   }
   monster.init({
