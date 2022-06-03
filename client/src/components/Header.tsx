@@ -17,7 +17,9 @@ import DropDown from './DropDown';
 
 function Header() {
   // 추후 Login 관련 state로 사용 (redux로 변경 예정)
-  let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
+  let isLogin = window.localStorage.getItem('isLogin')
+    ? JSON.parse(window.localStorage.getItem('isLogin') || '')
+    : false;
   // const isLogin = true;
   // 해당 페이지의 nav 메뉴 버튼 활성화를 위해 현재 경로 가져옴
   let location = useLocation();
@@ -38,7 +40,7 @@ function Header() {
       </Logo>
       {/* Login상황일 경우, MenuBar가 표시된다. 
       MainPage에서는 MenuBar가 표시되지 않으므로 필요한 작업임! */}
-      {isLogin.status === "loggedIn"? (
+      {isLogin.status === 'loggedIn' ? (
         <MenuBarContainer>
           <MenuBar active={location.pathname === '/status' ? true : false}>
             <Link to={'/status'}>My Status</Link>

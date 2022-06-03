@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { UserDataType } from '../../Types/generalTypes';
 import axios from 'axios';
 
-const url = 'http://tdquest.tk';
+const url = 'https://tdquest.tk';
 
 export interface SignUserInfo {
   status: string;
