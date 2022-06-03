@@ -66,10 +66,18 @@ export const patchTodoListAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .put(`${APIMAIN}/todo?id=${arg.id}`, {
-          content: arg.content,
-          kind: arg.kind,
-        })
+        .put(
+          `${APIMAIN}/todo?id=${arg.id}`,
+          {
+            content: arg.content,
+            kind: arg.kind,
+          },
+          {
+            headers: {
+              Authorization: `accessToken ${arg.accessToken}`,
+            },
+          }
+        )
         .then((res) => {
           return res.data;
         });
@@ -200,7 +208,7 @@ export const todolistSlice = createSlice({
       })
       .addCase(todoStatusChangeAsync.fulfilled, (state, action) => {
         // todo완료/취소 했을때
-        console.log(action.payload.todoInfo);
+        console.log(action.payload.characterInfo);
 
         const is_complete: boolean = action.payload.todoInfo.is_complete;
         const targetId: number = action.payload.todoInfo.id;

@@ -32,8 +32,12 @@ import {
   todoStatusChangeAsync,
   getCompletedTodoListAsync,
 } from '../../features/todolist/todolistSlice';
+import { Toast } from '../../components/Toast';
 
 function TodoListPage() {
+  const [showToast, setShowToast] = useState(false);
+  const [toastText, setToastText] = useState('');
+
   const loadingStatus = useSelector((state: any) => state.todoList.status);
   const todoList = useSelector((state: any) => state.todoList.todo); // todo list
   const completedTodoList = useSelector(
@@ -67,7 +71,7 @@ function TodoListPage() {
   const LOCALSTORAGE = window.localStorage.getItem('isLogin') as string;
   const { id: user_id, nickname } = JSON.parse(LOCALSTORAGE).userInfo;
   console.log(user_id);
-  // const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
+  const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
   const charInfo: any = useSelector((state: any) => state.sign.characterInfo);
 
   const dispatch: any = useDispatch();
@@ -109,23 +113,34 @@ function TodoListPage() {
   };
   const deleteTask = () => {
     // 태스크 삭제 관련 로직 ***
+    setShowToast(true);
+    setToastText(`${selectedTaskContent.kind} task deleted`);
     dispatch(
       deleteTodoListAsync({
         id: selectedTaskContent.taskId,
       })
     );
     setShowModal(false);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   };
   const saveTask = () => {
     // 태스크 내용 업데이트 관련 로직 ***
+    setShowToast(true);
+    setToastText(`${selectedTaskContent.kind} task updated`);
     dispatch(
       patchTodoListAsync({
         id: selectedTaskContent.taskId,
         content: selectedTaskContent.taskContent,
         kind: selectedTaskContent.kind,
+        accessToken: accessToken,
       })
     );
     setShowModal(false);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   };
   const openModalHandler = (
     taskContent: string,
@@ -157,6 +172,8 @@ function TodoListPage() {
   //--- creating task 관련---//
   const createTaskHander = (taskContent: string, category: string) => {
     // 태스크 생성 관련 로직 ***
+    setShowToast(true);
+    setToastText(`${category} task created`);
     dispatch(
       postTodoListAsync({
         user_id: user_id,
@@ -164,6 +181,9 @@ function TodoListPage() {
         kind: category,
       })
     );
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   };
 
   //--- creating task 관련---//
@@ -171,6 +191,8 @@ function TodoListPage() {
   const taskCompletedHandler = (itemId: number, category: string) => {
     // 태스크 완료 관련 로직 ***
     // is_complete: 1 = completed / 0 = incompleted
+    setShowToast(true);
+    setToastText(`${category} task completed`);
     dispatch(
       todoStatusChangeAsync({
         user_id: user_id,
@@ -179,11 +201,16 @@ function TodoListPage() {
         is_complete: 1,
       })
     );
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   };
 
   const taskCompletedCancelHander = (itemId: number, category: string) => {
     // 태스크 완료 취소 관련 로직 ***
     // is_complete: 1 = completed / 0 = incompleted
+    setShowToast(true);
+    setToastText(`${category} task incompleted`);
     dispatch(
       todoStatusChangeAsync({
         user_id: user_id,
@@ -192,6 +219,9 @@ function TodoListPage() {
         is_complete: 0,
       })
     );
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   };
 
   return (
@@ -285,30 +315,11 @@ function TodoListPage() {
               itemBtnActionFunction={taskCompletedCancelHander}
             />
           </SectionContainer>
+          {showToast ? <Toast text={toastText}></Toast> : ''}
         </TodoContainer>
       )}
     </div>
   );
 }
-
-const dummyRes_getCharacterInfo = {
-  data: {
-    characterInfo: {
-      id: 0,
-      user_id: 'TEST_USER_1',
-      image: 'char_default',
-      level: 1250,
-      status_phy: 50,
-      status_int: 20,
-      status_spi: 30,
-      medal: 'medal',
-      created_at: '2022-05-08',
-      updated_at: '2022-05-08',
-      // Server 측에서 추가로 계산하여 보내줄 데이터 (요청예정)
-      userLevel: 13,
-      userExp: 50,
-    },
-  },
-};
 
 export default TodoListPage;

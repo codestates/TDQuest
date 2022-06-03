@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 
 const RootToast = styled.div`
   .display_none {
@@ -104,10 +104,9 @@ const ToastBody = styled.div`
   height: 100%;
   margin-left: 5%;
   align-items: center;
-  font-family: "Fredoka One", cursive;
+  font-family: 'Fredoka One', cursive;
   font-size: 15px;
 `;
-
 export function Toast({ text }: { text: string }) {
   const [showToast, setShowToast] = useState(true);
   const [hideToast, setHideToast] = useState(false);
@@ -130,8 +129,8 @@ export function Toast({ text }: { text: string }) {
 
   return (
     <RootToast>
-      <ToastContainer className={`${showToast ? null : "display_none"}`}>
-        <div className={`toast_wrapper ${hideToast ? "hide" : null}`}>
+      <ToastContainer className={`${showToast ? null : 'display_none'}`}>
+        <div className={`toast_wrapper ${hideToast ? 'hide' : null}`}>
           <CloseButton onClick={handleClose}>❌</CloseButton>
           <ToastBody>{text}</ToastBody>
         </div>

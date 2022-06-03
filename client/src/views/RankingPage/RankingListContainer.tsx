@@ -29,9 +29,10 @@ const TitleContainer = styled.div`
   background-color: ${color_context_brown};
   display: flex;
   justify-content: center;
+  align-items: center;
+
   img {
     height: 20px;
-    align-self: center;
     margin-right: 5px;
   }
   h3 {
@@ -39,7 +40,7 @@ const TitleContainer = styled.div`
     height: 2rem;
     font-family: 'Fredoka One', cursive;
     color: ${color_white};
-    align-self: center;
+    margin-top: 7px;
   }
 `;
 
@@ -59,8 +60,6 @@ const Item = styled.div`
   background-color: ${color_white};
   min-height: 50px;
   margin-top: 15px;
-  display: flex;
-  align-items: center;
   display: grid;
   grid-template-columns: 180px 1fr 100px;
   align-items: center;

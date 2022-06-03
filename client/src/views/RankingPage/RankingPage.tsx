@@ -11,11 +11,7 @@ import {
   RewardInfo,
 } from './RankingPageStyle';
 import Status from '../../components/Status';
-import {
-  color_primary_green_light,
-  color_secondary_beige,
-  color_context_beige,
-} from '../../components/CommonStyle';
+import { color_secondary_beige } from '../../components/CommonStyle';
 import RankingListContainer from './RankingListContainer';
 import {
   getRankingListAsync,
@@ -117,25 +113,5 @@ function RankingPage() {
     </RankingContainer>
   );
 }
-
-const dummyRes_getCharacterInfo = {
-  data: {
-    characterInfo: {
-      id: 0,
-      user_id: 'TEST_USER_1',
-      image: 'char_default',
-      level: 1250,
-      status_phy: 50,
-      status_int: 20,
-      status_spi: 30,
-      medal: 'medal',
-      created_at: '2022-05-08',
-      updated_at: '2022-05-08',
-      // Server 측에서 추가로 계산하여 보내줄 데이터 (요청예정)
-      userLevel: 13,
-      userExp: 50,
-    },
-  },
-};
 
 export default RankingPage;
