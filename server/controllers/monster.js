@@ -13,5 +13,5 @@ module.exports = {
         catch {
             res.status(404).json({ message: "Not Found" })
         }
-    }, // 레이드 첫 화면
+    }
 }

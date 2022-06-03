@@ -2,7 +2,8 @@ const dotenv = require('dotenv');
 const axios = require('axios')
 const { user } = require('../../models')
 const { character } = require("../../models")
-const { verifyToken, makeAccessToken, makeRefreshToken} = require('../../middleware/token');
+const { damage_log } = require("../../models")
+const {makeAccessToken, makeRefreshToken} = require('../../middleware/token');
 
 module.exports = {
     google : async (req, res) => {
@@ -50,13 +51,17 @@ module.exports = {
               await character.findOne({
                 where : { user_id : userInfo.dataValues.id}
               })
-              .then(character => {
+              .then(async character => {
+                const damage_logInfo = await damage_log.findOne({
+                  where : { user_id : userInfo.dataValues.id}
+                })
+
                 const characterInfo = {...character.dataValues, 
                   level : character.dataValues.totalExp / 100,
                   exp : character.dataValues.totalExp % 100
                 }
                 res.cookie('refreshToken', refreshToken)
-                .json({characterInfo : characterInfo, accessToken : accessToken})
+                .json({characterInfo : characterInfo, accessToken : accessToken, damage_logInfo : damage_logInfo})
               })//{ httpOnly: true}
           }
           else{
@@ -65,6 +70,10 @@ module.exports = {
               .then(async userInfo => {
                 await character.create({user_id : userInfo.dataValues.id})
                 .then(async character => {
+                  const damage_logInfo = await damage_log.findOne({
+                    where : { user_id : userInfo.dataValues.id}
+                  })
+
                   const characterInfo = {...character.dataValues, 
                     level : character.dataValues.totalExp / 100,
                     exp : character.dataValues.totalExp % 100
@@ -72,7 +81,7 @@ module.exports = {
                   const accessToken = makeAccessToken(userInfo.dataValues.email)
                   const refreshToken = makeRefreshToken(userInfo.dataValues.email)
                   res.cookie('refreshToken', refreshToken)
-                  .json({characterInfo : characterInfo, accessToken : accessToken})
+                  .json({characterInfo : characterInfo, accessToken : accessToken, damage_logInfo : damage_logInfo})
                 })
               }) //{ httpOnly: true}
             }
