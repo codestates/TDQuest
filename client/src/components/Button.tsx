@@ -19,6 +19,7 @@ type ButtonData = {
   //!
   type?: any;
   bgColor?: string;
+  img? : any;
   //!
 };
 
@@ -67,6 +68,55 @@ const ButtonContainer = styled.button<ButtonData>`
     }}
   }
   min-width: 100px;
+
+  > img {
+    width : ${(props) => {
+      if(props.bgColor === "#f9e000"){
+        return "23px";
+      }else if(props.bgColor === "#fa6c67"){
+        return "20px";
+      } else {
+        return "22px";
+      }
+    }};
+    position: relative;
+    top : 3px;
+    right : ${(props) => {
+      if(props.bgColor === "#f9e000"){
+        return "2.3rem";
+      }else if(props.bgColor === "#fa6c67"){
+        return "2rem";
+      } else {
+        return "5.7rem";
+      }
+    }};
+        
+    @media(max-width : 768px){      
+      /* width : ${(props) => props.bgColor === "#f9e000"? "15px" : "12px"};
+      right : ${(props) => props.bgColor === "#f9e000"? "0.6rem" : "0.5rem"}; */
+
+      width : ${(props) => {
+          if(props.bgColor === "#f9e000"){
+            return "15px";
+          }else if(props.bgColor === "#fa6c67"){
+            return "12px";
+          } else {
+            return "14px";
+          }
+        }};
+      right : ${(props) => {
+          if(props.bgColor === "#f9e000"){
+            return "0.6rem";
+          }else if(props.bgColor === "#fa6c67"){
+            return "0.5rem";
+          } else {
+            return "2.5rem";
+          }
+        }};
+    }
+  }
+
+
 `;
 
 // Button 컴포넌트는 width, fontSize, padding, text를 넣어 사용할 수 있습니다.
@@ -83,7 +133,8 @@ function Button({
   deactive,
   onClick,
   type,
-  bgColor
+  bgColor,
+  img
 }: ButtonData) {
   return (
     <ButtonContainer
@@ -96,7 +147,9 @@ function Button({
       onClick={onClick}
       type={type}
       bgColor={bgColor}
+      img={img}
     >
+      {img}
       {text}
     </ButtonContainer>
   );
