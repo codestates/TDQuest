@@ -54,6 +54,6 @@ router.patch("/todo", todo.updateTodo);
 router.get("/todo/incomplete", todo.incompleteList);
 router.get("/todo/complete", todo.completeList)
 router.patch("/todo/complete", todo.completeTodo)
-
+router.get("/todo/check", todo.check)
 
 module.exports = router;

@@ -78,6 +78,22 @@ module.exports = {
         }
     }, // 완료되지않은 todolist 불러오기
 
+    check : async (req, res) => {
+        const characterArray = await character.findAll(
+            {
+                include: {
+                    model: user,
+                    include: {
+                        model: damage_log,
+                        where: { raid_id: req.query.raid_id },
+                    },
+                    required: true
+                }
+            })
+            .then(data => {
+            res.status(200).json({message : data})
+            })
+    },
     completeList: async (req, res) => {
         try {
             if (req.query.time) { // 특정 날짜
@@ -301,7 +317,6 @@ module.exports = {
 
                     const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
                     if (monsterInfo.dataValues.hp === 0) { // 몬스터를 잡았을 때
-                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
                         const characterArray = await character.findAll(
                             {
                                 include: {
@@ -309,12 +324,12 @@ module.exports = {
                                     include: {
                                         model: damage_log,
                                         where: { raid_id: req.query.raid_id } //raid 참가한 인원
-                                    }
+                                    },
+                                required: true
                                 }
                             })
                         characterArray.forEach(el => {
-                            console.log(el)
-                            character.decrement({
+                            character.increment({
                                 totalExp: monsterInfo.dataValues.reward
                             },
                                 { where: { id: el.dataValues.id } })
@@ -422,7 +437,6 @@ module.exports = {
 
 
                     if (monsterInfo.dataValues.hp === 0) {
-                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
                         const characterArray = await character.findAll(
                             {
                                 include: {
@@ -430,7 +444,8 @@ module.exports = {
                                     include: {
                                         model: damage_log,
                                         where: { raid_id: req.query.raid_id } //raid 참가한 인원
-                                    }
+                                    },
+                                    required: true
                                 }
                             })
                         characterArray.forEach(el => {
