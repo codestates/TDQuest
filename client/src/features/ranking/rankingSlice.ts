@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import axios from 'axios';
 import { APIMAIN } from '../../API/tdquestAPI';
-const url = 'http://localhost:3001';
 
 export interface todoListState {
   status: 'idle' | 'loading' | 'failed';
