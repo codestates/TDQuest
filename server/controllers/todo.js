@@ -40,9 +40,10 @@ module.exports = {
                 kind: req.body.kind,
                 content: req.body.content
             }, { where: { id: req.query.id } })
-
-            const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
-            res.status(200).json({ message: "수정되었습니다.", todoInfo: todoInfo })
+                .then(async todoInfo => {
+                    await todo_list.findOne({ where: { id: req.query.id } })
+                    res.status(200).json({ message: "수정되었습니다.", todoInfo: todoInfo })
+                })
         }
         catch (err) {
             res.status(401).json({ message: 'Not Found' })
@@ -105,126 +106,121 @@ module.exports = {
     },
 
     completeTodo: async (req, res) => {
-        const transaction = await sequelize.transaction();
+
         if (!req.query.raid_id) {
             if (req.query.is_complete === '1') { //완료버튼을 눌렀다면
                 try {
-                    await todo_list.update({ is_complete: true },
+                    let todoInfo = ''
+                    await todo_list.update({ is_complete: 1 },
                         {
                             where: {
                                 id: req.query.id,
-                                is_complete: false
-                            },
-                            transaction : transaction
-                        }).then(data => {if (data[0] === 0) throw err})
-                        
+                                is_complete: 0
+                            }
+                        })
+                        .then(async data => {
+                                todoInfo = await todo_list.findOne({
+                                    where: { id: req.query.id }
+                                })
+                            })
+
                     if (req.query.status === "phy") {
                         await character.increment(
                             { status_phy: 1 },
                             {
-                                where: { user_id: req.query.user_id },
-                                transaction : transaction
-                            }).then(data => { if (data[0][1] === 0) throw err})
+                                where: { user_id: req.query.user_id }
+                            })
                     }
                     else if (req.query.status === "int") {
                         await character.increment(
                             { status_int: 1 },
-                            {
-                                where: { user_id: req.query.user_id }
-                            }, transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } }
+                        )
                     }
                     else if (req.query.status === "spi") {
                         await character.increment(
                             { status_spi: 1 },
                             {
-                                where: { user_id: req.query.user_id },
-                                transaction : transaction
-                            }).then(data => { if (data[0][1] === 0) throw err})
+                                where: { user_id: req.query.user_id }
+                            })
                     }
                     else if (req.query.status === "etc") {
                         await character.increment(
                             { totalExp: 1 },
                             {
-                                where: { user_id: req.query.user_id },
-                                transaction : transaction
+                                where: { user_id: req.query.user_id }
                             })
-                            .then(data => { if (data[0][1] === 0) throw err})
+                            
                     }
-                    const todoInfo = await todo_list.findOne({
-                        where: { id: req.query.id }
-                    }, transaction).then(data => {if (data === null) throw err })
 
-                    const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } }, transaction)
+                    const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } })
                         .then(data => {
                             if (data === null) {
                                 throw err
                             }
                             else {
-                            return {
-                                ...data.dataValues,
-                                level: data.dataValues.totalExp / 100,
-                                exp: data.dataValues.totalExp % 100
-                            }
+                                return {
+                                    ...data.dataValues,
+                                    level: data.dataValues.totalExp / 100,
+                                    exp: data.dataValues.totalExp % 100
+                                }
                             }
                         })
-                           
-                    await transaction.commit()
+
+
                     res.status(200).json({
                         characterInfo: characterInfo,
                         todoInfo: todoInfo
                     })
                 }
                 catch (err) {
-                   await transaction.rollback();
+                    ;
                     res.status(400).json({ message: "실패" })
                 }
             }
             else {//취소할 떄
                 try {
+                    let todoInfo = ''
                     await todo_list.update({ is_complete: false },
                         {
                             where: {
                                 id: req.query.id,
                                 is_complete: true
-                            },
-                            transaction : transaction
-                        }).then(data => {if (data[0] === 0) throw err})
+                            }
+                        }).then(async data => {
+                            todoInfo = await todo_list.findOne({
+                                where: { id: req.query.id }
+                            })
+                        })
 
                     if (req.query.status === "phy") {
                         await character.decrement(
                             { status_phy: 1 },
                             {
-                                where: { user_id: req.query.user_id },
-                                transaction : transaction
-                            }).then(data => { if (data[0][1] === 0) throw err})
+                                where: { user_id: req.query.user_id }
+                            })
                     }
                     else if (req.query.status === "int") {
                         await character.decrement(
                             { status_int: 1 },
-                            {
-                                where: { user_id: req.query.user_id }
-                            }, transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "spi") {
                         await character.decrement(
                             { status_spi: 1 },
-                            {
-                                where: { user_id: req.query.user_id }
-                            }, transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "etc") {
                         await character.decrement(
                             { totalExp: 1 },
-                            {
-                                where: { user_id: req.query.user_id }
-                            }, transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
-                    const todoInfo = await todo_list.findOne({
-                        where: { id: req.query.id },
-                    }, transaction)
 
                     const characterInfo = await character.findOne(
-                        { where: { user_id: req.query.user_id } }, transaction)
+                        { where: { user_id: req.query.user_id } })
                         .then(data => {
                             return {
                                 ...data.dataValues,
@@ -236,10 +232,10 @@ module.exports = {
                         characterInfo: characterInfo,
                         todoInfo: todoInfo
                     })
-                    await transaction.commit()
+
                 }
                 catch (err) {
-                    await transaction.rollback()
+
                     res.status(400).json({ message: "실패" })
                 }
             }
@@ -248,63 +244,60 @@ module.exports = {
         else { //레이드 참가
             if (req.query.is_complete === '1') {
                 try {
-                    await todo_list.update({ is_complete: true },
+                    let todoInfo = ''
+                    await todo_list.update({ is_complete: 1 },
                         {
                             where: {
                                 id: req.query.id,
-                                is_complete: false
-                            },
-                            transaction : transaction
-                        }).then(data => {if (data[0] === 0) throw err})
-                        
+                                is_complete: 0
+                            }
+                        }).then(async data => {
+                                todoInfo = await todo_list.findOne({
+                                    where: { id: req.query.id }
+                                })
+                            })
+
                     if (req.query.status === "phy") {
                         await character.increment(
                             { status_phy: 1 },
-                            { where: { user_id: req.query.user_id },
-                            transaction : transaction})
-                            .then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "int") {
                         await character.increment(
                             { status_int: 1 },
-                            { where: { user_id: req.query.user_id },
-                            transaction : transaction})
-                            .then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "spi") {
                         await character.increment(
                             { status_spi: 1 },
-                            { where: { user_id: req.query.user_id },
-                            transaction : transaction})
-                            .then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "etc") {
                         await character.increment(
                             { totalExp: 1 },
-                            { where: { user_id: req.query.user_id },
-                            transaction : transaction})
-                            .then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
 
                     await damage_log.create(
-                        { log :  1 ,
-                          user_id : req.query.user_id,
-                          raid_id : req.query.raid_id
-                        }, transaction)
+                        {
+                            log: 1,
+                            user_id: req.query.user_id,
+                            raid_id: req.query.raid_id
+                        })
 
                     await monster.decrement(
                         { hp: 1 },
-                        {
-                            where: {
-                                id: req.query.raid_id
-                            },
-                            transaction : transaction
-                        }).then(data => { if (data[0][1] === 0) throw err})
+                        { where: { id: req.query.raid_id } })
+                        
 
-                    const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } }, transaction)
+                    const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
                     if (monsterInfo.dataValues.hp === 0) { // 몬스터를 잡았을 때
-                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } }, transaction)
-                        .then(data => {if (data === null) throw err })
+                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
+                            .then(data => { if (data === null) throw err })
 
                         const characterArray = await character.findAll(
                             {
@@ -315,15 +308,15 @@ module.exports = {
                                         where: { raid_id: req.query.raid_id } //raid 참가한 인원
                                     }
                                 }
-                            }, transaction)
+                            })
                         characterArray.forEach(el => {
                             character.decrement({
                                 level: monsterInfo.dataValues.reward
                             },
                                 { where: { id: el.dataValues.id } })
-                        }, transaction)
-                        const todoInfo = await todo_list.findOne({ where: { id: req.query.id } }, transaction)
-                        const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } }, transaction)
+                        })
+                        const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
+                        const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } })
                             .then(data => {
                                 return {
                                     ...data.dataValues,
@@ -331,14 +324,14 @@ module.exports = {
                                     exp: data.dataValues.totalExp % 100
                                 }
                             })
-                        await transaction.commit()
+
                         res.status(200).json({ message: "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo: characterInfo })
 
                     }
 
                     else { //monster를 잡지못하고 데미지만 넣었을 때
-                        const todoInfo = await todo_list.findOne({ where: { id: req.query.id } }, transaction)
-                        const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } }, transaction)
+                        const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
+                        const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } })
                             .then(data => {
                                 return {
                                     ...data.dataValues,
@@ -346,80 +339,82 @@ module.exports = {
                                     exp: data.dataValues.totalExp % 100
                                 }
                             })
-                        await transaction.commit()
+
                         res.status(200).json({ message: "데미지를 넣었습니다", todoInfo: todoInfo, characterInfo: characterInfo })
                     }
 
                 }
                 catch (err) {
-                    await transaction.rollback()
                     res.status(400).json({ message: "실패" })
                 }
             }
             else { // 취소
                 try {
+                    let todoInfo = ''
                     await todo_list.update({ is_complete: false },
                         {
                             where: {
                                 id: req.query.id,
                                 is_complete: true
-                            },
-                            transaction : transaction
+                            }
                         })
-                        .then(data => {if (data[0] === 0) throw err})
-                        
+                        .then(async data => {
+                            todoInfo = await todo_list.findOne({
+                                where: { id: req.query.id }
+                            })
+                        })
                     if (req.query.status === "phy") {
                         await character.decrement(
                             { status_phy: 1 },
-                            { where: { user_id: req.query.user_id } },
-                            transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "int") {
                         await character.decrement(
                             { status_int: 1 },
-                            { where: { user_id: req.query.user_id } },
-                            transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "spi") {
                         await character.decrement(
                             { status_spi: 1 },
-                            { where: { user_id: req.query.user_id } },
-                            transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
                     else if (req.query.status === "etc") {
                         await character.decrement(
                             { totalExp: 1 },
-                            { where: { user_id: req.query.user_id } },
-                            transaction).then(data => { if (data[0][1] === 0) throw err})
+                            { where: { user_id: req.query.user_id } })
+                            
                     }
 
                     await damage_log.findOne({
-                        where : { user_id : req.query.user_id,
-                            raid_id : req.query.user_id
+                        where: {
+                            user_id: req.query.user_id,
+                            raid_id: req.query.user_id
                         },
-                        include : { model: user,
-                            include : { model : todo_list,
-                                where : {id : req.query.id}
+                        include: {
+                            model: user,
+                            include: {
+                                model: todo_list,
+                                where: { id: req.query.id }
                             }
                         }
-                    }).then(async data => 
+                    }).then(async data =>
                         await damage_log.destroy(
                             {
-                                where : { id : data.dataValues.id}
+                                where: { id: data.dataValues.id }
                             })
                     )
 
                     await monster.decrement(
                         { hp: 1 },
-                        {
-                            where: {
-                                id: req.query.raid_id
-                            }
-                        }, transaction).then(data => { if (data[0][1] === 0) throw err})
-                
+                        { where: { id: req.query.raid_id } })
                         
-                    const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } }, transaction)
-                    
+
+
+                    const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
+
 
                     if (monsterInfo.dataValues.hp === 0) {
                         const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
@@ -448,12 +443,12 @@ module.exports = {
                                     exp: data.dataValues.totalExp % 100
                                 }
                             })
-                        await transaction.commit()
+
                         res.status(200).json({ message: "취소합니다", todoInfo: todoInfo, characterInfo: characterInfo })
                     }
                     else {
-                        const todoInfo = await todo_list.findOne({ where: { id: req.query.id } }, transaction)
-                        const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } }, transaction)
+                        const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
+                        const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } })
                             .then(data => {
                                 return {
                                     ...data.dataValues,
@@ -461,12 +456,11 @@ module.exports = {
                                     exp: data.dataValues.totalExp % 100
                                 }
                             })
-                        await transaction.commit()
+
                         res.status(200).json({ message: "취소합니다", todoInfo: todoInfo, characterInfo: characterInfo })
                     }
                 }
                 catch (err) {
-                    await transaction.rollback()
                     res.status(400).json({ message: "실패" })
                 }
             }
