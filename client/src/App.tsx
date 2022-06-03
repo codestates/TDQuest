@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import MainRouter from "./views/Router/Router";
-import { useAppSelector } from "./app/hooks";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { TDQuestAPI } from "./API/tdquestAPI";
+import { getUserData } from "./features/userinfo/userInfoSlice";
+import { getCharacterAsync } from "./features/character/characterSlice"
 
 function App() {
   const LOCALSTORAGE = window.localStorage;
@@ -11,24 +13,28 @@ function App() {
     ? JSON.parse(LOCALSTORAGE.getItem("isLogin") || "")
     : false;
   const verified_userId = localInfo ? localInfo.userInfo.id : false;
+  const dispatch = useAppDispatch();
 
   const InitializeUser = async () => {
     if (verified_userId) {
-      await TDQuestAPI.get(`userInfo/?id=${verified_userId}`)
-        .then((res) => {
-          console.log(
-            "------------------------------------------------- \n Initaialzie User success \n -------------------------------------------------"
-          );
-          console.log("userInfo by SignIn axios : ", res.data);
-          console.log("localStorage : ", localInfo);
-          console.log("reduxStore : ", userInfoRedux);
-        })
-        .catch((err) => {
-          console.log("Initialize err :", err);
-          LOCALSTORAGE.removeItem("isLogin");
-        });
-    }
-  };
+      try{
+        const userInfo = await TDQuestAPI.get(`userInfo/?id=${verified_userId}`);
+        dispatch(getUserData(userInfo.data))
+        // const charInfo = await TDQuestAPI.get(`character/?user_id=${verified_userId}`);
+        // dispatch(getCharacterAsync(charInfo))
+        console.log(
+          "------------------------------------------------- \n Initaialzie User success \n -------------------------------------------------"
+        );
+        console.log("userInfo by SignIn axios : ", userInfo.data);
+        console.log("localStorage : ", localInfo);
+        console.log("reduxStore : ", userInfoRedux);
+      }
+      catch(err : any){
+        console.log("Initialize err :", err);
+        LOCALSTORAGE.removeItem("isLogin");
+      };
+    };
+  }
 
   useEffect(() => {
     InitializeUser();

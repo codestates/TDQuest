@@ -71,10 +71,12 @@ function InputBox({state, handler}: { state : boolean, handler : any }) {
       <FormContainer onSubmit={(value)=>handleSubmit(value)}>
         {oauthState? 
         <OauthContainer>
-          <Button bgColor="#f9e000" text="Sign in with kakao" type="button" onClick={()=>{window.open(kakao_url)}} />
-          <Button bgColor="#fa6c67" text="Sign in with google" type="button" onClick={()=>{window.open(google_url)}} />
+          {/* <Button bgColor="#f9e000" text="Sign in with kakao" type="button" img={<img src={require("../static/images/kakao.png")}/>} onClick={()=>{dispatch(signOauth('KaKao'))}} /> */}
+          <Button bgColor="#f9e000" text="Sign in with kakao" type="button" img={<img src={require("../static/images/kakao.png")}/>} onClick={()=>{window.open(kakao_url)}} />
+          {/* <Button bgColor="#fa6c67" text="Sign in with google" type="button" img={<img src={require("../static/images/google.png")}/>} onClick={()=>{dispatch(signOauth('google'))}} /> */}
+          <Button bgColor="#fa6c67" text="Sign in with google" type="button" img={<img src={require("../static/images/google.png")}/>} onClick={()=>{window.open(google_url)}} />
           <span>OR</span>
-          <Button text="Sign In" type="button" onClick={()=>{setOauthState(false)}} />
+          <Button text="Sign In" type="button" img={<img src={require("../static/images/Logo.png")}/>} onClick={()=>{setOauthState(false)}} />
         </OauthContainer>
         :
         <div>

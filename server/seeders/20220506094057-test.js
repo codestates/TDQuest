@@ -66,7 +66,6 @@ module.exports = {
       status_phy: 200.5,
       status_int: 0,
       status_spi: 0,
-      status_etc: 50,
       medal: 'gold',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -152,55 +151,95 @@ module.exports = {
     }
   ]);
 
-  const monsterId = await queryInterface.bulkInsert('monsters', [{
-    monster_image : "test.jpg",
-    kind : 'phy',
-    name : 'mustlemon',
-    hp : 5000,
-    reward : 50,
+  const monster1 = await queryInterface.bulkInsert('monsters', [
+    {
+      monster_image: "test.jpg",
+      kind: "int",
+      name: "solomon",
+      hp: 9000,
+      reward: 50,
     createdAt: new Date(),
     updatedAt: new Date(),
-  }]);
+  }])
+  
+  const monster2 = await queryInterface.bulkInsert('monsters', [
+    {
+      monster_image: "test.jpg",
+      kind: "phy",
+      name: "boxing",
+      hp: 3000,
+      reward: 30,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }])
+ 
+  const monster3 = await queryInterface.bulkInsert('monsters', [
+    {
+      monster_image: "test.jpg",
+      kind: "ant",
+      name: "spi",
+      hp: 1,
+      reward: 50,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }])
 
-  const raidsId = await queryInterface.bulkInsert('raids', [{
+
+  const raids1= await queryInterface.bulkInsert('raids', [
+    {
     createdAt: new Date(),
     updatedAt: new Date(),
-    monster_id : monsterId
-  }]);
+    monster_id : monster1
+    }]);
+  
+    const raids2 = await queryInterface.bulkInsert('raids', [
+      {
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      monster_id : monster2
+      }]);
+
+      const raids3 = await queryInterface.bulkInsert('raids', [
+        {
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        monster_id : monster3
+        }]);
+
 
   const damage_log_Id1 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
-    raid_id : raidsId,
+    raid_id : raids1,
     user_id : userId1
   }]);
   const damage_log_Id2 = await queryInterface.bulkInsert('damage_logs', [{
     log: 40,
     createdAt: new Date(),
     updatedAt: new Date(),
-    raid_id : raidsId,
+    raid_id : raids1,
     user_id : userId1
   }]);
   const damage_log_Id3 = await queryInterface.bulkInsert('damage_logs', [{
     log: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
-    raid_id : raidsId,
+    raid_id : raids2,
     user_id : userId1
   }]);
   const damage_log_Id4 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
-    raid_id : raidsId,
+    raid_id : raids2,
     user_id : userId2
   }]);
   const damage_log_Id5 = await queryInterface.bulkInsert('damage_logs', [{
     log: 30,
     createdAt: new Date(),
     updatedAt: new Date(),
-    raid_id : raidsId,
+    raid_id : raids3,
     user_id : userId3
   }]);
 },

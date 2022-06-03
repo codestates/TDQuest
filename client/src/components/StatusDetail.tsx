@@ -48,8 +48,12 @@ const StatusBar = styled.div<{ isExp?: boolean; value?: number }>`
 `;
 
 const StatusValue = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 10%;
   font-size: 1.1rem;
   font-family: "Fredoka One", cursive;
+  margin-right: 5px;
 `;
 
 function StatusDetail({
