@@ -66,7 +66,7 @@ export const patchTodoListAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .put(
+        .patch(
           `${APIMAIN}/todo?id=${arg.id}`,
           {
             content: arg.content,
@@ -111,7 +111,7 @@ export const todoStatusChangeAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       const data = axios
-        .put(
+        .patch(
           `${APIMAIN}/todo/complete?user_id=${arg.user_id}&status=${arg.kind}&id=${arg.id}&is_complete=${arg.is_complete}`,
           {
             // is_complete: arg.is_complete,
@@ -208,9 +208,10 @@ export const todolistSlice = createSlice({
       })
       .addCase(todoStatusChangeAsync.fulfilled, (state, action) => {
         // todo완료/취소 했을때
-        console.log(action.payload.characterInfo);
+        console.log(action.payload);
 
-        const is_complete: boolean = action.payload.todoInfo.is_complete;
+        const is_complete: any = action.payload.todoInfo.is_complete;
+
         const targetId: number = action.payload.todoInfo.id;
         // 추가해야할 부분 => 스토어의 케릭터 스탯 업데이트 ::
 
