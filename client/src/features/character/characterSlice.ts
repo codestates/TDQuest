@@ -1,15 +1,37 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import axios from 'axios';
+import { TDQuestAPI } from '../../API/tdquestAPI';
 
 export interface CharacterState {
-  value: number;
-  status: 'idle' | 'loading' | 'failed';
+  createdAt: string
+  exp: number
+  id: number
+  image: any
+  level: number
+  medal: any
+  status_int: number
+  status_phy: number
+  status_spi: number
+  totalExp: number
+  updatedAt: string
+  user_id: number
+  status : string
 }
 
 const initialState: CharacterState = {
-  value: 0,
-  status: 'idle',
+  status : '',
+  createdAt: '',
+  exp: 0,
+  id: 0,
+  image: 0,
+  level: 0,
+  medal: 0,
+  status_int: 0,
+  status_phy: 0,
+  status_spi: 0,
+  totalExp: 0,
+  updatedAt: '',
+  user_id: 0,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -27,9 +49,13 @@ export const getCharacterAsync = createAsyncThunk(
   // }
   //example:::
   'get/:id',
-  async (arg) => {
-    const response = await axios.get(`http://localhost:3001/get/${arg}`);
-    return response.data;
+  async (arg : string) => {
+    try {
+      const response = await TDQuestAPI.get(`character/?user_id=${arg}`);
+      return response.data;
+    } catch (err:any){
+      console.log(err.response);
+    }
   }
 );
 
@@ -61,8 +87,7 @@ export const characterSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getCharacterAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
-        // state.value += action.payload;
+        return {...state, ...action.payload}
       })
       .addCase(getCharacterAsync.rejected, (state) => {
         state.status = 'failed';
