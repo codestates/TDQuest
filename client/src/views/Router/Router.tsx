@@ -26,7 +26,7 @@ function MainRouter() {
         <Route path='/sign' element={<SignPage />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/raidjoin' element={<RaidJoinPage />} />
-        <Route path='/raid' element={<RaidPage />} />
+        <Route path='/raid' element={(isLogin.damage_logInfo)? <RaidPage/> : <RaidJoinPage/>}/>
         <Route path='/ranking' element={<RankingPage />} />
       </Routes>
       <Footer />
