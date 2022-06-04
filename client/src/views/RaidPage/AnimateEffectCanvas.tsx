@@ -10,7 +10,13 @@ export const Canvas = styled.canvas`
   image-rendering: pixelated;
 `;
 
-function AnimateEffectCanvas({imageX, imageY}: {imageX?: string, imageY?: string}) {
+function AnimateEffectCanvas({
+  imageX,
+  imageY,
+}: {
+  imageX?: string;
+  imageY?: string;
+}) {
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
 
@@ -21,10 +27,14 @@ function AnimateEffectCanvas({imageX, imageY}: {imageX?: string, imageY?: string
     const ctx = canvas?.getContext("2d");
 
     const image = new Image();
-    if (imageX && !imageY) {
-      image.src = require("../../static/images/monsters/effects/" + imageX + ".png");
-    } else if (!imageX && imageY) {
-      image.src = require("../../static/images/monsters/effects/" + imageY + ".png");
+    if (imageX && imageY === "") {
+      image.src = require("../../static/images/monsters/effects/" +
+        imageX +
+        ".png");
+    } else if (imageX === "" && imageY) {
+      image.src = require("../../static/images/monsters/effects/" +
+        imageY +
+        ".png");
     }
     const spriteWidth = 32;
     const spriteHeight = 32;
@@ -52,7 +62,7 @@ function AnimateEffectCanvas({imageX, imageY}: {imageX?: string, imageY?: string
           spriteWidth,
           spriteHeight
         );
-  
+
         ctx?.drawImage(
           image,
           frameX * spriteWidth,
@@ -76,9 +86,9 @@ function AnimateEffectCanvas({imageX, imageY}: {imageX?: string, imageY?: string
           30,
           35,
           FireWidth,
-          FireHeight,
+          FireHeight
         );
-        
+
         ctx?.drawImage(
           image,
           frameX_column * FireWidth,
@@ -86,7 +96,7 @@ function AnimateEffectCanvas({imageX, imageY}: {imageX?: string, imageY?: string
           FireWidth,
           FireHeight,
           230,
-          60,
+          75,
           FireWidth,
           FireHeight
         );

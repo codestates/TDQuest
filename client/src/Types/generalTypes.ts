@@ -74,4 +74,23 @@ export type DamageLogType = {
 
 export type Objtype = {
   [key: string]: number;
-}
+};
+
+export type RaidsType = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  monster_id: number;
+};
+
+export type MonsterInfoType = {
+  id: number;
+  monster_image: string;
+  kind: string;
+  name: string;
+  hp: number;
+  reward: number;
+  createdAt: string;
+  updatedAt: string;
+  raids: RaidsType;
+};
