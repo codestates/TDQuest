@@ -28,7 +28,7 @@ export const RaidJoinContainer = styled.div`
   font-family : 'Fredoka One', cursive;
 `;
 
-export const ParticipateContainer = styled.form`
+export const ParticipateContainer = styled.div`
   height: 100%;
   min-height: 90vh;
   display: flex;
@@ -138,13 +138,7 @@ export const SlideContainer = styled.div`
     width: 1500px;
   }
 `
-// export const RaidInfoBoxContainer = styled.div<{
-//   name : string, 
-//   hp : string,
-//   reward : string,
-//   image : string
-//   }>`
-export const RaidInfoBoxContainer = styled.div`
+export const RaidInfoBox = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
@@ -207,15 +201,14 @@ export const BossInfo = styled.div`
     font-weight: bolder;
     font-family: "OpenSans";
   }
-  @media (max-width:1200px) {
-    > div:first-child{
-      font-size: ${fontSize_h2_tablet};
-    }
-  }
+
 
   @media (max-width:1000px) {
     img {
       height : ${fontSize_h2_tablet};
+    }
+    > div:first-child{
+      font-size: ${fontSize_h2_tablet};
     }
   }
 
