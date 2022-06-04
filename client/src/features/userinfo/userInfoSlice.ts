@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import { TDQuestAPI } from "../../API/tdquestAPI";
 import { UserDataType } from "../../Types/generalTypes";
 
