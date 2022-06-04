@@ -8,7 +8,7 @@ import {
 
  const HpBarContainer = styled.div<{max : number, current : number}>`
   /* width : 90%; */
-  width : 17rem; 
+  width : 15rem; 
   height : ${fontSize_h2_laptop};
   margin-left: 1rem;
   display : flex;
@@ -24,20 +24,20 @@ import {
     border-radius: 5px;
     background-color : #8d8c8c;
     height : ${fontSize_h2_laptop};
-    width : 17rem;
+    width : 15rem;
   }
   //current hp 사이즈
   > div:last-child {
     position: absolute;
-    border-radius: 5px 0px 0px 5px;
+    border-radius: 5px;
     z-index : 1;
     height : ${fontSize_h2_laptop};
-    width : ${props => 17 * (props.current / props.max)}rem;
+    width : ${props => 15 * (props.current / props.max)}rem;
     background-color: ${color_primary_green_medium};
   }
 
   > p {
-    width: 17rem;
+    width: 15rem;
     position: absolute;
     text-align: center;
     z-index: 2;
@@ -60,6 +60,16 @@ import {
     }
     > div:last-child{
       width : ${props => 9 * (props.current / props.max)}rem;
+    }
+  }
+
+  @media (max-width:768px) {
+    width : 15rem;
+    > div, > p{
+      width : 15rem;
+    }
+    > div:last-child{
+      width : ${props => 15 * (props.current / props.max)}rem;
     }
   }
 

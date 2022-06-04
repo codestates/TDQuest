@@ -8,15 +8,12 @@ import {
   Foot,
   NavDot,
   SlideContainer,
-  RaidInfoBoxContainer,
-  BossInfo,
-  BossView,
-  BossReward,
 } from './RaidJoinStyle'
-import HpBar from './HpBar'
+import Loading from '../../components/Loading';
+import RaidInfoBox from './RaidInfoBox';
 import { useNavigate } from 'react-router-dom';
 //!
-import {TDQuestAPI} from '../../API/tdquestAPI'
+import { TDQuestAPI } from '../../API/tdquestAPI'
 
 function RaidJoinPage() {
   const [currentPage, setCurrentPage] = useState({
@@ -28,7 +25,8 @@ function RaidJoinPage() {
     getLeftTime(initialTime.getDay() === 6 || initialTime.getDay() === 0, initialTime)
     );
   const [canRaid, setCanRaid] = useState(initialTime.getDay() === 6 || initialTime.getDay() === 0);
-  
+  const [monsterInfo, setMonsterInfo] = useState([{name : ""}, {}, {}])
+  const [loading, setLoading] = useState(true);
   const slidePage = useRef<any>(null);
   let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
   const navigate = useNavigate();
@@ -129,8 +127,13 @@ function RaidJoinPage() {
     } 
   };
 
-  const handleParticipate = () => {
-    canRaid? navigate("/raid") : alert("you can raid only weekend")
+  const handleParticipate = (monsterId : number) => {
+    if (canRaid){
+      participate(monsterId);
+      alert("참가 신청 완료")
+    } else {
+      alert("you can raid only weekend")
+    }
   }
 
   const participate = async(monsterId : number) => {
@@ -145,17 +148,33 @@ function RaidJoinPage() {
       console.log(err)
     }
   }
+
+  const getMonsterInfo = async ()=>{
+    try{
+      const monster1 = await TDQuestAPI.get('/monster/?monster_id=7');
+      const monster2 = await TDQuestAPI.get('/monster/?monster_id=8');
+      const monster3 = await TDQuestAPI.get('/monster/?monster_id=9');
+      setMonsterInfo([monster1.data, monster2.data, monster3.data])
+    } catch(err){
+      console.log(err)
+    }
+  }
+
   useEffect(()=>{
-    initialTime = new Date();
-    let newisLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
-    console.log('etst',newisLogin)
-    setTimeout(()=>handleTime(initialTime), 30000)
+    if(loading){
+      initialTime = new Date();
+      // let newisLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
+      // console.log('storage:', newisLogin)
+      getMonsterInfo();
+      setLoading(false);
+    }
+    setTimeout(()=>handleTime(initialTime), 30000);
   }, [leftTime]);
 
   return (
   <RaidJoinContainer>
-    //!
-    <button onClick={()=>participate(currentPage.id)}>참가버튼 테스트</button>
+    {loading? (<Loading customText="Loading..." />):
+    (
     <ParticipateContainer>
       <Header>
         <div>
@@ -176,151 +195,21 @@ function RaidJoinPage() {
 
       <Body>
         <SlideContainer ref={slidePage}>
-          <RaidInfoBoxContainer>
-            <BossInfo>
-              <div>
-                <span>
-                  <img src={require('../../static/images/icons/flag.png')}/>
-                  Fire Dragon
-                </span>
-                <span>
-                  LV3
-                </span>
-              </div>
-              <div>
-                {'The dragon who live in muscle areas,\nHe has beautiful muscle scale and claws...\nparticipate this raid and get awards'}
-              </div>
-            </BossInfo>
-            <BossView>
-              <img src={require("../../static/images/monster_int.gif")}></img>
-              <div>
-                HP 
-                <HpBar max={12345} current={12340}/>
-              </div>
-            </BossView>
-            <BossReward>
-             <div>
-                <span>
-                  <img src={require("../../static/images/icons/Ring.png")}/>
-                  {` Expected Reward`}
-                </span>
-              </div>
-              <div>
-                <ul>
-                  <li>PHY +5 point</li>
-                  <li>INT +1 point</li>
-                  <li>SPI +1 point</li>
-                </ul>
-
-                <ul>
-                  <li>Armor of dragon scale</li>
-                  <li>Sword of dragon</li>
-                  <li>Random Pet egg(rare)</li>
-                </ul>
-              </div>
-            </BossReward>
-          </RaidInfoBoxContainer>
-
-          <RaidInfoBoxContainer>
-            <BossInfo>
-              <div>
-                <span>
-                  <img src={require('../../static/images/icons/flag.png')}/>
-                  Fire Dragon
-                </span>
-                <span>
-                  LV3
-                </span>
-              </div>
-              <div>
-                {'The dragon who live in muscle area,\nHe has beautiful muscle scale and claws...\nparticipate this raid and get awards'}
-              </div>
-            </BossInfo>
-            <BossView>
-              <img src={require("../../static/images/monster_phy.gif")}></img>
-              <div>
-                HP 
-                <HpBar max={10} current={9}/>
-              </div>
-            </BossView>
-            <BossReward>
-              <div>
-                <span>
-                  <img src={require("../../static/images/icons/Ring.png")}/>
-                  {` Expected Reward`}
-                </span>
-              </div>
-              <div>
-                <ul>
-                  <li>PHY +5 point</li>
-                  <li>INT +1 point</li>
-                  <li>SPI +1 point</li>
-                </ul>
-
-                <ul>
-                  <li>Armor of dragon scale</li>
-                  <li>Sword of dragon</li>
-                  <li>Random Pet egg(rare)</li>
-                </ul>
-              </div>
-            </BossReward>
-          </RaidInfoBoxContainer>
-
-          <RaidInfoBoxContainer>
-            <BossInfo>
-              <div>
-                <span>
-                  <img src={require('../../static/images/icons/flag.png')}/>
-                  Fire Dragon
-                </span>
-                <span>
-                  LV3
-                </span>
-              </div>
-              <div>
-                {'The dragon who live in muscle area,\nHe has beautiful muscle scale and claws...\nparticipate this raid and get awards'}
-              </div>
-            </BossInfo>
-            <BossView>
-              <img src={require("../../static/images/monster_spi.gif")}></img>
-              <div>
-                HP 
-                <HpBar max={20} current={5}/>
-              </div>
-            </BossView>
-            <BossReward>
-              <div>
-                <span>
-                  <img src={require("../../static/images/icons/Ring.png")}/>
-                  {` Expected Reward`}
-                </span>
-              </div>
-              <div>
-                <ul>
-                  <li>PHY +5 point</li>
-                  <li>INT +1 point</li>
-                  <li>SPI +1 point</li>
-                </ul>
-
-                <ul>
-                  <li>Armor of dragon scale</li>
-                  <li>Sword of dragon</li>
-                  <li>Random Pet egg(rare)</li>
-                </ul>
-              </div>
-            </BossReward>
-          </RaidInfoBoxContainer>
+          <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox>
+          <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox>
+          <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox>
         </SlideContainer>
       </Body>
       
       <Foot>
         <span>
-          <Button text={"Participate !"} width={"270px"} height={"60px"} fontSize={"32px"} onClick={handleParticipate}/>
+          <Button text={"Participate !"} width={"270px"} height={"60px"} fontSize={"32px"} onClick={()=>handleParticipate(currentPage.id)}/>
           <img src={require("../../static/images/HelperBear.png")}/>
         </span>
         {canRaid? `Raid Start Time Left` : `Until Raid Time`} : {`${leftTime.days}d ${leftTime.hours}h ${leftTime.mins}min`}
       </Foot>
     </ParticipateContainer> 
+    )}
   </RaidJoinContainer>
   )
 }
