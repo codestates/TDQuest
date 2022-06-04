@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { UserDataType } from '../../Types/generalTypes';
-import axios from 'axios';
-
-const url = 'https://tdquest.tk';
+import { TDQuestAPI } from '../../API/tdquestAPI';
 
 export interface SignUserInfo {
   status: string;
@@ -18,7 +16,7 @@ export const initialState: SignUserInfo = {
 
 export const signIn = createAsyncThunk('sign/in', async (data: any) => {
   try {
-    const response = await axios.post(`${url}/log/in`, data);
+    const response = await TDQuestAPI.post(`/log/in`, data);
     console.log('response:', response);
     const isLogin = { status: 'loggedIn', ...response.data };
     localStorage.setItem('isLogin', JSON.stringify(isLogin));
@@ -35,7 +33,7 @@ export const signIn = createAsyncThunk('sign/in', async (data: any) => {
 
 export const signUp = createAsyncThunk('sign/up', async (data: any) => {
   try {
-    const response = await axios.post(`${url}/sign/in`, data);
+    const response = await TDQuestAPI.post(`/sign/in`, data);
     console.log(response);
     window.location.href = '/sign';
     alert('회원가입 완료!');

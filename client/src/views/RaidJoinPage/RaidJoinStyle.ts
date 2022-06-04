@@ -28,7 +28,7 @@ export const RaidJoinContainer = styled.div`
   font-family : 'Fredoka One', cursive;
 `;
 
-export const ParticipateContainer = styled.div`
+export const ParticipateContainer = styled.form`
   height: 100%;
   min-height: 90vh;
   display: flex;
@@ -42,7 +42,6 @@ export const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   > div:first-child{
     display: flex;
     flex-direction: row;
@@ -53,7 +52,6 @@ export const Header = styled.div`
     @media (max-width:768px) {
       font-size : ${fontSize_h1_mobile};
     }
-
     @media (max-width:500px) {
       font-size : ${fontSize_h3_mobile};
     }
@@ -76,7 +74,6 @@ export const Header = styled.div`
         @media (max-width:768px) {
           height: ${fontSize_h1_mobile};
         }
-
         @media (max-width:400px) {
           height : ${fontSize_h3_mobile};
         }
@@ -117,7 +114,6 @@ export const Body = styled.div`
   @media (max-width:1200px) {
     width : 700px;
   }
-
   @media (max-width:768px) {
     width : 400px;
   }
@@ -133,19 +129,23 @@ export const SlideContainer = styled.div`
   /* height: 30%; */
   //!
   transition-duration: 0.5s;
-
   @media (max-width:768px) {
     width: 1500px;
   }
 `
-export const RaidInfoBox = styled.div`
+// export const RaidInfoBoxContainer = styled.div<{
+//   name : string, 
+//   hp : string,
+//   reward : string,
+//   image : string
+//   }>`
+export const RaidInfoBoxContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
   width : 100%;
-
   > div {
     //!
     width : 25%;
@@ -154,18 +154,15 @@ export const RaidInfoBox = styled.div`
     align-items: center;
     //!
   }
-
   > div:nth-child(2) {
     width : 30%;
   }
-
   @media (max-width:768px) {
     width: 500px;
     flex-wrap : wrap;
     > div {
       width : 150px;
     }
-
     > div:nth-child(2){
       width: 353px;
       order : -1;
@@ -178,11 +175,9 @@ export const BossInfo = styled.div`
     flex-direction: column;
     align-items: center;
   }
-
   img {
     height : ${fontSize_h2_laptop};
   }
-
   > div:first-child{
     padding-top : 2rem;
     display: flex;
@@ -193,7 +188,6 @@ export const BossInfo = styled.div`
     font-size: ${fontSize_h2_laptop};
     color : ${color_menu_header_purple}
   }
-
   > div:nth-child(2) {
     padding-top : 1.5rem;
     text-align: center;
@@ -201,17 +195,16 @@ export const BossInfo = styled.div`
     font-weight: bolder;
     font-family: "OpenSans";
   }
-
-
-  @media (max-width:1000px) {
-    img {
-      height : ${fontSize_h2_tablet};
-    }
+  @media (max-width:1200px) {
     > div:first-child{
       font-size: ${fontSize_h2_tablet};
     }
   }
-
+  @media (max-width:1000px) {
+    img {
+      height : ${fontSize_h2_tablet};
+    }
+  }
   @media (max-width:768px) {
     img {
       height : ${fontSize_h2_mobile};
@@ -220,7 +213,6 @@ export const BossInfo = styled.div`
       padding-top: 0rem ;
       font-size: ${fontSize_h2_mobile};
     }
-
     > div:nth-child(2){
       padding-top: 0rem;
     }
@@ -246,7 +238,6 @@ export const BossView = styled.div`
     align-items: center;
     font-size: ${fontSize_h2_laptop};
   }
-
   @media (max-width:768px) {
     > div {
       margin-top: 1rem;
@@ -264,20 +255,16 @@ export const BossReward = styled.div`
     align-items: center;
     justify-content: space-around;
     text-align: center;
-
   }
-
   > div:first-child{
     height : 2.5rem;
     background-color: ${color_context_brown};
   }
-
   > div:nth-child(2){
     background-color: ${color_secondary_beige};
     height : 13rem;
     line-height: 140%;
   }
-
   @media (max-width:1000px) {
     > div:first-child{
       font-size : ${fontSize_body_mobile_medium};
@@ -286,7 +273,6 @@ export const BossReward = styled.div`
       font-size : ${fontSize_body_mobile_small}
     }
   }
-
   @media (max-width:768px) {
     > div:first-child{
       margin-top: 1rem;
@@ -300,7 +286,6 @@ export const Foot = styled.div`
   width : 100%;
   margin : 1rem;
   margin-bottom: 4rem;
-
   > span {
     display: flex;
     align-items: center;
@@ -326,5 +311,3 @@ export const StandByContainer = styled.div`
     }
   }
 `
-
-
