@@ -19,7 +19,7 @@ function App() {
     if (verified_userId) {
       try{
         const userInfo = await TDQuestAPI.get(`userInfo/?id=${verified_userId}`);
-        dispatch(getUserData(userInfo.data.id))
+        dispatch(getUserData(String(userInfo.data.id)))
         // const charInfo = await TDQuestAPI.get(`character/?user_id=${verified_userId}`);
         // dispatch(getCharacterAsync(charInfo))
         console.log(
