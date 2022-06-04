@@ -7,9 +7,10 @@ const { makeAccessToken, makeRefreshToken } = require("../../middleware/token");
 
 module.exports = {
   kakao: async (req, res) => {
-    return res.redirect(
-      `https://kauth.kakao.com/oauth/authorize?client_id=3554b2f431d5904cbc02157e94f32984&redirect_uri=http://localhost:3001/oauth/kakao/callback&response_type=code`
-    );
+    return res.redirect(`${process.env.KAKAO_URL}/
+      authorize?client_id=${process.env.KAKAO_ID}&
+      redirect_uri=${process.env.KAKAO_REDIRECT}&
+      response_type=code`);
   },
 
   callback: async (req, res) => {
@@ -62,13 +63,11 @@ module.exports = {
             level: character.dataValues.totalExp / 100,
             exp: character.dataValues.totalExp % 100,
           };
-          res
-            .cookie("refreshToken", refreshToken)
-            .json({
-              characterInfo: characterInfo,
-              accessToken: accessToken,
-              damage_logInfo: damage_logInfo,
-            });
+          res.cookie("refreshToken", refreshToken).json({
+            characterInfo: characterInfo,
+            accessToken: accessToken,
+            damage_logInfo: damage_logInfo,
+          });
         }); //{ httpOnly: true}
     } //{ httpOnly: true}
     else {
@@ -93,13 +92,11 @@ module.exports = {
                 const refreshToken = makeRefreshToken(
                   userInfo.dataValues.email
                 );
-                res
-                  .cookie("refreshToken", refreshToken)
-                  .json({
-                    characterInfo: characterInfo,
-                    accessToken: accessToken,
-                    damage_logInfo: damage_logInfo,
-                  });
+                res.cookie("refreshToken", refreshToken).json({
+                  characterInfo: characterInfo,
+                  accessToken: accessToken,
+                  damage_logInfo: damage_logInfo,
+                });
               });
           }); //{ httpOnly: true}
       } catch (err) {
