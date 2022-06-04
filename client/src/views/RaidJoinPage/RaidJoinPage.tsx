@@ -8,61 +8,43 @@ import {
   Foot,
   NavDot,
   SlideContainer,
-  RaidInfoBoxContainer,
+  RaidInfoBox,
   BossInfo,
   BossView,
   BossReward,
+  StandByContainer,
 } from './RaidJoinStyle'
 import HpBar from './HpBar'
 import { useNavigate } from 'react-router-dom';
-//!
-import {TDQuestAPI} from '../../API/tdquestAPI'
+import { Toast } from '../../components/Toast'
 
 function RaidJoinPage() {
-  const [currentPage, setCurrentPage] = useState({
-    page : "PHY",
-    id : 8,
-  });
+  const [currentPage, setCurrentPage] = useState("PHY");
   let initialTime = new Date()
   const [leftTime, setLeftTime] = useState(
     getLeftTime(initialTime.getDay() === 6 || initialTime.getDay() === 0, initialTime)
     );
   const [canRaid, setCanRaid] = useState(initialTime.getDay() === 6 || initialTime.getDay() === 0);
-  
+    
   const slidePage = useRef<any>(null);
-  let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
   const navigate = useNavigate();
   
   const handleSlide = (direction : string) => {
     if (direction === "left"){
-      if (currentPage.page === "PHY" && slidePage.current){
+      if (currentPage === "PHY" && slidePage.current){
         slidePage.current.style.transform = "translate(calc(100%/3))"
-        setCurrentPage({
-          page : "INT", 
-          id : 7
-        })
-      } else if (currentPage.page === "SPI" && slidePage.current){
+        setCurrentPage("INT")
+      } else if (currentPage === "SPI" && slidePage.current){
         slidePage.current.style.transform = ""
-        setCurrentPage({
-          page : "PHY",
-          id : 8
-        }
-          
-        )
+        setCurrentPage("PHY")
       }
     } else {
-      if (currentPage.page === "PHY" && slidePage.current){
+      if (currentPage === "PHY" && slidePage.current){
         slidePage.current.style.transform = "translate(calc(-100%/3))"
-        setCurrentPage({
-          page :"SPI",
-          id : 9
-        })
-      } else if (currentPage.page === "INT" && slidePage.current){
+        setCurrentPage("SPI")
+      } else if (currentPage === "INT" && slidePage.current){
         slidePage.current.style.transform = ""
-        setCurrentPage({
-          page :"PHY",
-          id : 8
-        })
+        setCurrentPage("PHY")
       }
     }
   };
@@ -70,26 +52,17 @@ function RaidJoinPage() {
   const handleDot= (location : string) => {
     if (location === "left"){
       slidePage.current.style.transform = "translate(calc(100%/3))"
-      setCurrentPage({
-        page : "INT" ,
-        id : 7
-      })
+      setCurrentPage("INT")
     } 
     
     if (location === "center"){
       slidePage.current.style.transform = ""
-      setCurrentPage({
-        page : "PHY",
-        id : 8
-      })
+      setCurrentPage("PHY")
     } 
     
     if (location === "right"){
       slidePage.current.style.transform = "translate(calc(-100%/3))"
-      setCurrentPage({
-        page : "SPI",
-        id : 9
-      })
+      setCurrentPage("SPI")
     } 
   };
 
@@ -123,9 +96,12 @@ function RaidJoinPage() {
     if (currentTime.getDay() === 6 || currentTime.getDay() === 0){
       setLeftTime(getLeftTime(true, currentTime));
       setCanRaid(true)
+      console.log(leftTime)
     } else {
       setLeftTime(getLeftTime(false, currentTime));
       setCanRaid(false)
+      console.log('left',leftTime)
+      console.log(currentTime)
     } 
   };
 
@@ -133,50 +109,34 @@ function RaidJoinPage() {
     canRaid? navigate("/raid") : alert("you can raid only weekend")
   }
 
-  const participate = async(monsterId : number) => {
-    try{
-      const paricipateFunc = await TDQuestAPI.post(`/raids/invite?user_id=${isLogin.userInfo.id}&raid_id=${monsterId}`)
-      console.log(paricipateFunc)
-      const damage_logInfo = await TDQuestAPI.get(`/raids/damage_logs?raid_id=${monsterId}`)
-      const newIsLogin = {...isLogin, damage_logInfo}
-      localStorage.setItem('isLogin', JSON.stringify(newIsLogin));
-      navigate("/raid")
-    } catch(err){
-      console.log(err)
-    }
-  }
   useEffect(()=>{
     initialTime = new Date();
-    let newisLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
-    console.log('etst',newisLogin)
-    setTimeout(()=>handleTime(initialTime), 30000)
+    setInterval(()=>{handleTime(initialTime)}, 30000)
   }, [leftTime]);
 
   return (
   <RaidJoinContainer>
-    //!
-    <button onClick={()=>participate(currentPage.id)}>참가버튼 테스트</button>
     <ParticipateContainer>
       <Header>
         <div>
           <span onClick={()=>handleSlide("left")}>{` < `}</span>
           <span>
             <img src={require('../../static/images/icons/RaidPageHeader.png')}/>
-            {` This Week's Boss Raid (${currentPage.page})`}
+            {` This Week's Boss Raid (${currentPage})`}
           </span>
           <span onClick={()=>handleSlide("right")}>{` > `}</span>
         </div>
 
         <div>
-          <NavDot thisDot='INT' state={currentPage.page} onClick={()=>handleDot("left")}>●</NavDot>
-          <NavDot thisDot='PHY' state={currentPage.page} onClick={()=>handleDot("center")}>●</NavDot>
-          <NavDot thisDot='SPI' state={currentPage.page} onClick={()=>handleDot("right")}>●</NavDot>
+          <NavDot thisDot='INT' state={currentPage} onClick={()=>handleDot("left")}>●</NavDot>
+          <NavDot thisDot='PHY' state={currentPage} onClick={()=>handleDot("center")}>●</NavDot>
+          <NavDot thisDot='SPI' state={currentPage} onClick={()=>handleDot("right")}>●</NavDot>
         </div>
       </Header>
 
       <Body>
         <SlideContainer ref={slidePage}>
-          <RaidInfoBoxContainer>
+          <RaidInfoBox>
             <BossInfo>
               <div>
                 <span>
@@ -219,9 +179,9 @@ function RaidJoinPage() {
                 </ul>
               </div>
             </BossReward>
-          </RaidInfoBoxContainer>
+          </RaidInfoBox>
 
-          <RaidInfoBoxContainer>
+          <RaidInfoBox>
             <BossInfo>
               <div>
                 <span>
@@ -264,9 +224,9 @@ function RaidJoinPage() {
                 </ul>
               </div>
             </BossReward>
-          </RaidInfoBoxContainer>
+          </RaidInfoBox>
 
-          <RaidInfoBoxContainer>
+          <RaidInfoBox>
             <BossInfo>
               <div>
                 <span>
@@ -309,7 +269,7 @@ function RaidJoinPage() {
                 </ul>
               </div>
             </BossReward>
-          </RaidInfoBoxContainer>
+          </RaidInfoBox>
         </SlideContainer>
       </Body>
       

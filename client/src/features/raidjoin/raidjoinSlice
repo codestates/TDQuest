@@ -1,18 +1,67 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { TDQuestAPI } from "../../API/tdquestAPI";
+// import { createSlice } from '@reduxjs/toolkit';
 
-export interface damageLogInfo {
-  log : string;
-  created_at : string; 
-  updated_at : string;
-  user_id : string;
-  raid_id : string;
-}
+// type LeftTime = {
+//   days : number,
+//   hours : number,
+//   mins : number
+// }
+// // 시간 구하기..
 
-export const initialState: damageLogInfo = {
-  log : "",
-  created_at : "", 
-  updated_at : "",
-  user_id : "",
-  raid_id : "",
-};
+// const initialTime = new Date()
+
+// const initialState : object = getLeftTime(initialTime.getDay() === 6 || initialTime.getDay() === 0, initialTime)
+
+// export const raidjoinSlice = createSlice({
+//   name : 'leftTime',
+//   initialState,
+//   reducers : {
+//     getLeftTime(state, action){
+//       let tomarrowMidNight : Date = new Date();
+//       tomarrowMidNight.setHours(0);
+//       tomarrowMidNight.setMinutes(0);
+//       tomarrowMidNight.setSeconds(0);
+//       tomarrowMidNight.setDate(tomarrowMidNight.getDate() + 1)
+    
+//       let diff : number = tomarrowMidNight.getTime() - currentTime.getTime();
+//       const left : LeftTime = {
+//         days : currentTime.getDay() === 6 ? 1 : 0,
+//         hours : Math.floor(diff / (1000 * 60 * 60)),
+//         mins : Math.floor(diff / (1000 * 60) % 60)
+//       }
+    
+//       if (!weekend) {
+//         left.days =  5 - currentTime.getDay()
+//       }
+//       return left;
+//     },
+//   }
+//   })
+
+  
+// function getLeftTime(weekend : boolean, currentTime : Date){
+//   type LeftTime = {
+//     days : number,
+//     hours : number,
+//     mins : number
+//   }
+  
+//   let tomarrowMidNight : Date = new Date();
+//   tomarrowMidNight.setHours(0);
+//   tomarrowMidNight.setMinutes(0);
+//   tomarrowMidNight.setSeconds(0);
+//   tomarrowMidNight.setDate(tomarrowMidNight.getDate() + 1)
+
+//   let diff : number = tomarrowMidNight.getTime() - currentTime.getTime();
+//   const left : LeftTime = {
+//     days : currentTime.getDay() === 6 ? 1 : 0,
+//     hours : Math.floor(diff / (1000 * 60 * 60)),
+//     mins : Math.floor(diff / (1000 * 60) % 60)
+//   }
+
+//   if (!weekend) {
+//     left.days =  5 - currentTime.getDay()
+//   }
+//   return left;
+// }
+
+// export default raidjoinSlice.reducer;
