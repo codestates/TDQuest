@@ -2,13 +2,18 @@ import styled from "styled-components";
 import React from "react";
 import { TDQuestAPI } from "../../API/tdquestAPI";
 import { DamageLogType } from "../../Types/generalTypes";
+import { fontSize_body_mobile_small } from "../../components/CommonStyle";
 import moment from "moment";
 
 const LogContentContainer = styled.div`
   display: flex;
   width: 60%;
   margin-left: 20px;
-  margin-top: 15px;
+  @media (max-width: 768px) {
+    width: 95%;
+    margin-left: 0;
+    margin-top: 15px;
+  }
 `;
 
 const LogContentWrapper = styled.div`
@@ -18,7 +23,7 @@ const LogContentWrapper = styled.div`
 `;
 
 const LogContent = styled.div`
-  height: 35px;
+  height: 45px;
   background-color: white;
   display: flex;
   justify-content: space-between;
@@ -26,11 +31,18 @@ const LogContent = styled.div`
   align-items: center;
   padding: 0 10px;
   margin-bottom: 10px;
+  @media (max-width: 768px) {
+    height: 45px;
+  }
 `;
 
 const ShowUserInfo = styled.div`
   font-size: 18px;
   font-weight: 500;
+  @media (max-width: 768px) {
+    font-size: 15px;
+    line-height: 18px;
+  }
 `;
 const ShowDate = styled.div`
   display: flex;
@@ -39,6 +51,10 @@ const ShowDate = styled.div`
   font-size: 14px;
   color: gray;
   letter-spacing: -1px;
+  @media (max-width: 768px) {
+    font-size: ${fontSize_body_mobile_small};
+    width: 30%;
+  }
 `;
 
 export function DamageLogContent({

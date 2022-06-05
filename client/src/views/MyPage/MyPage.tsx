@@ -37,7 +37,7 @@ import {
 } from "../../features/userinfo/userInfoSlice";
 
 function MyPage() {
-  const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
+  //const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
   const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
@@ -49,6 +49,7 @@ function MyPage() {
   const [netError, setNetError] = useState(false);
 
   const userData = useAppSelector((state) => state.MyPageInfo);
+  const charData = useAppSelector((state) => state.character);
   const dispatch = useAppDispatch();
 
   const LOCALSTORAGE = window.localStorage;
@@ -89,7 +90,7 @@ function MyPage() {
         }
       });
     }
-    setCharData(LOCALSTORAGE_PASRED.characterInfo);
+    //setCharData(LOCALSTORAGE_PASRED.characterInfo);
   }, []);
 
   console.log(userData);

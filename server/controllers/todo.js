@@ -144,7 +144,7 @@ module.exports = {
                                 where: { user_id: req.query.user_id }
                             })
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.increment(
                             { totalExp: 1 },
                             {
@@ -212,7 +212,7 @@ module.exports = {
                             { where: { user_id: req.query.user_id } })
 
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.decrement(
                             { totalExp: 1 },
                             { where: { user_id: req.query.user_id } })
@@ -246,6 +246,14 @@ module.exports = {
                 try {
                     let todoInfo = ''
                     let damage_logInfo = ''
+                    // 유저 스탯 비례하여 데미지를 주는 코드 추가 (stat * 1)
+                    let damage = 1                    
+                    let characterStat = {} 
+                    await character.findOne({ where: { user_id: req.query.user_id } })
+                    .then(data => {            
+                        characterStat = data.dataValues;                        
+                    })
+                    const { status_phy, status_int, status_spi, totalExp } = characterStat
 
                     await todo_list.update({ is_complete: 1 },
                         {
@@ -263,30 +271,30 @@ module.exports = {
                         await character.increment(
                             { status_phy: 1 },
                             { where: { user_id: req.query.user_id } })
-
+                        damage = 1 * status_phy;
                     }
                     else if (req.query.status === "int") {
                         await character.increment(
                             { status_int: 1 },
                             { where: { user_id: req.query.user_id } })
-
+                        damage = 1 * status_int;
                     }
                     else if (req.query.status === "spi") {
                         await character.increment(
                             { status_spi: 1 },
                             { where: { user_id: req.query.user_id } })
-
+                        damage = 1 * status_spi;
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.increment(
                             { totalExp: 1 },
                             { where: { user_id: req.query.user_id } })
-
+                        damage = 1 * Math.floor(totalExp / 100);
                     }
 
                     await damage_log.create(
                         {
-                            log: 1,
+                            log: damage,
                             user_id: req.query.user_id,
                             raid_id: req.query.raid_id
                         })
@@ -295,12 +303,12 @@ module.exports = {
                         })
 
                     await monster.decrement(
-                        { hp: 1 },
+                        { hp: damage },
                         { where: { id: req.query.raid_id } })
 
 
                     const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
-                    if (monsterInfo.dataValues.hp === 0) { // 몬스터를 잡았을 때
+                    if (monsterInfo.dataValues.hp <= 0) { // 몬스터를 잡았을 때
                         const characterArray = await character.findAll(
                             {
                                 include: {
@@ -327,6 +335,7 @@ module.exports = {
                                     exp: data.dataValues.totalExp % 100
                                 }
                             })
+                        await monster.update({reward: 0},{ where: { id: req.query.raid_id } });
 
                         res.status(200).json({ message: "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo: characterInfo, damage_logInfo: damage_logInfo })
 
@@ -386,7 +395,7 @@ module.exports = {
                             { where: { user_id: req.query.user_id } })
 
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.decrement(
                             { totalExp: 1 },
                             { where: { user_id: req.query.user_id } })
