@@ -47,22 +47,26 @@ export function DamageLogContent({
   damage_log: DamageLogType[];
 }) {
   const ExtractData = damage_log.filter((el, index) => {
-    console.log(el);
-    if (el.log !== 0 && index < 6) {
+    if (el.log !== 0) {
       return el;
     }
   });
 
+  const getLogUnderSix = [...ExtractData];
+  if (getLogUnderSix.length > 6) {
+    for (let i = getLogUnderSix.length; i > 6; i--) {
+      getLogUnderSix.shift();
+    }
+  }
+
+  console.log(ExtractData);
+
   return (
     <LogContentContainer>
       <LogContentWrapper>
-        {ExtractData.map((el, index) => {
+        {getLogUnderSix.reverse().map((el, index) => {
           return UserLog(el.user.nickname, el.log, el.createdAt, index);
         })}
-        <LogContent>
-          <ShowUserInfo>{`⚔️ TEST gave to Raid Boss 30 Damage!`}</ShowUserInfo>
-          <ShowDate>방금 전</ShowDate>
-        </LogContent>
       </LogContentWrapper>
     </LogContentContainer>
   );

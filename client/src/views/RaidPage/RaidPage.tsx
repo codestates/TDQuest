@@ -67,8 +67,6 @@ function RaidPage() {
     hp: monster_hp,
     kind,
   } = monsterInfo;
-  console.log(monster_image, raid_info);
-  console.log(monsterInfo);
 
   const monster_data = {
     kind: "",
@@ -124,12 +122,19 @@ function RaidPage() {
       result.push(obj);
     }
 
-    const tmpData = Object.entries(logs).sort((a, b) => b[1] - a[1]);
+    const tmpData = Object.entries(logs)
+      .sort((a, b) => b[1] - a[1])
+      .filter((el) => {
+        if (el[1] !== 0) {
+          return el;
+        }
+      });
 
     return tmpData;
   }
 
   const logs = ExtractData(damage_log);
+  console.log(logs);
 
   return loading ? (
     <RaidContainer bgColor={color_primary_green_light}>
