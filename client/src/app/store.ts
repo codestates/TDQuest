@@ -5,7 +5,7 @@ import signReducer from "../features/sign/signSlice";
 import todoListReducer from "../features/todolist/todolistSlice";
 import myPageUserReducer from "../features/userinfo/userInfoSlice";
 import rankingReducer from "../features/ranking/rankingSlice";
-// import raidjoinReducer from '../features/raidjoin/raidjoinSlice';
+import raidjoinReducer from '../features/raidjoin/raidjoinSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +15,7 @@ export const store = configureStore({
     todoList: todoListReducer,
     MyPageInfo: myPageUserReducer,
     ranking: rankingReducer,
-    // raidjoin: raidjoinReducer
+    raidjoin: raidjoinReducer
   },
 });
 
