@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "aws-cli": "^0.0.2",
-    "aws-param-store": "^3.2.0",
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",

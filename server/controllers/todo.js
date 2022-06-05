@@ -78,22 +78,6 @@ module.exports = {
         }
     }, // 완료되지않은 todolist 불러오기
 
-    check: async (req, res) => {
-        const characterArray = await character.findAll(
-            {
-                include: {
-                    model: user,
-                    include: {
-                        model: damage_log,
-                        where: { raid_id: req.query.raid_id },
-                    },
-                    required: true
-                }
-            })
-            .then(data => {
-                res.status(200).json({ message: data })
-            })
-    },
     completeList: async (req, res) => {
         try {
             if (req.query.time) { // 특정 날짜
