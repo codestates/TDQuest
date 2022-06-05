@@ -17,6 +17,7 @@ type RaidInfo = {
   hp? : string,
   reward? : string,
   image? : string,
+  kind? : string,
 };
 
 export const BossInfo = styled.div`
@@ -28,6 +29,8 @@ export const BossInfo = styled.div`
 
   img {
     height : ${fontSize_h2_laptop};
+    image-rendering: pixelated;
+    margin-right: 0.3rem;
   }
 
   > div:first-child{
@@ -182,17 +185,19 @@ function RaidInfoBox({
   hp,
   reward,
   image,
+  kind
 }: RaidInfo) {
   return (
-    <RaidJoinContainer name={name} hp={hp} reward={reward} image={image}>
+    <RaidJoinContainer name={name} hp={hp} reward={reward} image={image} kind={kind}>
       <BossInfo>
         <div>
           <span>
-            <img src={require('../../static/images/icons/flag.png')} />
-            {name}
+            <img src={
+              kind? require("../../static/images/" + `${kind}` + ".png") : require('../../static/images/icons/flag.png')} />
+            {name?.split(" ").length === 2 ? name?.split(" ")[0] : name?.split(" ").slice(0,2).join(" ")}
           </span>
           <span>
-            LV3
+          {name?.split(" ").length === 2 ? name?.split(" ")[1] : name?.split(" ")[2]}
           </span>
         </div>
         <div>
@@ -200,7 +205,7 @@ function RaidInfoBox({
         </div>
       </BossInfo>
       <BossView>
-        <img src={image? require("../../static/images/" + {image} + ".gif") : require("../../static/images/monster_phy.gif")}></img>
+        <img src={image? require("../../static/images/" + `${image}` + ".gif") : require("../../static/images/monster_phy.gif")}></img>
         <div>
           HP 
           <HpBar max={Number(hp)} current={Number(hp)}/>
