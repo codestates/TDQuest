@@ -8,7 +8,8 @@ import {
   RewardContainer,
   TitleContainer,
   ContentContainer,
-  RewardInfo,
+  UserInfo,
+  CharacterContainer,
 } from './RankingPageStyle';
 import Status from '../../components/Status';
 import { color_secondary_beige } from '../../components/CommonStyle';
@@ -66,27 +67,25 @@ function RankingPage() {
         </StatusContainer>
         <RewardContainer bgColor={color_secondary_beige}>
           <TitleContainer>
-            {/* <img
-              src={require('../../static/images/icons/Ring.png')}
-              alt='Ring'
-            /> */}
             <h3>Top Ranking</h3>
           </TitleContainer>
           <ContentContainer>
-            <RewardInfo>
-              <h3>left</h3>
-            </RewardInfo>
-            <div>
+            <CharacterContainer>
+              {topRanker.user ? (
+                <Status charData={topRanker} onlyChar={true} />
+              ) : null}
+            </CharacterContainer>
+            <UserInfo>
               <h3>Best user of this week</h3>
               <p>
                 <img src={crownIcon} alt='crown'></img>
-                {topRanker.user ? topRanker.user.nickname : 'test'}
+                {topRanker.user ? topRanker.user.nickname : 'user'}
               </p>
               <p>
                 Total stats:{' '}
                 {topRanker.user ? topRankerTotalPoint(topRanker) : 0} points
               </p>
-            </div>
+            </UserInfo>
           </ContentContainer>
         </RewardContainer>
       </SectionContainer>
