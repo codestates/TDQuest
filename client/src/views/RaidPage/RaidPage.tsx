@@ -28,6 +28,8 @@ import {
   DefaultUserDataType,
   RaidsType,
   MonsterInfoType,
+  initialMonsterInfo,
+  initialDamageLog,
 } from "../../Types/generalTypes";
 
 function RaidPage() {
@@ -35,20 +37,10 @@ function RaidPage() {
   const Raid_id = JSON.parse(window.localStorage.getItem("isLogin") as string)
     .damage_logInfo.raid_id;
   const [loading, setIsLoading] = useState(true);
-  const [monsterInfo, setMonsterInfo] = useState<MonsterInfoType>(
-    {} as MonsterInfoType
-  );
-  const [damage_log, setDamage_log] = useState<DamageLogType[]>([
-    {
-      id: 0,
-      log: 0,
-      createdAt: "",
-      updatedAt: "",
-      user_id: 0,
-      raid_id: 0,
-      user: DefaultUserDataType,
-    },
-  ]);
+  const [monsterInfo, setMonsterInfo] =
+    useState<MonsterInfoType>(initialMonsterInfo);
+  const [damage_log, setDamage_log] =
+    useState<DamageLogType[]>(initialDamageLog);
 
   useEffect(() => {
     console.log(Raid_id);

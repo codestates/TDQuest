@@ -17,6 +17,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   const InitializeUser = async () => {
+    console.log("Initializing...");
     if (verified_userId) {
       try {
         const userInfo = await TDQuestAPI.get(
@@ -26,7 +27,6 @@ function App() {
         const charInfo = await TDQuestAPI.get(
           `character/?user_id=${verified_userId}`
         );
-        console.log(charInfo);
         dispatch(getCharacterAsync(userInfo.data.userInfo.id));
         console.log(
           "------------------------------------------------- \n Initaialzie User success \n -------------------------------------------------"
@@ -43,8 +43,9 @@ function App() {
   useEffect(() => {
     InitializeUser();
   }, []);
-  console.log("localStorage : ", localInfo);
-  console.log("reduxStore : ", reduxInfo);
+  // console.log("localStorage : ", localInfo);
+  //console.log("reduxStore : ", reduxInfo);
+
   return (
     <div className="App">
       <MainRouter />

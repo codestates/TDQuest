@@ -47,7 +47,8 @@ export function DamageLogContent({
   damage_log: DamageLogType[];
 }) {
   const ExtractData = damage_log.filter((el, index) => {
-    if (el.log !== 0 || index >= 6) {
+    console.log(el);
+    if (el.log !== 0 && index < 6) {
       return el;
     }
   });
