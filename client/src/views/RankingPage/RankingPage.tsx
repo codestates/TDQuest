@@ -32,7 +32,7 @@ function RankingPage() {
   );
   const topRanker: any = useSelector((state: any) => state.ranking.top);
   const topRankerTotalPoint = (arg: any) => {
-    return arg.status_phy + arg.status_int + arg.status_spi + arg.status_etc;
+    return arg.status_phy + arg.status_int + arg.status_spi;
   };
   const { id: user_id, nickname } = JSON.parse(
     window.localStorage.getItem('isLogin') as string
