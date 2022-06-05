@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import {
   fontSize_h1_laptop,
   fontSize_h2_laptop,
@@ -97,6 +97,8 @@ export const ContentContainer = styled.div`
   grid-template-columns: 0.9fr 1fr;
   align-self: center;
   justify-self: center;
+  grid-gap: 20px;
+  margin-top: -20px;
   h3 {
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
@@ -117,4 +119,44 @@ export const ContentContainer = styled.div`
   }
 `;
 
-export const RewardInfo = styled.div``;
+export const UserInfo = styled.div`
+  align-self: center;
+`;
+
+const blink = keyframes`
+  100% {
+    box-shadow: 0 0 3px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 20px #686CD5,
+      0 0 20px #686CD5, 0 0 30px #686CD5;
+  }
+`;
+
+export const CharacterContainer = styled.div`
+  box-shadow: 0 0 2px #fff, 0 0 10px #fff, 0 0 20px #cfb53b, 0 0 30px #cfb53b,
+    0 0 30px #cfb53b, 0 0 50px #cfb53b;
+  animation: ${blink} 0.6s infinite alternate;
+  position: relative;
+`;
+
+export const FrameTopRanker = styled.img`
+  position: absolute;
+  height: 150px;
+  top: 0;
+  right: -45px;
+  z-index: 10;
+  @media (max-width: 1024px) {
+    height: 120px;
+    top: 15px;
+    right: -35px;
+  }
+  @media (max-width: 788px) {
+    height: 150px;
+    top: 0;
+    right: -45px;
+    z-index: 10;
+  }
+  @media (max-width: 550px) {
+    height: 120px;
+    top: 15px;
+    right: -30px;
+  }
+`;

@@ -8,7 +8,9 @@ import {
   RewardContainer,
   TitleContainer,
   ContentContainer,
-  RewardInfo,
+  UserInfo,
+  CharacterContainer,
+  FrameTopRanker,
 } from './RankingPageStyle';
 import Status from '../../components/Status';
 import { color_secondary_beige } from '../../components/CommonStyle';
@@ -18,6 +20,7 @@ import {
   getTopRankerAsync,
 } from '../../features/ranking/rankingSlice';
 import crownIcon from '../../static/images/icons/Crown.png';
+import frameTopRanker from '../../static/images/icons/FrameTopRanker.png';
 
 function RankingPage() {
   const dispatch: any = useDispatch();
@@ -66,27 +69,26 @@ function RankingPage() {
         </StatusContainer>
         <RewardContainer bgColor={color_secondary_beige}>
           <TitleContainer>
-            {/* <img
-              src={require('../../static/images/icons/Ring.png')}
-              alt='Ring'
-            /> */}
             <h3>Top Ranking</h3>
           </TitleContainer>
           <ContentContainer>
-            <RewardInfo>
-              <h3>left</h3>
-            </RewardInfo>
-            <div>
+            <CharacterContainer>
+              {topRanker.user ? (
+                <Status charData={topRanker} onlyChar={true} />
+              ) : null}
+              <FrameTopRanker src={frameTopRanker} alt='frame'></FrameTopRanker>
+            </CharacterContainer>
+            <UserInfo>
               <h3>Best user of this week</h3>
               <p>
                 <img src={crownIcon} alt='crown'></img>
-                {topRanker.user ? topRanker.user.nickname : 'test'}
+                {topRanker.user ? topRanker.user.nickname : 'user'}
               </p>
               <p>
                 Total stats:{' '}
                 {topRanker.user ? topRankerTotalPoint(topRanker) : 0} points
               </p>
-            </div>
+            </UserInfo>
           </ContentContainer>
         </RewardContainer>
       </SectionContainer>
