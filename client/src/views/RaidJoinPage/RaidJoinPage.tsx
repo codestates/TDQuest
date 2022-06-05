@@ -14,9 +14,6 @@ import RaidInfoBox from './RaidInfoBox';
 import { useNavigate } from 'react-router-dom';
 //!
 import { TDQuestAPI } from '../../API/tdquestAPI'
-import { getMonsterInfo, MonstersInfo } from '../../features/raidjoin/raidjoinSlice'
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Toast } from "../../components/Toast"
 
 function RaidJoinPage() {
   const [currentPage, setCurrentPage] = useState({
@@ -28,13 +25,12 @@ function RaidJoinPage() {
     getLeftTime(initialTime.getDay() === 6 || initialTime.getDay() === 0, initialTime)
     );
   const [canRaid, setCanRaid] = useState(initialTime.getDay() === 6 || initialTime.getDay() === 0);
+  const [monsterInfo, setMonsterInfo] = useState([{name : ""}, {}, {}])
   const [loading, setLoading] = useState(true);
   const slidePage = useRef<any>(null);
   let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const monsterInfo : MonstersInfo = useAppSelector((store)=>store.raidjoin) 
-
+  
   const handleSlide = (direction : string) => {
     if (direction === "left"){
       if (currentPage.page === "PHY" && slidePage.current){
@@ -153,17 +149,28 @@ function RaidJoinPage() {
     }
   }
 
+  const getMonsterInfo = async ()=>{
+    try{
+      const monster1 = await TDQuestAPI.get('/monster/?monster_id=7');
+      const monster2 = await TDQuestAPI.get('/monster/?monster_id=8');
+      const monster3 = await TDQuestAPI.get('/monster/?monster_id=9');
+      setMonsterInfo([monster1.data, monster2.data, monster3.data])
+    } catch(err){
+      console.log(err)
+    }
+  }
+
   useEffect(()=>{
     if(loading){
       initialTime = new Date();
       // let newisLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
       // console.log('storage:', newisLogin)
-      dispatch(getMonsterInfo());
-      setTimeout(()=>setLoading(false), 1000);
+      getMonsterInfo();
+      setLoading(false);
     }
     setTimeout(()=>handleTime(initialTime), 30000);
   }, [leftTime]);
-  
+
   return (
   <RaidJoinContainer>
     {loading? (<Loading customText="Loading..." />):
@@ -188,12 +195,9 @@ function RaidJoinPage() {
 
       <Body>
         <SlideContainer ref={slidePage}>
-        {monsterInfo.monsterInfo.map((el: any) => (
-          <RaidInfoBox name={el.monsterInfo.name} hp={el.monsterInfo.hp} reward={el.monsterInfo.reward} image={el.monsterInfo.monster_image} kind={el.monsterInfo.kind} ></RaidInfoBox>
-        ))}
-          {/* <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox>
           <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox>
-          <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox> */}
+          <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox>
+          <RaidInfoBox name="test" hp="10" reward="test" ></RaidInfoBox>
         </SlideContainer>
       </Body>
       
