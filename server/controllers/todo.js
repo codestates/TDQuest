@@ -354,7 +354,8 @@ module.exports = {
             else { // 취소
                 try {
                     let todoInfo = ''
-
+                    let damage_logInfo = ''
+                    
                     await todo_list.update({ is_complete: false },
                         {
                             where: {
@@ -395,7 +396,7 @@ module.exports = {
                     await damage_log.findOne({
                         where: {
                             user_id: req.query.user_id,
-                            raid_id: req.query.user_id
+                            raid_id: req.query.raid_id
                         },
                         include: {
                             model: user,
@@ -465,6 +466,7 @@ module.exports = {
                     }
                 }
                 catch (err) {
+                    console.log(err)
                     res.status(400).json({ message: "실패" })
                 }
             }
