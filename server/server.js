@@ -6,6 +6,13 @@ const https = require("https");
 const fs = require("fs");
 const cookieParser = require("cookie-parser");
 
+
+app.use(cors({
+  origin : ["https://d2lx9yleo3gz1b.cloudfront.net", "https://tdquest.ml"],
+  credentials : true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
+}))
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -14,13 +21,6 @@ app.get("/check", (req, res) => {
   res.status(201).send("success");
 });
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  })
-);
 
 app.use("/", router);
 const HTTPS_PORT = 3001;

@@ -10,7 +10,8 @@ module.exports = {
         try {
             const userInfo = await user.findOne({
                 where: {
-                    email: req.body.email
+                    email: req.body.email,
+                    logintype : req.body.logintype
                 }
             })
             const hash = await  bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password)
@@ -58,7 +59,7 @@ module.exports = {
     },
 
     logout: async (req, res) => {
-        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
         res.status(200).json({ message: '로그아웃되었습니다.' })
     },
 }

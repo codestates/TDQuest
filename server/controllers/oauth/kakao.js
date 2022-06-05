@@ -93,5 +93,6 @@ module.exports = {
               res.status(400).json({message : err})
             }
           }
+      return res.redirect("http://localhost:3000")
   },
 }
