@@ -32,14 +32,7 @@ function Status({
   onlyChar?: boolean;
   direction?: string;
 }): JSX.Element {
-  const {
-    image: character,
-    status_phy,
-    status_int,
-    status_spi,
-    level,
-    exp,
-  } = charData;
+  const { status_phy, status_int, status_spi, level, exp } = charData;
 
   const setUserCharacter = (
     status_phy: number,
@@ -74,7 +67,6 @@ function Status({
   };
 
   const userCharImg = setUserCharacter(status_phy, status_int, status_spi);
-  console.log(userCharImg);
 
   // 유저 칭호를 설정하는 함수
   const setUserTitle = (userStat: number[]): string => {

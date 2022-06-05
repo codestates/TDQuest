@@ -82,6 +82,7 @@ function DropDown() {
             isLogin.status === "loggedIn"
               ? () => {
                   window.localStorage.removeItem("isLogin");
+                  window.localStorage.removeItem("accessToken");
                   window.location.assign("/");
                 }
               : () => window.location.assign("/sign")

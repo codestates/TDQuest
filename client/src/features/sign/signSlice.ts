@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { UserDataType } from '../../Types/generalTypes';
-import { TDQuestAPI } from '../../API/tdquestAPI';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { UserDataType } from "../../Types/generalTypes";
+import { TDQuestAPI } from "../../API/tdquestAPI";
 
 export interface SignUserInfo {
   status: string;
@@ -9,44 +9,43 @@ export interface SignUserInfo {
 }
 
 export const initialState: SignUserInfo = {
-  status: '',
+  status: "",
   userInfo: {} as UserDataType,
   characterInfo: {},
 };
 
-export const signIn = createAsyncThunk('sign/in', async (data: any) => {
+export const signIn = createAsyncThunk("sign/in", async (data: any) => {
   try {
     const response = await TDQuestAPI.post(`/log/in`, data);
-    console.log('response:', response);
-    const isLogin = { status: 'loggedIn', ...response.data };
-    localStorage.setItem('isLogin', JSON.stringify(isLogin));
+    const isLogin = { status: "loggedIn", ...response.data };
+    localStorage.setItem("isLogin", JSON.stringify(isLogin));
     localStorage.setItem(
-      'accessToken',
+      "accessToken",
       JSON.stringify(response.data.accessToken)
     );
     return isLogin;
   } catch (err: any) {
     console.log(err.response);
-    return { status: 'failed' };
+    return { status: "failed" };
   }
 });
 
-export const signUp = createAsyncThunk('sign/up', async (data: any) => {
+export const signUp = createAsyncThunk("sign/up", async (data: any) => {
   try {
     const response = await TDQuestAPI.post(`/sign/in`, data);
     console.log(response);
-    window.location.href = '/sign';
-    alert('회원가입 완료!');
+    window.location.href = "/sign";
+    alert("회원가입 완료!");
   } catch (err: any) {
     console.log(err.response.status);
     if (err.response.status === 409) {
-      alert('이미 존재하는 아이디가 있습니다.');
+      alert("이미 존재하는 아이디가 있습니다.");
     }
   }
 });
 
 export const signSlice = createSlice({
-  name: 'sign',
+  name: "sign",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

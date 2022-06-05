@@ -1,6 +1,6 @@
-export interface CharDataType {
+export type CharDataType = {
   id?: number;
-  user_id: string;
+  user_id: number;
   image: string;
   level: number;
   status_phy: number;
@@ -8,10 +8,23 @@ export interface CharDataType {
   status_spi: number;
   exp?: number;
   totalExp?: number;
-  userExp?: number;
-  userLevel?: number;
   userTitle?: string[];
-}
+};
+
+export const initialCharData = {
+  id: 0,
+  image: "",
+  totalExp: 0,
+  status_phy: 0,
+  status_int: 0,
+  status_spi: 0,
+  medal: null,
+  createdAt: "",
+  updatedAt: "",
+  user_id: 0,
+  level: 0,
+  exp: 0,
+};
 
 export type UserDataType = {
   id?: number;
@@ -72,6 +85,18 @@ export type DamageLogType = {
   user: LogUserDataType;
 };
 
+export const initialDamageLog = [
+  {
+    id: 0,
+    log: 0,
+    createdAt: "",
+    updatedAt: "",
+    user_id: 0,
+    raid_id: 0,
+    user: DefaultUserDataType,
+  },
+];
+
 export type Objtype = {
   [key: string]: number;
 };
@@ -93,4 +118,21 @@ export type MonsterInfoType = {
   createdAt: string;
   updatedAt: string;
   raids: RaidsType;
+};
+
+export const initialMonsterInfo = {
+  id: 7,
+  monster_image: "monster_int",
+  kind: "int",
+  name: "FireBird LV1",
+  hp: 5000,
+  reward: 50,
+  createdAt: "2022-06-03T20:27:43.000Z",
+  updatedAt: "2022-06-03T20:27:43.000Z",
+  raids: {
+    id: 7,
+    createdAt: "2022-06-03T20:27:43.000Z",
+    updatedAt: "2022-06-03T20:27:43.000Z",
+    monster_id: 7,
+  },
 };
