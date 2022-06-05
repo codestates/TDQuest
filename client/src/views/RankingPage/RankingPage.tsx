@@ -10,6 +10,7 @@ import {
   ContentContainer,
   UserInfo,
   CharacterContainer,
+  FrameTopRanker,
 } from './RankingPageStyle';
 import Status from '../../components/Status';
 import { color_secondary_beige } from '../../components/CommonStyle';
@@ -19,6 +20,7 @@ import {
   getTopRankerAsync,
 } from '../../features/ranking/rankingSlice';
 import crownIcon from '../../static/images/icons/Crown.png';
+import frameTopRanker from '../../static/images/icons/FrameTopRanker.png';
 
 function RankingPage() {
   const dispatch: any = useDispatch();
@@ -74,6 +76,7 @@ function RankingPage() {
               {topRanker.user ? (
                 <Status charData={topRanker} onlyChar={true} />
               ) : null}
+              <FrameTopRanker src={frameTopRanker} alt='frame'></FrameTopRanker>
             </CharacterContainer>
             <UserInfo>
               <h3>Best user of this week</h3>

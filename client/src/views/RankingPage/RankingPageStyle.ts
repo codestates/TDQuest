@@ -134,4 +134,29 @@ export const CharacterContainer = styled.div`
   box-shadow: 0 0 2px #fff, 0 0 10px #fff, 0 0 20px #cfb53b, 0 0 30px #cfb53b,
     0 0 30px #cfb53b, 0 0 50px #cfb53b;
   animation: ${blink} 0.6s infinite alternate;
+  position: relative;
+`;
+
+export const FrameTopRanker = styled.img`
+  position: absolute;
+  height: 150px;
+  top: 0;
+  right: -45px;
+  z-index: 10;
+  @media (max-width: 1024px) {
+    height: 120px;
+    top: 15px;
+    right: -35px;
+  }
+  @media (max-width: 788px) {
+    height: 150px;
+    top: 0;
+    right: -45px;
+    z-index: 10;
+  }
+  @media (max-width: 550px) {
+    height: 120px;
+    top: 15px;
+    right: -30px;
+  }
 `;
