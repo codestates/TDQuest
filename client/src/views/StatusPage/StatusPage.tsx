@@ -22,10 +22,14 @@ import Loading from "../../components/Loading";
 // API REQUEST
 import { TDQuestAPI } from "../../API/tdquestAPI";
 // Types
-import { CharDataType, TodoListType } from "../../Types/generalTypes";
+import {
+  CharDataType,
+  TodoListType,
+  initialCharData,
+} from "../../Types/generalTypes";
 
 function StatusPage(): JSX.Element {
-  const [userCharData, setUserData] = useState<CharDataType>({} as CharDataType);
+  const [userCharData, setUserData] = useState<CharDataType>(initialCharData);
   const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { id: user_id, nickname } = JSON.parse(
@@ -37,13 +41,11 @@ function StatusPage(): JSX.Element {
         await TDQuestAPI.get(`character/?user_id=${user_id}`).then((res) => {
           setUserData(res.data.characterInfo);
           setLoading(false);
-          console.log(userCharData);
         });
       };
       getCharacterData();
 
       const getComleteTDList = async () => {
-        console.log(user_id);
         await TDQuestAPI.get(`todo/complete/?user_id=${user_id}`).then(
           (res) => {
             setDonelist(res.data.todo_lists);
@@ -55,10 +57,8 @@ function StatusPage(): JSX.Element {
     }
   }, []);
 
-  const { image, status_phy, status_int, status_spi, level, exp } = userCharData;
-
-  console.log(donelist);
-  console.log("userCharData: ", userCharData);
+  const { image, status_phy, status_int, status_spi, level, exp } =
+    userCharData;
 
   return (
     <div>

@@ -70,7 +70,6 @@ function TodoListPage() {
 
   const LOCALSTORAGE = window.localStorage.getItem('isLogin') as string;
   const { id: user_id, nickname } = JSON.parse(LOCALSTORAGE).userInfo;
-  console.log(user_id);
   const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
   const charInfo: any = useSelector((state: any) => state.sign.characterInfo);
 
@@ -94,8 +93,18 @@ function TodoListPage() {
     const year = date.getFullYear();
     const month = ('0' + (1 + date.getMonth())).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
-
     return year + '-' + month + '-' + day;
+  };
+
+  //raid_id 가져오는 함수
+  const raid_id = (): any => {
+    try {
+      const { raid_id } = JSON.parse(LOCALSTORAGE).damage_logInfo;
+      return raid_id;
+    } catch (er) {
+      // console.log(er);
+      return false;
+    }
   };
 
   //--- modal 관련---//
@@ -199,6 +208,7 @@ function TodoListPage() {
         id: itemId,
         kind: category,
         is_complete: 1,
+        raid_id: raid_id(),
       })
     );
     setTimeout(() => {
@@ -217,6 +227,7 @@ function TodoListPage() {
         id: itemId,
         kind: category,
         is_complete: 0,
+        raid_id: raid_id(),
       })
     );
     setTimeout(() => {

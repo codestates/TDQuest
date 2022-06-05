@@ -6,8 +6,8 @@ import {
   color_white,
   color_context_beige,
   fontSize_h2_laptop,
-  fontSize_h3_laptop
-} from "../../components/CommonStyle"
+  fontSize_h3_laptop,
+} from "../../components/CommonStyle";
 
 export const RaidContainer = styled.div<{ bgColor: string }>`
   padding-top: 80px;
@@ -52,7 +52,7 @@ export const SectionContainer = styled.section`
 export const RaidDetailContainer = styled.div`
   display: flex;
   width: 90%;
-  height: 300px;
+  height: 350px;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
@@ -75,20 +75,19 @@ export const MonsterWrapper = styled.div`
   height: 100%;
   .background {
     width: 100%;
-    height: 80%;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    background-color: #686cd5;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(#686cd5 75%, #997a66 25%);
     z-index: 5;
   }
-  .ground {
+  /* .ground {
     width: 100%;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     height: 20%;
     background-color: #997a66;
     z-index: 20;
-  }
+  } */
   .monster_wrapper {
     position: absolute;
     width: 100%;
@@ -98,15 +97,6 @@ export const MonsterWrapper = styled.div`
     z-index: 20;
     justify-content: center;
   }
-`;
-
-export const EffectsCanvas = styled.canvas`
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-
-  position: absolute;
-  image-rendering: pixelated;
 `;
 
 export const Monster = styled.img`
@@ -225,51 +215,45 @@ export const ContentContainer = styled.div`
   }
 `;
 
-export const Contents = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-  width: 93%;
-  height: 40px;
-  justify-content: space-evenly;
-  align-items: center;
-  background-color: white;
-  .trophy {
-    width: 20px;
-    height: 20px;
-    img {
-      image-rendering: pixelated;
-      width: 100%;
-    }
-  }
-  .user_nickname {
-    width: 20%;
-    overflow: hidden;
-    font-weight: bold;
-    height: 20px;
-  }
-  .damage_ratio_container {
-    width: 53%;
-    height: 20px;
-    .damage_ratio {
-      width: 95%;
-      height: 20px;
-      border-radius: 5px;
-      background-color: #8fd14f;
-    }
-  }
-  .damage_ratio {
-    width: 10%;
-    font-family: "Fredoka One", cursive;
-  }
-`;
-
 export const DamageStatusContainer = styled.div`
   width: 85%;
-  margin-top: 20px;
-  height: 200px;
+  margin-top: 30px;
+  height: 300px;
   background-color: ${color_context_beige};
   box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
   display: flex;
   padding-top: 20px;
   padding-left: 10px;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+export const CharContainer = styled.div`
+  width: 40%;
+  height: 80%;
+  image-rendering: pixelated;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .effect {
+    image-rendering: pixelated;
+    width: 100px;
+    height: 100px;
+    transform: rotate(180deg);
+  }
+  .charcter {
+    width: 70px;
+  }
+`;
+
+export const HelperBearContainer = styled.div`
+  width: 40%;
+  height: 80%;
+  image-rendering: pixelated;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

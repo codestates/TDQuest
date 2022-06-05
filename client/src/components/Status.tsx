@@ -32,14 +32,41 @@ function Status({
   onlyChar?: boolean;
   direction?: string;
 }): JSX.Element {
-  const {
-    image: character,
-    status_phy,
-    status_int,
-    status_spi,
-    level,
-    exp,
-  } = charData;
+  const { status_phy, status_int, status_spi, level, exp } = charData;
+
+  const setUserCharacter = (
+    status_phy: number,
+    status_int: number,
+    status_spi: number
+  ) => {
+    let userImg = "";
+    let grade = "";
+    const MaxStat = Math.max(status_phy, status_int, status_spi);
+    if (MaxStat < 10) {
+      return "char_default";
+    }
+
+    if (MaxStat === status_phy) {
+      userImg = "Physical/phy_";
+    } else if (MaxStat === status_int) {
+      userImg = "Intelligence/Int_";
+    } else if (MaxStat === status_spi) {
+      userImg = "Spirit/Spi_";
+    }
+
+    if (MaxStat > 10 && MaxStat <= 30) {
+      grade = "01";
+    } else if (MaxStat > 30 && MaxStat <= 50) {
+      grade = "02";
+    } else if (MaxStat > 50 && MaxStat <= 70) {
+      grade = "03";
+    } else if (MaxStat > 70) {
+      grade = "04";
+    }
+    return userImg + grade;
+  };
+
+  const userCharImg = setUserCharacter(status_phy, status_int, status_spi);
 
   // 유저 칭호를 설정하는 함수
   const setUserTitle = (userStat: number[]): string => {
@@ -69,6 +96,7 @@ function Status({
 
   const handleImgError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = require("../static/images/character/char_default.png");
+    console.log("image error");
   };
 
   return (
@@ -77,7 +105,9 @@ function Status({
         <CharacterBackground>
           <div className="character_wrapper">
             <Character
-              src={`../static/images/character/${character}.png`}
+              src={require("../static/images/character/" +
+                userCharImg +
+                ".png")}
               onError={handleImgError}
               alt="userCharacter"
             />
@@ -88,7 +118,7 @@ function Status({
       {onlyChar ? null : (
         <CharacterInfoContainer direction={direction}>
           <UserNameContainer direction={direction}>
-            <UserLevel>{level}</UserLevel>
+            <UserLevel>{Math.floor(level)}</UserLevel>
             <UserNameWrapper direction={direction}>
               <UserTitle>{userTitle}</UserTitle>
               <UserName>{userName}</UserName>
