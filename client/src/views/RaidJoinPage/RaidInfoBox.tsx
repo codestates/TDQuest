@@ -4,6 +4,9 @@ import {
   color_menu_header_purple, 
   fontSize_h2_laptop,
   fontSize_h2_mobile,
+  fontSize_h3_tablet,
+  fontSize_h3_mobile,
+  fontSize_body_laptop_small,
   color_context_brown,
   color_secondary_beige,
   color_border_yellow,
@@ -17,6 +20,7 @@ type RaidInfo = {
   hp? : string,
   reward? : string,
   image? : string,
+  kind? : string,
 };
 
 export const BossInfo = styled.div`
@@ -28,10 +32,11 @@ export const BossInfo = styled.div`
 
   img {
     height : ${fontSize_h2_laptop};
+    image-rendering: pixelated;
+    margin-right: 0.3rem;
   }
 
   > div:first-child{
-    padding-top : 2rem;
     display: flex;
     height: 7rem;
     line-height: 150%;
@@ -43,29 +48,36 @@ export const BossInfo = styled.div`
 
   > div:nth-child(2) {
     padding-top : 1.5rem;
+    padding-bottom : 2rem;
     text-align: center;
     line-height: 130%;
     font-weight: bolder;
+    font-size : 15px;
     font-family: "OpenSans";
   }
 
 
-  @media (max-width:1000px) {
+  @media (max-width:1200px) {
     img {
-      height : ${fontSize_h2_tablet};
+      height : ${fontSize_h3_tablet};
     }
     > div:first-child{
-      font-size: ${fontSize_h2_tablet};
+      padding-top: 1.5rem;
+      font-size: ${fontSize_h3_tablet};
+    }
+
+    > div:nth-child(2) {
+      padding-top : 0rem;
     }
   }
 
   @media (max-width:768px) {
     img {
-      height : ${fontSize_h2_mobile};
+      height : ${fontSize_h3_mobile};
     }
     > div:first-child{
-      padding-top: 0rem ;
-      font-size: ${fontSize_h2_mobile};
+      font-size: ${fontSize_h3_mobile};
+      height: 6rem;
     }
 
     > div:nth-child(2){
@@ -182,25 +194,29 @@ function RaidInfoBox({
   hp,
   reward,
   image,
+  kind
 }: RaidInfo) {
   return (
-    <RaidJoinContainer name={name} hp={hp} reward={reward} image={image}>
+    <RaidJoinContainer name={name} hp={hp} reward={reward} image={image} kind={kind}>
       <BossInfo>
         <div>
           <span>
-            <img src={require('../../static/images/icons/flag.png')} />
-            {name}
+            <img src={
+              kind? require("../../static/images/" + `${kind}` + ".png") : require('../../static/images/icons/flag.png')} />
+            {name?.split(" ").length === 2 ? name?.split(" ")[0] : name?.split(" ").slice(0,2).join(" ")}
           </span>
           <span>
-            LV3
+          {name?.split(" ").length === 2 ? name?.split(" ")[1] : name?.split(" ")[2]}
           </span>
         </div>
         <div>
-          {'The dragon who live in muscle area,\nHe has beautiful muscle scale and claws...\nparticipate this raid and get awards'}
+          <p>The dragon who live in muscle area,</p>
+          <p>He has beautiful muscle scale and claws...</p>
+          <p>participate this raid and get awards</p>
         </div>
       </BossInfo>
       <BossView>
-        <img src={image? require("../../static/images/" + {image} + ".gif") : require("../../static/images/monster_phy.gif")}></img>
+        <img src={image? require("../../static/images/" + `${image}` + ".gif") : require("../../static/images/monster_phy.gif")}></img>
         <div>
           HP 
           <HpBar max={Number(hp)} current={Number(hp)}/>
