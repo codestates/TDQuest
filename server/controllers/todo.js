@@ -78,6 +78,22 @@ module.exports = {
         }
     }, // 완료되지않은 todolist 불러오기
 
+    check: async (req, res) => {
+        const characterArray = await character.findAll(
+            {
+                include: {
+                    model: user,
+                    include: {
+                        model: damage_log,
+                        where: { raid_id: req.query.raid_id },
+                    },
+                    required: true
+                }
+            })
+            .then(data => {
+                res.status(200).json({ message: data })
+            })
+    },
     completeList: async (req, res) => {
         try {
             if (req.query.time) { // 특정 날짜
@@ -106,6 +122,7 @@ module.exports = {
     },
 
     completeTodo: async (req, res) => {
+
         if (!req.query.raid_id) {
             if (req.query.is_complete === '1') { //완료버튼을 눌렀다면
                 try {
@@ -244,6 +261,8 @@ module.exports = {
             if (req.query.is_complete === '1') {
                 try {
                     let todoInfo = ''
+                    let damage_logInfo = ''
+
                     await todo_list.update({ is_complete: 1 },
                         {
                             where: {
@@ -287,6 +306,9 @@ module.exports = {
                             user_id: req.query.user_id,
                             raid_id: req.query.raid_id
                         })
+                        .then(data => {
+                            damage_logInfo = data.dataValues
+                        })
 
                     await monster.decrement(
                         { hp: 1 },
@@ -295,9 +317,6 @@ module.exports = {
 
                     const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
                     if (monsterInfo.dataValues.hp === 0) { // 몬스터를 잡았을 때
-                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
-                            .then(data => { if (data === null) throw err })
-
                         const characterArray = await character.findAll(
                             {
                                 include: {
@@ -305,12 +324,13 @@ module.exports = {
                                     include: {
                                         model: damage_log,
                                         where: { raid_id: req.query.raid_id } //raid 참가한 인원
-                                    }
+                                    },
+                                    required: true
                                 }
                             })
                         characterArray.forEach(el => {
-                            character.decrement({
-                                level: monsterInfo.dataValues.reward
+                            character.increment({
+                                totalExp: monsterInfo.dataValues.reward
                             },
                                 { where: { id: el.dataValues.id } })
                         })
@@ -324,7 +344,7 @@ module.exports = {
                                 }
                             })
 
-                        res.status(200).json({ message: "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo: characterInfo })
+                        res.status(200).json({ message: "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo: characterInfo, damage_logInfo: damage_logInfo })
 
                     }
 
@@ -339,7 +359,7 @@ module.exports = {
                                 }
                             })
 
-                        res.status(200).json({ message: "데미지를 넣었습니다", todoInfo: todoInfo, characterInfo: characterInfo })
+                        res.status(200).json({ message: "데미지를 넣었습니다", todoInfo: todoInfo, characterInfo: characterInfo, damage_logInfo: damage_logInfo })
                     }
 
                 }
@@ -350,6 +370,7 @@ module.exports = {
             else { // 취소
                 try {
                     let todoInfo = ''
+
                     await todo_list.update({ is_complete: false },
                         {
                             where: {
@@ -406,7 +427,7 @@ module.exports = {
                             })
                     )
 
-                    await monster.decrement(
+                    await monster.increment(
                         { hp: 1 },
                         { where: { id: req.query.raid_id } })
 
@@ -416,7 +437,6 @@ module.exports = {
 
 
                     if (monsterInfo.dataValues.hp === 0) {
-                        const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
                         const characterArray = await character.findAll(
                             {
                                 include: {
@@ -424,12 +444,13 @@ module.exports = {
                                     include: {
                                         model: damage_log,
                                         where: { raid_id: req.query.raid_id } //raid 참가한 인원
-                                    }
+                                    },
+                                    required: true
                                 }
                             })
                         characterArray.forEach(el => {
                             character.decrement({
-                                level: monsterInfo.dataValues.reward
+                                totalExp: monsterInfo.dataValues.reward
                             },
                                 { where: { id: el.dataValues.id } })
                         })
