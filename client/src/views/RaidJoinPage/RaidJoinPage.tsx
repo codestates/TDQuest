@@ -29,6 +29,8 @@ function RaidJoinPage() {
     );
   const [canRaid, setCanRaid] = useState(initialTime.getDay() === 6 || initialTime.getDay() === 0);
   const [loading, setLoading] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [toastText, setToastText] = useState('');
   const slidePage = useRef<any>(null);
   let isLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
   const navigate = useNavigate();
@@ -132,12 +134,21 @@ function RaidJoinPage() {
   };
 
   const handleParticipate = (monsterId : number) => {
+    let local = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
     if (canRaid){
-      participate(monsterId);
-      alert("참가 신청 완료")
+      setShowToast(true)
+      if (local.damage_logInfo){
+        setToastText("you are already participated!")
+      } else {
+        participate(monsterId);
+        setToastText("participate in raid on weekend!")
+      }
     } else {
-      alert("you can raid only weekend")
+      setToastText("you can raid only weekend")
     }
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   }
 
   const participate = async(monsterId : number) => {
@@ -145,9 +156,9 @@ function RaidJoinPage() {
       const paricipateFunc = await TDQuestAPI.post(`/raids/invite?user_id=${isLogin.userInfo.id}&raid_id=${monsterId}`)
       console.log(paricipateFunc)
       const damage_logInfo = await TDQuestAPI.get(`/raids/damage_logs?raid_id=${monsterId}`)
-      const newIsLogin = {...isLogin, damage_logInfo}
+      console.log("damage_loginfo" , damage_logInfo)
+      const newIsLogin = {...isLogin, damage_logInfo : damage_logInfo.data}
       localStorage.setItem('isLogin', JSON.stringify(newIsLogin));
-      navigate("/raid");
     } catch(err){
       console.log(err)
     }
@@ -156,11 +167,11 @@ function RaidJoinPage() {
   useEffect(()=>{
     if(loading){
       initialTime = new Date();
-      // let newisLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
-      // console.log('storage:', newisLogin)
       dispatch(getMonsterInfo());
       setTimeout(()=>setLoading(false), 1000);
     }
+    let newisLogin = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
+    console.log('storage:', newisLogin)
     setTimeout(()=>handleTime(initialTime), 30000);
   }, [leftTime]);
   
@@ -204,6 +215,7 @@ function RaidJoinPage() {
         </span>
         {canRaid? `Raid Start Time Left` : `Until Raid Time`} : {`${leftTime.days}d ${leftTime.hours}h ${leftTime.mins}min`}
       </Foot>
+      {showToast ? <Toast text={toastText}></Toast> : ''}
     </ParticipateContainer> 
     )}
   </RaidJoinContainer>

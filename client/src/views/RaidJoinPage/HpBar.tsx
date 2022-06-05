@@ -44,16 +44,6 @@ import {
   }
 
   @media (max-width:1300px) {
-    width : 12rem;
-    > div, > p{
-      width : 12rem;
-    }
-    > div:last-child{
-      width : ${props => 12 * (props.current / props.max)}rem;
-    }
-  }
-
-  @media (max-width:1000px) {
     width : 9rem;
     > div, > p{
       width : 9rem;

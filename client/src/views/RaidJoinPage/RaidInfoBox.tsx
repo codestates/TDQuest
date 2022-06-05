@@ -4,6 +4,9 @@ import {
   color_menu_header_purple, 
   fontSize_h2_laptop,
   fontSize_h2_mobile,
+  fontSize_h3_tablet,
+  fontSize_h3_mobile,
+  fontSize_body_laptop_small,
   color_context_brown,
   color_secondary_beige,
   color_border_yellow,
@@ -34,7 +37,6 @@ export const BossInfo = styled.div`
   }
 
   > div:first-child{
-    padding-top : 2rem;
     display: flex;
     height: 7rem;
     line-height: 150%;
@@ -46,29 +48,36 @@ export const BossInfo = styled.div`
 
   > div:nth-child(2) {
     padding-top : 1.5rem;
+    padding-bottom : 2rem;
     text-align: center;
     line-height: 130%;
     font-weight: bolder;
+    font-size : 15px;
     font-family: "OpenSans";
   }
 
 
-  @media (max-width:1000px) {
+  @media (max-width:1200px) {
     img {
-      height : ${fontSize_h2_tablet};
+      height : ${fontSize_h3_tablet};
     }
     > div:first-child{
-      font-size: ${fontSize_h2_tablet};
+      padding-top: 1.5rem;
+      font-size: ${fontSize_h3_tablet};
+    }
+
+    > div:nth-child(2) {
+      padding-top : 0rem;
     }
   }
 
   @media (max-width:768px) {
     img {
-      height : ${fontSize_h2_mobile};
+      height : ${fontSize_h3_mobile};
     }
     > div:first-child{
-      padding-top: 0rem ;
-      font-size: ${fontSize_h2_mobile};
+      font-size: ${fontSize_h3_mobile};
+      height: 6rem;
     }
 
     > div:nth-child(2){
@@ -201,7 +210,9 @@ function RaidInfoBox({
           </span>
         </div>
         <div>
-          {'The dragon who live in muscle area,\nHe has beautiful muscle scale and claws...\nparticipate this raid and get awards'}
+          <p>The dragon who live in muscle area,</p>
+          <p>He has beautiful muscle scale and claws...</p>
+          <p>participate this raid and get awards</p>
         </div>
       </BossInfo>
       <BossView>
