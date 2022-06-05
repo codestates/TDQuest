@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 
 
 app.use(cors({
-  origin : ["https://d2lx9yleo3gz1b.cloudfront.net", "https://tdquest.ml"],
+  origin : ["https://d2lx9yleo3gz1b.cloudfront.net", "https://tdquest.ml", "http://localhost:3000"],
   credentials : true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
 }))

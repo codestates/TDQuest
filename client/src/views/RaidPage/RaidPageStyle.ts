@@ -7,6 +7,7 @@ import {
   color_context_beige,
   fontSize_h2_laptop,
   fontSize_h3_laptop,
+  fontSize_h2_mobile,
 } from "../../components/CommonStyle";
 
 export const RaidContainer = styled.div<{ bgColor: string }>`
@@ -56,6 +57,10 @@ export const RaidDetailContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
 `;
 
 export const MonsterContainer = styled.div`
@@ -66,6 +71,9 @@ export const MonsterContainer = styled.div`
   min-height: 250px;
   height: 100%;
   position: relative;
+  @media (max-width: 768px) {
+    min-height: 330px;
+  }
 `;
 
 export const MonsterWrapper = styled.div`
@@ -105,7 +113,7 @@ export const Monster = styled.img`
   z-index: 50;
 `;
 
-export const MonsterInfoContainer = styled.div`
+export const MonsterInfoContainer = styled.div<{ monster_hp: number }>`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
@@ -134,7 +142,7 @@ export const MonsterInfoContainer = styled.div`
       margin-right: 10px;
     }
     .hp_container {
-      width: 70%;
+      width: 100%;
       height: 20px;
       background-color: ${color_context_beige};
       display: flex;
@@ -143,7 +151,7 @@ export const MonsterInfoContainer = styled.div`
       position: relative;
       border-radius: 5px;
       .current_hp {
-        width: 65%;
+        width: ${(props) => `${(props.monster_hp / 5000) * 100}%`};
         height: 100%;
         background-color: #8fd14f;
         border-top-left-radius: 5px;
@@ -176,6 +184,12 @@ export const DamageGraphContainer = styled.div`
   height: 100%;
   margin-left: 50px;
   box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+  @media (max-width: 768px) {
+    min-width: 300px;
+    margin-top: 20px;
+    margin-left: 0px;
+    width: 100%;
+  }
 `;
 
 export const TitleContainer = styled.div`
@@ -196,6 +210,9 @@ export const TitleContainer = styled.div`
     font-size: ${fontSize_h3_laptop};
     font-family: "Fredoka One", cursive;
     color: ${color_white};
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h2_mobile};
+    }
   }
 `;
 
@@ -226,6 +243,14 @@ export const DamageStatusContainer = styled.div`
   padding-left: 10px;
   display: flex;
   justify-content: space-evenly;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 90%;
+    margin-top: 20px;
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 10px;
+  }
 `;
 
 export const CharContainer = styled.div`
@@ -252,8 +277,12 @@ export const HelperBearContainer = styled.div`
   width: 40%;
   height: 80%;
   image-rendering: pixelated;
-  z-index: 200;
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 `;

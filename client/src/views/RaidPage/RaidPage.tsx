@@ -22,6 +22,7 @@ import HelperBear from "../../components/HelperBear";
 import AnimateEffectCanvas from "./AnimateEffectCanvas";
 import DamageRankContent from "./DamageRankContent";
 import { DamageLogContent } from "./DamageLogContent";
+import { RaidClose } from "./RaidClose";
 import { TDQuestAPI, LOCALSTORAGE_STRING } from "../../API/tdquestAPI";
 import {
   DamageLogType,
@@ -66,7 +67,9 @@ function RaidPage() {
     name: monster_name,
     hp: monster_hp,
     kind,
+    reward,
   } = monsterInfo;
+  console.log(monsterInfo);
 
   const monster_data = {
     kind: "",
@@ -95,9 +98,6 @@ function RaidPage() {
     SortLog.sort((a, b) =>
       a.user_id < b.user_id ? -1 : a.user_id > b.user_id ? 1 : 0
     );
-
-    //보스에게 입힌 총 데미지 계산(사용예정)
-    const totalDamage = damage_log.reduce((acc, cur) => acc + cur.log, 0);
 
     const TempParticipateUsers = SortLog.map((el) => el.user.nickname);
     const ParticipateUsers = TempParticipateUsers.filter(
@@ -134,11 +134,22 @@ function RaidPage() {
   }
 
   const logs = ExtractData(damage_log);
+  //보스에게 입힌 총 데미지 계산
+  const totalDamage = damage_log.reduce((acc, cur) => acc + cur.log, 0);
   console.log(logs);
+  console.log(totalDamage);
 
   return loading ? (
     <RaidContainer bgColor={color_primary_green_light}>
       <Loading />
+    </RaidContainer>
+  ) : reward === 0 ? (
+    <RaidContainer bgColor={color_primary_green_light}>
+      <RaidClose
+        monster_image={monster_image}
+        effects={[monster_data.effectX, monster_data.effectY]}
+        monster_name={monster_name}
+      />
     </RaidContainer>
   ) : (
     <RaidContainer bgColor={color_primary_green_light}>
@@ -156,7 +167,6 @@ function RaidPage() {
           <MonsterContainer>
             <MonsterWrapper>
               <div className="background"></div>
-              <div className="ground"></div>
               <div className="monster_wrapper">
                 <Monster
                   src={require("../../static/images/" + monster_image + ".gif")}
@@ -168,7 +178,7 @@ function RaidPage() {
                 />
               </div>
             </MonsterWrapper>
-            <MonsterInfoContainer>
+            <MonsterInfoContainer monster_hp={monster_hp}>
               <div className="monster_name_wrapper">
                 <img
                   src={require("../../static/images/" +
@@ -205,7 +215,13 @@ function RaidPage() {
                 } else if (index >= 5) {
                   return null;
                 }
-                return <DamageRankContent key={index} logs={el} />;
+                return (
+                  <DamageRankContent
+                    key={index}
+                    logs={el}
+                    totalDamage={totalDamage}
+                  />
+                );
               })}
             </ContentContainer>
           </DamageGraphContainer>
@@ -215,7 +231,7 @@ function RaidPage() {
         <DamageLogContent damage_log={damage_log} />
         <HelperBearContainer>
           <HelperBear
-            width="200px"
+            width="180px"
             text="Complete todo and give damage to boss!"
           ></HelperBear>
         </HelperBearContainer>
