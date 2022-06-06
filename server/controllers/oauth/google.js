@@ -41,7 +41,6 @@ module.exports = {
       email: me.email,
       nickname: me.name,
     };
-    console.log(userId);
 
     const userInfo = await user.findOne({
       where: { email: userId.email, logintype: "google" },
@@ -81,7 +80,11 @@ module.exports = {
     } else {
       try {
         await user
-          .create({ emal: userId.email, logintype: "google" })
+          .create({
+            email: userId.email,
+            nickname: userId.nickname,
+            logintype: "google",
+          })
           .then(async (userInfo) => {
             await character
               .create({ user_id: userInfo.dataValues.id })
