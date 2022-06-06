@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import MainRouter from "./views/Router/Router";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
@@ -6,6 +6,7 @@ import { TDQuestAPI } from "./API/tdquestAPI";
 import { getUserData } from "./features/userinfo/userInfoSlice";
 import { getCharacterAsync } from "./features/character/characterSlice";
 import { shallowEqual } from "react-redux";
+import { signOauth } from "./features/sign/signSlice"
 
 function App() {
   const LOCALSTORAGE = window.localStorage;
@@ -42,9 +43,14 @@ function App() {
 
   useEffect(() => {
     InitializeUser();
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get('code');
+    const search = String(url).includes('google')
+    console.log(search)
+    if (!localInfo && code){
+      dispatch(signOauth(url))
+    }
   }, []);
-  // console.log("localStorage : ", localInfo);
-  //console.log("reduxStore : ", reduxInfo);
 
   return (
     <div className="App">

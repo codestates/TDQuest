@@ -219,7 +219,7 @@ function RaidInfoBox({
         <img src={image? require("../../static/images/" + `${image}` + ".gif") : require("../../static/images/monster_phy.gif")}></img>
         <div>
           HP 
-          <HpBar max={Number(hp)} current={Number(hp)}/>
+          <HpBar max={5000} current={Number(hp)}/>
         </div>
       </BossView>
       <BossReward>
