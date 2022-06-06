@@ -51,9 +51,9 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (state) {
-      console.log(userInfo)
       dispatch(signIn(userInfo)).then((res) => {
       if (res.payload.status === "loggedIn") {
+        dispatch(getCharacterAsync(res.payload.userInfo.id));
         navigate("/todo");
       } else {
         alert("입력하신 정보가 올바르지 않습니다");
