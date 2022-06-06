@@ -40,12 +40,13 @@ module.exports = {
                 kind: req.body.kind,
                 content: req.body.content
             }, { where: { id: req.query.id } })
-                .then(async todoInfo => {
-                    await todo_list.findOne({ where: { id: req.query.id } })
+                .then(async data => {
+                    const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
                     res.status(200).json({ message: "수정되었습니다.", todoInfo: todoInfo })
                 })
         }
         catch (err) {
+            console.log(err)
             res.status(401).json({ message: 'Not Found' })
         }
     },

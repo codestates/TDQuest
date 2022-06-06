@@ -55,6 +55,7 @@ function StatusPage(): JSX.Element {
       };
       getComleteTDList();
     }
+    console.log("useEffect");
   }, []);
 
   const { image, status_phy, status_int, status_spi, level, exp } =

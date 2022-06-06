@@ -55,6 +55,9 @@ const ContentContainer = styled.div`
   padding-bottom: 10px;
   align-items: center;
   width: 100%;
+  .empty {
+    font-family: "Fredoka One", cursive;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -226,7 +229,7 @@ function TaskContainer({
             ))}
           </>
         ) : (
-          "Empty..."
+          <div className="empty">Empty...</div>
         )}
       </ContentContainer>
     </Container>

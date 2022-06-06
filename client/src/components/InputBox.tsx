@@ -24,7 +24,6 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
     email: "",
     password: "",
     nickname: "",
-    logintype : "general"
   });
   const [oauthState, setOauthState] = useState(true);
 
@@ -52,12 +51,12 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
     e.preventDefault();
     if (state) {
       dispatch(signIn(userInfo)).then((res) => {
-      if (res.payload.status === "loggedIn") {
-        dispatch(getCharacterAsync(res.payload.userInfo.id));
-        navigate("/todo");
-      } else {
-        alert("입력하신 정보가 올바르지 않습니다");
-      }
+        if (res.payload.status === "loggedIn") {
+          dispatch(getCharacterAsync(res.payload.userInfo.id));
+          navigate("/todo");
+        } else {
+          alert("입력하신 정보가 올바르지 않습니다");
+        }
       });
     } else {
       if (emailResult && pswResult) {
@@ -88,7 +87,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
               type="button"
               img={<img src={require("../static/images/kakao.png")} />}
               onClick={() => {
-                window.location.assign(kakao_url);
+                window.open(kakao_url);
               }}
             />
             {/* <Button bgColor="#fa6c67" text="Sign in with google" type="button" img={<img src={require("../static/images/google.png")}/>} onClick={()=>{dispatch(signOauth('google'))}} /> */}
@@ -98,7 +97,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
               type="button"
               img={<img src={require("../static/images/google.png")} />}
               onClick={() => {
-                window.location.assign(google_url);
+                window.open(google_url);
               }}
             />
             <span>OR</span>
