@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 axios.defaults.withCredentials = true;
-// axios.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
-//   window.localStorage.getItem("accessToken") as string
-// )}`;
+axios.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
+  window.localStorage.getItem("accessToken") as string
+)}`;
 
 // env 파일에서 url 주소를 불러오도록 설정할 예정
 // export const APIMAIN = "https://tdquest.tk";
