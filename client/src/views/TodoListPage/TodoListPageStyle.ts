@@ -1,17 +1,18 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   fontSize_h1_laptop,
   fontSize_h2_laptop,
   fontSize_h3_laptop,
   fontSize_body_mobile_medium,
   fontSize_body_mobile_small,
+  fontSize_body_laptop_big,
   fontSize_body_laptop,
   color_menu_header_purple,
   color_border_yellow,
   color_context_brown,
   color_white,
   color_secondary_beige,
-} from '../../components/CommonStyle';
+} from "../../components/CommonStyle";
 
 export const TodoContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -41,7 +42,7 @@ export const TodoListPageHeader = styled.div`
     }
     h2 {
       font-size: ${fontSize_h2_laptop};
-      font-family: 'Fredoka One', cursive;
+      font-family: "Fredoka One", cursive;
       color: ${color_menu_header_purple};
     }
   }
@@ -83,9 +84,12 @@ export const TitleContainer = styled.div`
     margin-right: 5px;
   }
   h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     color: ${color_white};
     align-self: center;
   }
@@ -99,9 +103,14 @@ export const ContentContainer = styled.div`
   h3 {
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
-    font-family: 'OpenSans';
+    font-family: "OpenSans";
     text-align: center;
   }
 `;
 
-export const RewardInfo = styled.div``;
+export const RewardInfo = styled.div`
+  h3 {
+    font-family: "Fredoka One", cursive;
+    font-size: ${fontSize_body_laptop_big};
+  }
+`;

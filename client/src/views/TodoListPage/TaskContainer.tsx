@@ -55,6 +55,7 @@ const ContentContainer = styled.div`
   padding-bottom: 10px;
   align-items: center;
   width: 100%;
+  font-family: "Fredoka One", cursive;
 `;
 
 const InputContainer = styled.div`
