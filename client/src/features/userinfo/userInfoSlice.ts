@@ -13,7 +13,14 @@ export const getUserData = createAsyncThunk(
   "userinfo",
   async (user_id: string) => {
     try {
-      const userData = await TDQuestAPI.get(`userinfo/?id=${user_id}`);
+      const accessToken = JSON.parse(
+        window.localStorage.getItem("accessToken") as string
+      );
+      const userData = await TDQuestAPI.get(`userinfo/?id=${user_id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       const response = {
         email: userData.data.userInfo.email,
         nickname: userData.data.userInfo.nickname,

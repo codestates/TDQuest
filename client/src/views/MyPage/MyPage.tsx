@@ -58,12 +58,20 @@ function MyPage() {
   );
 
   const { id: L_user_id, email: L_email } = LOCALSTORAGE_PASRED.userInfo;
+  const accessToken = JSON.parse(
+    window.localStorage.getItem("accessToken") as string
+  );
 
   useEffect(() => {
     if (loading) {
       const getComleteTDList = async () => {
         console.log(L_user_id);
-        await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`)
+        console.log(accessToken);
+        await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
           .then((res) => {
             setDonelist(res.data.todo_lists);
             setNetError(false);
