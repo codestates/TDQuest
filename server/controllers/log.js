@@ -11,19 +11,19 @@ module.exports = {
             const userInfo = await user.findOne({
                 where: {
                     email: req.body.email,
-                    logintype : req.body.logintype
+                    logintype: req.body.logintype
                 }
             })
-            const hash = await  bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password)
-              if (!hash) {
+            const hash = await bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password)
+            if (!hash) {
                 res.status(404).json({ message: "Wrong user password" })
-              }  
-              else {
+            }
+            else {
                 const accessToken = await makeAccessToken(userInfo.dataValues.email)
                 const refreshToken = await makeRefreshToken(userInfo.dataValues.email)
-                
+
                 const damage_logInfo = await damage_log.findOne({
-                    where : { user_id : userInfo.dataValues.id}
+                    where: { user_id: userInfo.dataValues.id }
                 })
 
                 await character.findOne({
@@ -39,19 +39,19 @@ module.exports = {
                             .json({
                                 characterInfo: characterInfo,
                                 userInfo: {
-                                    id : userInfo.id,
-                                    email : userInfo.email,
-                                    nickname : userInfo.nickname,
-                                    logintype : userInfo.logintype,
-                                    createdAt : userInfo.createdAt,
-                                    updatedAt : userInfo.updatedAt
+                                    id: userInfo.id,
+                                    email: userInfo.email,
+                                    nickname: userInfo.nickname,
+                                    logintype: userInfo.logintype,
+                                    createdAt: userInfo.createdAt,
+                                    updatedAt: userInfo.updatedAt
                                 },
-                                damage_logInfo : damage_logInfo,
+                                damage_logInfo: damage_logInfo,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken
                             })
                     })
-              }
+            }
         }
         catch (err) {
             res.status(404).json({ message: "Wrong user Id" })

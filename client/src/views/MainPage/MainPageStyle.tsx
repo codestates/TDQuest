@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   fontSize_h1_laptop,
   fontSize_h1_tablet,
   fontSize_body_laptop,
   fontSize_body_tablet,
-} from "../../components/CommonStyle";
+} from '../../components/CommonStyle';
 
 // 고정 px들 반응형에 맞게 수정
 export const MainpageContainer = styled.div<{ bgColor: string }>`
@@ -13,7 +13,7 @@ export const MainpageContainer = styled.div<{ bgColor: string }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  padding-top: 80px;
   overflow: hidden;
 `;
 
@@ -32,7 +32,7 @@ export const LogoWrapper = styled.section`
   }
 
   h1 {
-    font-family: "Fredoka One", cursive;
+    font-family: 'Fredoka One', cursive;
     font-size: 94px;
   }
 
@@ -53,20 +53,19 @@ export const LogoWrapper = styled.section`
 `;
 
 export const Wrapper = styled.section<{
-  bgColor: string; 
+  bgColor: string;
   direction: string;
-  type? : string;
-  }>`
+  type?: string;
+}>`
   background-color: ${(props) => props.bgColor};
   width: 100%;
   display: flex;
   flex-direction: ${(props) => props.direction};
   justify-content: ${(props) =>
-    props.direction === "column" ? "space-around" : "center"};
+    props.direction === 'column' ? 'space-around' : 'center'};
   align-items: center;
   padding: 5%;
-  height: ${(props) =>
-    props.type === "signup" ? "none" : "50vh"};;
+  height: ${(props) => (props.type === 'signup' ? 'none' : '50vh')};
 
   > div > img {
     width: 700px;
@@ -100,7 +99,7 @@ export const DesCard = styled.section`
   text-align: center;
 
   h1 {
-    font-family: "Fredoka One", cursive;
+    font-family: 'Fredoka One', cursive;
     font-size: ${fontSize_h1_laptop};
   }
 
@@ -141,7 +140,7 @@ export const StatCard = styled.section`
   }
 
   h1 {
-    font-family: "Fredoka One", cursive;
+    font-family: 'Fredoka One', cursive;
     font-size: ${fontSize_h1_laptop};
     text-align: center;
   }
@@ -183,7 +182,7 @@ export const BearWrapper = styled.section`
     padding: 2rem;
 
     p {
-      font-family: "Fredoka One", cursive;
+      font-family: 'Fredoka One', cursive;
       font-size: 24px;
     }
   }

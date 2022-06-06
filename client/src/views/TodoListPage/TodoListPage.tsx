@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import {
   color_primary_green_light,
   color_secondary_beige,
-  color_context_beige,
-} from "../../components/CommonStyle";
+} from '../../components/CommonStyle';
 import {
   TodoContainer,
   TodoListPageHeader,
@@ -15,15 +14,15 @@ import {
   TitleContainer,
   ContentContainer,
   RewardInfo,
-} from "./TodoListPageStyle";
-import Loading from "../../components/Loading";
-import Status from "../../components/Status";
-import HelperBear from "../../components/HelperBear";
-import TaskContainer from "./TaskContainer";
-import UncheckedIcon from "../../static/images/icons/unchecked.svg";
-import CheckedIcon from "../../static/images/icons/checked.svg";
-import MsgModal from "../../components/MsgModal";
-import TaskContent_modal from "./TaskContent_Modal";
+} from './TodoListPageStyle';
+import Loading from '../../components/Loading';
+import Status from '../../components/Status';
+import HelperBear from '../../components/HelperBear';
+import TaskContainer from './TaskContainer';
+import UncheckedIcon from '../../static/images/icons/unchecked.svg';
+import CheckedIcon from '../../static/images/icons/checked.svg';
+import MsgModal from '../../components/MsgModal';
+import TaskContent_modal from './TaskContent_Modal';
 import {
   getTodoListAsync,
   postTodoListAsync,
@@ -31,13 +30,13 @@ import {
   deleteTodoListAsync,
   todoStatusChangeAsync,
   getCompletedTodoListAsync,
-} from "../../features/todolist/todolistSlice";
-import { getCharacterAsync } from "../../features/character/characterSlice";
-import { Toast } from "../../components/Toast";
+} from '../../features/todolist/todolistSlice';
+import { getCharacterAsync } from '../../features/character/characterSlice';
+import { Toast } from '../../components/Toast';
 
 function TodoListPage() {
   const [showToast, setShowToast] = useState(false);
-  const [toastText, setToastText] = useState("");
+  const [toastText, setToastText] = useState('');
 
   const loadingStatus = useSelector((state: any) => state.todoList.status);
   const todoList = useSelector((state: any) => state.todoList.todo); // todo list
@@ -49,13 +48,13 @@ function TodoListPage() {
     try {
       return el.todoInfo.reduce(
         (acc: any, cur: any, i: any) => {
-          if (cur.kind === "phy") {
+          if (cur.kind === 'phy') {
             acc.phy += 0.5;
-          } else if (cur.kind === "int") {
+          } else if (cur.kind === 'int') {
             acc.int += 0.5;
-          } else if (cur.kind === "spi") {
+          } else if (cur.kind === 'spi') {
             acc.spi += 0.5;
-          } else if (cur.kind === "exp") {
+          } else if (cur.kind === 'exp') {
             acc.exp += 0.5;
           }
           return acc;
@@ -69,7 +68,7 @@ function TodoListPage() {
   };
   const expectedStats = getExpectedStats(todoList);
 
-  const LOCALSTORAGE = window.localStorage.getItem("isLogin") as string;
+  const LOCALSTORAGE = window.localStorage.getItem('isLogin') as string;
   const { id: user_id, nickname } = JSON.parse(LOCALSTORAGE).userInfo;
   const accessToken = JSON.parse(LOCALSTORAGE).accessToken;
   const charInfo: any = useSelector((state: any) => state.character);
@@ -92,9 +91,9 @@ function TodoListPage() {
   const getToday = (): string => {
     const date = new Date();
     const year = date.getFullYear();
-    const month = ("0" + (1 + date.getMonth())).slice(-2);
-    const day = ("0" + date.getDate()).slice(-2);
-    return year + "-" + month + "-" + day;
+    const month = ('0' + (1 + date.getMonth())).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return year + '-' + month + '-' + day;
   };
 
   //raid_id 가져오는 함수
@@ -110,9 +109,9 @@ function TodoListPage() {
 
   //--- modal 관련---//
   const [selectedTaskContent, setSelectedTaskContent] = useState({
-    taskContent: "",
+    taskContent: '',
     taskId: 0,
-    kind: "",
+    kind: '',
   });
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
@@ -214,7 +213,6 @@ function TodoListPage() {
     ).then(() => {
       dispatch(getCharacterAsync(user_id));
     });
-
     setTimeout(() => {
       setShowToast(false);
     }, 2000);
@@ -243,20 +241,20 @@ function TodoListPage() {
 
   return (
     <div>
-      {loadingStatus === "loading" ? (
+      {loadingStatus === 'loading' ? (
         <TodoContainer bgColor={color_primary_green_light}>
-          <Loading customText="Loading..." />
+          <Loading customText='Loading...' />
         </TodoContainer>
       ) : (
         <TodoContainer bgColor={color_primary_green_light}>
           <MsgModal
-            header="Task info"
+            header='Task info'
             open={showModal}
             close={closeModal}
             footerClick={deleteTask}
             footerClick2={saveTask}
-            footer="Delete"
-            footer2="Save"
+            footer='Delete'
+            footer2='Save'
             secondFooterBtn={true}
           >
             <TaskContent_modal
@@ -267,10 +265,10 @@ function TodoListPage() {
             ></TaskContent_modal>
           </MsgModal>
           <TodoListPageHeader>
-            <div className="headerContainer">
+            <div className='headerContainer'>
               <img
-                src={require("../../static/images/icons/Achievements.png")}
-                alt="Achievements"
+                src={require('../../static/images/icons/Achievements.png')}
+                alt='Achievements'
               />
               <h2>To-Do List</h2>
             </div>
@@ -280,19 +278,18 @@ function TodoListPage() {
               <Status
                 userName={nickname}
                 charData={charInfo}
-                direction="row"
+                direction='row'
               ></Status>
             </StatusContainer>
             <RewardContainer bgColor={color_secondary_beige}>
               <TitleContainer>
                 <img
-                  src={require("../../static/images/icons/Ring.png")}
-                  alt="Ring"
+                  src={require('../../static/images/icons/Ring.png')}
+                  alt='Ring'
                 />
                 <h3>Today's Expected Reward</h3>
               </TitleContainer>
               <ContentContainer>
-                {/* 추후 todolist 태스크별 포인트 계산하여 표시 */}
                 <RewardInfo>
                   <h3>PHY + {expectedStats ? expectedStats.phy : 0} Points</h3>
                   <h3>INT + {expectedStats ? expectedStats.int : 0} Points</h3>
@@ -300,10 +297,10 @@ function TodoListPage() {
                   <h3>EXP + {expectedStats ? expectedStats.exp : 0} Points</h3>
                 </RewardInfo>
                 <HelperBear
-                  width="150px"
-                  height="80px"
-                  text="Your completed tasks will be refreshed every midnight!
-                  "
+                  width='150px'
+                  height='80px'
+                  text='Your completed tasks will be refreshed every midnight!
+                  '
                 ></HelperBear>
               </ContentContainer>
             </RewardContainer>
@@ -321,18 +318,18 @@ function TodoListPage() {
             />
             <TaskContainer
               title="Today's Done List"
-              icon="flag.png"
+              icon='flag.png'
               itemIcon={CheckedIcon}
               itemBtnActionFunction={taskCompletedCancelHander}
               todoList={completedTodoList}
             />
             <TaskContainer
-              title="My Routine To-do List"
+              title='My Routine To-do List'
               itemIcon={CheckedIcon}
               itemBtnActionFunction={taskCompletedCancelHander}
             />
           </SectionContainer>
-          {showToast ? <Toast text={toastText}></Toast> : ""}
+          {showToast ? <Toast text={toastText}></Toast> : ''}
         </TodoContainer>
       )}
     </div>

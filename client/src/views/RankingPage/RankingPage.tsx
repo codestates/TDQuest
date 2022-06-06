@@ -40,12 +40,13 @@ function RankingPage() {
   const { id: user_id, nickname } = JSON.parse(
     window.localStorage.getItem('isLogin') as string
   ).userInfo;
-  const charInfo: any = useSelector((state: any) => state.sign.characterInfo);
+  const charInfo: any = useSelector((state: any) => state.character);
 
   useEffect(() => {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
     dispatch(getRankingListAsync());
     dispatch(getTopRankerAsync());
+    console.log(charInfo);
   }, []);
 
   return (

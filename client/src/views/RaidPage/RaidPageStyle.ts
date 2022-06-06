@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   color_primary_green_light,
   color_context_brown,
@@ -8,7 +8,7 @@ import {
   fontSize_h2_laptop,
   fontSize_h3_laptop,
   fontSize_h2_mobile,
-} from "../../components/CommonStyle";
+} from '../../components/CommonStyle';
 
 export const RaidContainer = styled.div<{ bgColor: string }>`
   padding-top: 80px;
@@ -19,6 +19,7 @@ export const RaidContainer = styled.div<{ bgColor: string }>`
   align-items: center;
   height: 100%;
   min-height: 90vh;
+  padding-bottom: 20px;
   @media (max-width: 768px) {
     height: auto;
   }
@@ -38,7 +39,7 @@ export const RaidPageHeader = styled.div`
     }
     h2 {
       font-size: ${fontSize_h2_laptop};
-      font-family: "Fredoka One", cursive;
+      font-family: 'Fredoka One', cursive;
       color: #414693;
     }
   }
@@ -128,7 +129,7 @@ export const MonsterInfoContainer = styled.div<{ monster_hp: number }>`
     h2 {
       font-size: 28px;
       height: 1.5rem;
-      font-family: "Fredoka One", cursive;
+      font-family: 'Fredoka One', cursive;
       text-align: center;
     }
   }
@@ -137,7 +138,7 @@ export const MonsterInfoContainer = styled.div<{ monster_hp: number }>`
     justify-content: center;
     margin-top: 10px;
     h3 {
-      font-family: "Fredoka One", cursive;
+      font-family: 'Fredoka One', cursive;
       font-size: ${fontSize_body_laptop};
       margin-right: 10px;
     }
@@ -166,7 +167,7 @@ export const MonsterInfoContainer = styled.div<{ monster_hp: number }>`
         align-items: center;
         h3 {
           position: absolute;
-          font-family: "Fredoka One", cursive;
+          font-family: 'Fredoka One', cursive;
           z-index: 50;
           font-size: 16px;
         }
@@ -208,7 +209,7 @@ export const TitleContainer = styled.div`
   }
   h3 {
     font-size: ${fontSize_h3_laptop};
-    font-family: "Fredoka One", cursive;
+    font-family: 'Fredoka One', cursive;
     color: ${color_white};
     @media (max-width: 768px) {
       font-size: ${fontSize_h2_mobile};
@@ -227,7 +228,7 @@ export const ContentContainer = styled.div`
   h3 {
     font-size: ${fontSize_body_laptop};
     height: 1.5rem;
-    font-family: "OpenSans";
+    font-family: 'OpenSans';
     text-align: center;
   }
 `;
