@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import React from "react";
-import { TDQuestAPI } from "../../API/tdquestAPI";
-import { DamageLogType } from "../../Types/generalTypes";
-import { fontSize_body_mobile_small } from "../../components/CommonStyle";
-import moment from "moment";
+import styled from 'styled-components';
+import React from 'react';
+import { TDQuestAPI } from '../../API/tdquestAPI';
+import { DamageLogType } from '../../Types/generalTypes';
+import { fontSize_body_mobile_small } from '../../components/CommonStyle';
+import moment from 'moment';
 
 const LogContentContainer = styled.div`
   display: flex;
@@ -94,8 +94,8 @@ function UserLog(
   date: string,
   index: number
 ) {
-  const LogDate = moment.utc(date).format("YYYY-MM-DD HH:mm:ss");
-  const now = moment(LogDate, "YYYY-MM-DD HH:mm:ss").fromNow();
+  const LogDate = moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
+  const now = moment(LogDate, 'YYYY-MM-DD HH:mm:ss').fromNow();
 
   return (
     <LogContent key={index}>

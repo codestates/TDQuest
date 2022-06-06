@@ -108,8 +108,6 @@ export const todoStatusChangeAsync = createAsyncThunk(
   async (arg: any) => {
     try {
       let patchAPIAddress;
-      console.log(arg.raid_id);
-
       if (arg.raid_id) {
         patchAPIAddress = `${APIMAIN}/todo/complete?user_id=${arg.user_id}&status=${arg.kind}&id=${arg.id}&is_complete=${arg.is_complete}&raid_id=${arg.raid_id}`;
       } else {
