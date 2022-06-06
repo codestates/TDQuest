@@ -25,7 +25,7 @@ const initialState: CharacterState = {
   id: 0,
   image: 0,
   level: 0,
-  medal: 0,
+  medal: "",
   status_int: 0,
   status_phy: 0,
   status_spi: 0,

@@ -60,7 +60,7 @@ export const ChangePasswordModal = ({
   email: string;
   close: () => void;
   saveChange: () => void;
-  setShowToast: ()=> void;
+  setShowToast: () => void;
 }) => {
   const [curPassword, setCurPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -104,6 +104,7 @@ export const ChangePasswordModal = ({
       await TDQuestAPI.post(`log/in`, {
         email: email,
         password: curPassword,
+        logintype: "general",
       })
         .then((res) => {
           if (res.status === 200) {
@@ -156,7 +157,7 @@ export const ChangePasswordModal = ({
         {showAlert ? <span>Input same Password!</span> : null}
         {showCurPWAlert ? <span>Check current Password!</span> : null}
       </ChangePW_Wrapper>
-      <Button text="Confirm" onClick={handleChangePwAction}></Button>   
+      <Button text="Confirm" onClick={handleChangePwAction}></Button>
     </ChangePw_Container>
   );
 };
