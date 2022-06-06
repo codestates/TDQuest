@@ -24,6 +24,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
     email: "",
     password: "",
     nickname: "",
+    logintype : "general"
   });
   const [oauthState, setOauthState] = useState(true);
 

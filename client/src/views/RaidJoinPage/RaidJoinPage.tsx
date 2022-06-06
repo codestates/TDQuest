@@ -135,7 +135,6 @@ function RaidJoinPage() {
 
   const handleParticipate = (monsterId : number) => {
     let local = window.localStorage.getItem("isLogin")? JSON.parse(window.localStorage.getItem("isLogin") || "") : false;
-    if (canRaid){
       setShowToast(true)
       if (local.damage_logInfo){
         setToastText("you are already participated!")
@@ -143,12 +142,10 @@ function RaidJoinPage() {
         participate(monsterId);
         setToastText("participate in raid on weekend!")
       }
-    } else {
-      setToastText("you can raid only weekend")
-    }
-    setTimeout(() => {
+
+      setTimeout(() => {
       setShowToast(false);
-    }, 2000);
+    }, 1000);
   }
 
   const participate = async(monsterId : number) => {
