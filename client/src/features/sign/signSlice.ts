@@ -30,6 +30,20 @@ export const signIn = createAsyncThunk("sign/in", async (data: any) => {
   }
 });
 
+export const signOauth = createAsyncThunk("sign/oauth", async (url : any)=>{
+  try {
+    const search = String(url).includes('google')
+    const response = search? await TDQuestAPI.get(`/oauth/google/callback?code=${url.searchParams.get('code')}`) : await TDQuestAPI.get(`/oauth/kakao/callback?code=${url.searchParams.get('code')}`)
+    const isLogin = { status: "loggedIn", ...response.data};
+    localStorage.setItem("isLogin", JSON.stringify(isLogin));
+    console.log('test')
+    return isLogin;
+  } catch (err: any) {
+    console.log(err.response);
+    return { status: "failed" };
+  }
+})
+
 export const signUp = createAsyncThunk("sign/up", async (data: any) => {
   try {
     const response = await TDQuestAPI.post(`/sign/in`, data);
@@ -50,6 +64,9 @@ export const signSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(signIn.fulfilled, (state, action) => {
+      return { ...state, ...action.payload };
+    })
+    .addCase(signOauth.fulfilled, (state, action) => {
       return { ...state, ...action.payload };
     });
   },

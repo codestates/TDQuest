@@ -6,6 +6,7 @@ import { TDQuestAPI } from "./API/tdquestAPI";
 import { getUserData } from "./features/userinfo/userInfoSlice";
 import { getCharacterAsync } from "./features/character/characterSlice";
 import { shallowEqual } from "react-redux";
+import { signOauth } from "./features/sign/signSlice"
 
 function App() {
   const LOCALSTORAGE = window.localStorage;
@@ -40,19 +41,14 @@ function App() {
     }
   };
 
-  const signOauth = async( code : any)=>{
-    const OauthResponse = await TDQuestAPI.get(`/oauth/kakao/callback?code=${code}`);
-    const isLogin = { status: "loggedIn", ...OauthResponse.data};
-    localStorage.setItem("isLogin", JSON.stringify(isLogin));
-  }
-
-
   useEffect(() => {
     InitializeUser();
     const url = new URL(window.location.href);
     const code = url.searchParams.get('code');
+    const search = String(url).includes('google')
+    console.log(search)
     if (!localInfo && code){
-      signOauth(code);
+      dispatch(signOauth(url))
     }
   }, []);
 

@@ -70,7 +70,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
   //const kakao_url = 'http://localhost:3001/kakao'
   //const google_url = 'http://localhost:3001/google'
   const kakao_url = 'https://kauth.kakao.com/oauth/authorize?client_id=51ff7cb7b6a28cd0aae21b4069e991dc&redirect_uri=http://localhost:3000&response_type=code';
-  const google_url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=271860095349-9ir71s2ve6k3l9ts7r4mnis7lu211575.apps.googleusercontent.com&redirect_uri=http://localhost:3000/sign=code&include_granted_scopes=true&scope=https://www.googleapis.com/auth/userinfo.email'
+  const google_url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=271860095349-9ir71s2ve6k3l9ts7r4mnis7lu211575.apps.googleusercontent.com&redirect_uri=http://localhost:3000&response_type=code&include_granted_scopes=true&scope=https://www.googleapis.com/auth/userinfo.email'
   return (
     <InputBoxContainer>
       <Headline>
@@ -82,14 +82,13 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
         {oauthState ? (
           <OauthContainer>
             {/* <Button bgColor="#f9e000" text="Sign in with kakao" type="button" img={<img src={require("../static/images/kakao.png")}/>} onClick={()=>{dispatch(signOauth('KaKao'))}} /> */}
-            <a type="button" onClick={()=>{window.location.assign(kakao_url)}}>test</a>
             <Button
               bgColor="#f9e000"
               text="Sign in with kakao"
               type="button"
               img={<img src={require("../static/images/kakao.png")} />}
               onClick={() => {
-                window.open(kakao_url);
+                window.location.assign(kakao_url);
               }}
             />
             {/* <Button bgColor="#fa6c67" text="Sign in with google" type="button" img={<img src={require("../static/images/google.png")}/>} onClick={()=>{dispatch(signOauth('google'))}} /> */}
@@ -99,7 +98,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
               type="button"
               img={<img src={require("../static/images/google.png")} />}
               onClick={() => {
-                window.open(google_url);
+                window.location.assign(google_url);
               }}
             />
             <span>OR</span>
