@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import MainRouter from "./views/Router/Router";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
@@ -40,11 +40,21 @@ function App() {
     }
   };
 
+  const signOauth = async( code : any)=>{
+    const OauthResponse = await TDQuestAPI.get(`/oauth/kakao/callback?code=${code}`);
+    const isLogin = { status: "loggedIn", ...OauthResponse.data};
+    localStorage.setItem("isLogin", JSON.stringify(isLogin));
+  }
+
+
   useEffect(() => {
     InitializeUser();
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get('code');
+    if (!localInfo && code){
+      signOauth(code);
+    }
   }, []);
-  // console.log("localStorage : ", localInfo);
-  //console.log("reduxStore : ", reduxInfo);
 
   return (
     <div className="App">
