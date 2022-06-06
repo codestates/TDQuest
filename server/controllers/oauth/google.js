@@ -41,7 +41,6 @@ module.exports = {
       email: me.email,
       nickname: me.name,
     };
-    console.log(userId);
 
     const userInfo = await user.findOne({
       where: { email: userId.email, logintype: "google" },
@@ -50,8 +49,7 @@ module.exports = {
     if (userInfo) {
       const accessToken = makeAccessToken(userInfo.dataValues.email);
       const refreshToken = makeRefreshToken(userInfo.dataValues.email);
-      await character
-        .findOne({
+      await character.findOne({
           where: { user_id: userInfo.dataValues.id },
         })
         .then(async (character) => {
@@ -80,11 +78,9 @@ module.exports = {
         }); //{ httpOnly: true}
     } else {
       try {
-        await user
-          .create({ emal: userId.email, logintype: "google" })
+        await user.create({ emal: userId.email, logintype: "google" })
           .then(async (userInfo) => {
-            await character
-              .create({ user_id: userInfo.dataValues.id })
+            await character.create({ user_id: userInfo.dataValues.id })
               .then(async (character) => {
                 const damage_logInfo = await damage_log.findOne({
                   where: { user_id: userInfo.dataValues.id },
