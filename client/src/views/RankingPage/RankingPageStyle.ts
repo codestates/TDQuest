@@ -1,18 +1,16 @@
 import styled, { keyframes } from 'styled-components';
 import {
-  fontSize_h1_laptop,
   fontSize_h2_laptop,
   fontSize_h3_laptop,
-  fontSize_body_mobile_medium,
-  fontSize_body_mobile_small,
-  fontSize_body_laptop,
+  fontSize_h2_tablet,
+  fontSize_h3_tablet,
   color_menu_header_purple,
   color_border_yellow,
   color_context_brown,
   color_white,
-  color_secondary_beige,
   color_primary_green_light,
 } from '../../components/CommonStyle';
+import frameTopRankerIcon from '../../static/images/icons/FrameTopRanker.png';
 
 export const RankingContainer = styled.div`
   background-color: ${color_primary_green_light};
@@ -45,6 +43,9 @@ export const RankingPageHeader = styled.div`
       font-family: 'Fredoka One', cursive;
       color: ${color_menu_header_purple};
     }
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h2_tablet};
+    }
   }
 `;
 
@@ -52,14 +53,13 @@ export const SectionContainer = styled.div`
   width: 90%;
   display: grid;
   column-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   margin-bottom: 20px;
 `;
 
 export const StatusContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
   width: 100%;
-  height: 250px;
   border: 1px solid ${color_border_yellow};
   display: flex;
   justify-content: center;
@@ -89,6 +89,9 @@ export const TitleContainer = styled.div`
     font-family: 'Fredoka One', cursive;
     color: ${color_white};
     align-self: center;
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h3_tablet};
+    }
   }
 `;
 
@@ -104,6 +107,9 @@ export const ContentContainer = styled.div`
     height: 2rem;
     font-family: 'Fredoka One', cursive;
     text-align: center;
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h3_tablet};
+    }
   }
   p {
     font-size: ${fontSize_h3_laptop};
@@ -111,6 +117,9 @@ export const ContentContainer = styled.div`
     font-family: 'OpenSans';
     text-align: center;
     margin-bottom: 10px;
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h3_tablet};
+    }
     img {
       image-rendering: pixelated;
       width: 30px;
@@ -135,6 +144,18 @@ export const CharacterContainer = styled.div`
     0 0 30px #cfb53b, 0 0 50px #cfb53b;
   animation: ${blink} 0.6s infinite alternate;
   position: relative;
+`;
+
+export const GoldenLeaf = styled.div`
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  position: absolute;
+  top: 0;
+  background-image: url(${frameTopRankerIcon});
+  background-size: 120% 90%;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 export const FrameTopRanker = styled.img`

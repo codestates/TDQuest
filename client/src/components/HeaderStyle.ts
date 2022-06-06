@@ -6,6 +6,8 @@ import {
   fontSize_h1_laptop,
   fontSize_h2_laptop,
   fontSize_h3_laptop,
+  fontSize_h1_tablet,
+  fontSize_h3_tablet,
 } from './CommonStyle';
 
 export const HeaderContainer = styled.div`
@@ -20,6 +22,10 @@ export const HeaderContainer = styled.div`
   position: fixed;
   width: 100%;
   z-index: 9999;
+
+  @media (max-width: 768px) {
+    font-size: ${fontSize_h1_tablet};
+  }
 `;
 
 export const Logo = styled.div`
@@ -72,6 +78,9 @@ export const MenuBar = styled.div<IMenuBar>`
     &:hover {
       color: ${color_context_blue};
     }
+  }
+  @media (max-width: 800px) {
+    font-size: ${fontSize_h3_tablet};
   }
 `;
 
