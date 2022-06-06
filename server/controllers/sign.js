@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt")
 
 module.exports = {
     signIn: async (req, res) => {
-        const { email, nickname, password } = req.body
+        const { email, nickname, password, logintype} = req.body
         const hashPassword = await bcrypt.hash(password.toString(), Number(process.env.BCRYPT));
         const isUser = await user.findOne({
             where: { email: email }
@@ -20,7 +20,8 @@ module.exports = {
                 const userInfo = await user.create({
                     email: email,
                     nickname: nickname,
-                    password: hashPassword
+                    password: hashPassword,
+                    logintype : logintype
                 })
                 const characterInfo = await character.create({
                     user_id: userInfo.dataValues.id
