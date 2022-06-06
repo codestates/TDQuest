@@ -24,6 +24,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
     email: "",
     password: "",
     nickname: "",
+    logintype : "general"
   });
   const [oauthState, setOauthState] = useState(true);
 
@@ -50,13 +51,13 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (state) {
+      console.log(userInfo)
       dispatch(signIn(userInfo)).then((res) => {
-        if (res.payload.status === "loggedIn") {
-          dispatch(getCharacterAsync(res.payload.userInfo.id));
-          navigate("/todo");
-        } else {
-          alert("입력하신 정보가 올바르지 않습니다");
-        }
+      if (res.payload.status === "loggedIn") {
+        navigate("/todo");
+      } else {
+        alert("입력하신 정보가 올바르지 않습니다");
+      }
       });
     } else {
       if (emailResult && pswResult) {
