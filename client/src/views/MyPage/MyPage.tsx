@@ -27,6 +27,8 @@ import {
   AchievementsContainer,
   TitleContainer,
   ContentContainer,
+  AchievementsWrapper,
+  Achievements,
 } from "./MyPageStyle";
 // API REQUEST
 import { TDQuestAPI } from "../../API/tdquestAPI";
@@ -37,7 +39,6 @@ import {
 } from "../../features/userinfo/userInfoSlice";
 
 function MyPage() {
-  //const [charData, setCharData] = useState<CharDataType>({} as CharDataType);
   const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
@@ -51,6 +52,8 @@ function MyPage() {
   const userData = useAppSelector((state) => state.MyPageInfo);
   const charData = useAppSelector((state) => state.character);
   const dispatch = useAppDispatch();
+  const medals: string[] = charData?.medal.split(",") || [];
+  console.log(medals);
 
   const LOCALSTORAGE = window.localStorage;
   const LOCALSTORAGE_PASRED = JSON.parse(
@@ -317,7 +320,22 @@ function MyPage() {
               <TitleContainer>
                 <h3>Achievements</h3>
               </TitleContainer>
-              <ContentContainer></ContentContainer>
+              <ContentContainer>
+                <AchievementsWrapper>
+                  {medals[0] !== ""
+                    ? medals.map((el, idx) => {
+                        return (
+                          <Achievements
+                            key={idx}
+                            src={require("../../static/images/Achievements/" +
+                              el +
+                              ".png")}
+                          ></Achievements>
+                        );
+                      })
+                    : null}
+                </AchievementsWrapper>
+              </ContentContainer>
             </AchievementsContainer>
           </BottomContentContainer>
           {showToast ? (

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   color_primary_green_dark,
   color_context_gray,
@@ -6,7 +6,7 @@ import {
   color_white,
   color_context_beige,
   fontSize_body_laptop,
-} from '../../components/CommonStyle';
+} from "../../components/CommonStyle";
 
 export const MyPageRoot = styled.div`
   height: auto;
@@ -40,7 +40,7 @@ export const MyPageHeader = styled.div`
     }
     h1 {
       font-size: 1.5rem;
-      font-family: 'Fredoka One', cursive;
+      font-family: "Fredoka One", cursive;
       color: #414693;
     }
   }
@@ -95,7 +95,7 @@ export const UserInfoDetailContainer = styled.div`
     border: none;
     color: ${color_primary_green_dark};
     background-color: transparent;
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     font-size: 18px;
     margin: 10px 0;
     &:hover {
@@ -110,14 +110,14 @@ export const UserInfoDetailContainer = styled.div`
     h1 {
       width: 100%;
       font-size: 1.3rem;
-      font-family: 'Fredoka One', cursive;
+      font-family: "Fredoka One", cursive;
       margin-bottom: 15px;
     }
   }
   h2 {
     width: 70%;
     font-size: 1.3rem;
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     margin-bottom: 15px;
     color: ${color_context_gray};
   }
@@ -189,7 +189,7 @@ export const TitleContainer = styled.div`
   align-items: center;
   h3 {
     font-size: ${fontSize_body_laptop};
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     color: ${color_white};
   }
 `;
@@ -206,7 +206,7 @@ export const ContentContainer = styled.div`
   h3 {
     font-size: ${fontSize_body_laptop};
     height: 1.5rem;
-    font-family: 'OpenSans';
+    font-family: "OpenSans";
     text-align: center;
   }
   &::-webkit-scrollbar {
@@ -216,4 +216,22 @@ export const ContentContainer = styled.div`
     border-radius: 3px;
     background-color: #d0cfcf;
   }
+`;
+
+export const AchievementsWrapper = styled.div`
+  width: 90%;
+  height: 90%;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(80px, 1fr));
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+`;
+
+export const Achievements = styled.img`
+  border-radius: 3px;
+  border: 1px solid darkslategray;
+  width: 50px;
+  height: 50px;
 `;

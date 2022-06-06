@@ -254,7 +254,7 @@ module.exports = {
                     .then(data => {            
                         characterStat = data.dataValues;                        
                     })
-                    const { status_phy, status_int, status_spi, totalExp } = characterStat
+                    const { status_phy, status_int, status_spi, totalExp, medal } = characterStat
 
                     await todo_list.update({ is_complete: 1 },
                         {
@@ -326,6 +326,16 @@ module.exports = {
                                 totalExp: monsterInfo.dataValues.reward
                             },
                                 { where: { id: el.dataValues.id } })
+                            // 보스 몬스터 잡았을 경우 참가한 유저들에게 업적 부여하는 코드 추가
+                            if (medal === null) {
+                                character.update({
+                                    medal: monsterInfo.dataValues.name
+                                }, { where: { id: el.dataValues.id } })
+                            } else {
+                                character.update({
+                                    medal: medal.concat(`,${monsterInfo.dataValues.name}`)
+                                }, { where: { id: el.dataValues.id } })
+                            }
                         })
                         const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
                         const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } })
@@ -333,7 +343,7 @@ module.exports = {
                                 return {
                                     ...data.dataValues,
                                     level: data.dataValues.totalExp / 100,
-                                    exp: data.dataValues.totalExp % 100
+                                    exp: data.dataValues.totalExp % 100                                    
                                 }
                             })
                         await monster.update({reward: 0},{ where: { id: req.query.raid_id } });

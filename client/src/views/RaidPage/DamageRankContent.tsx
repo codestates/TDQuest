@@ -47,9 +47,10 @@ export const Contents = styled.div`
     }
   }
   .damage_ratio {
-    width: 10%;
+    width: 13%;
     font-family: "Fredoka One", cursive;
     display: flex;
+    justify-content: flex-end;
     @media (max-width: 768px) {
       width: 25%;
       justify-content: flex-end;
