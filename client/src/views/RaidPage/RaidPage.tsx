@@ -1,7 +1,7 @@
-import { editableInputTypes } from "@testing-library/user-event/dist/types/utils";
-import React, { useRef, useState, useEffect, RefObject } from "react";
-import styled from "styled-components";
-import { color_primary_green_light } from "../../components/CommonStyle";
+import { editableInputTypes } from '@testing-library/user-event/dist/types/utils';
+import React, { useRef, useState, useEffect, RefObject } from 'react';
+import styled from 'styled-components';
+import { color_primary_green_light } from '../../components/CommonStyle';
 import {
   RaidContainer,
   RaidPageHeader,
@@ -16,14 +16,14 @@ import {
   ContentContainer,
   DamageStatusContainer,
   HelperBearContainer,
-} from "./RaidPageStyle";
-import Loading from "../../components/Loading";
-import HelperBear from "../../components/HelperBear";
-import AnimateEffectCanvas from "./AnimateEffectCanvas";
-import DamageRankContent from "./DamageRankContent";
-import { DamageLogContent } from "./DamageLogContent";
-import { RaidClose } from "./RaidClose";
-import { TDQuestAPI, LOCALSTORAGE_STRING } from "../../API/tdquestAPI";
+} from './RaidPageStyle';
+import Loading from '../../components/Loading';
+import HelperBear from '../../components/HelperBear';
+import AnimateEffectCanvas from './AnimateEffectCanvas';
+import DamageRankContent from './DamageRankContent';
+import { DamageLogContent } from './DamageLogContent';
+import { RaidClose } from './RaidClose';
+import { TDQuestAPI, LOCALSTORAGE_STRING } from '../../API/tdquestAPI';
 import {
   DamageLogType,
   DefaultUserDataType,
@@ -31,11 +31,11 @@ import {
   MonsterInfoType,
   initialMonsterInfo,
   initialDamageLog,
-} from "../../Types/generalTypes";
+} from '../../Types/generalTypes';
 
 function RaidPage() {
   // 참가 중인 레이드 아이디를 받아옴
-  const Raid_id = JSON.parse(window.localStorage.getItem("isLogin") as string)
+  const Raid_id = JSON.parse(window.localStorage.getItem('isLogin') as string)
     .damage_logInfo.raid_id;
   const [loading, setIsLoading] = useState(true);
   const [monsterInfo, setMonsterInfo] =
@@ -72,19 +72,19 @@ function RaidPage() {
   console.log(monsterInfo);
 
   const monster_data = {
-    kind: "",
-    effectX: "",
-    effectY: "",
+    kind: '',
+    effectX: '',
+    effectY: '',
   };
-  if (kind === "phy") {
-    monster_data.kind = "Physical";
-    monster_data.effectX = "Thunder";
-  } else if (kind === "int") {
-    monster_data.kind = "Intelligence";
-    monster_data.effectY = "Fire2";
-  } else if (kind === "spi") {
-    monster_data.kind = "Spirit";
-    monster_data.effectX = "Thunder";
+  if (kind === 'phy') {
+    monster_data.kind = 'Physical';
+    monster_data.effectX = 'Thunder';
+  } else if (kind === 'int') {
+    monster_data.kind = 'Intelligence';
+    monster_data.effectY = 'Fire2';
+  } else if (kind === 'spi') {
+    monster_data.kind = 'Spirit';
+    monster_data.effectX = 'Thunder';
   }
 
   function ExtractData(damage_log: DamageLogType[]) {
@@ -154,10 +154,10 @@ function RaidPage() {
   ) : (
     <RaidContainer bgColor={color_primary_green_light}>
       <RaidPageHeader>
-        <div className="headerContainer">
+        <div className='headerContainer'>
           <img
-            src={require("../../static/images/icons/RaidPageHeader.png")}
-            alt="Skull"
+            src={require('../../static/images/icons/RaidPageHeader.png')}
+            alt='Skull'
           />
           <h2>Boss Raid</h2>
         </div>
@@ -166,11 +166,11 @@ function RaidPage() {
         <RaidDetailContainer>
           <MonsterContainer>
             <MonsterWrapper>
-              <div className="background"></div>
-              <div className="monster_wrapper">
+              <div className='background'></div>
+              <div className='monster_wrapper'>
                 <Monster
-                  src={require("../../static/images/" + monster_image + ".gif")}
-                  alt="monster"
+                  src={require('../../static/images/' + monster_image + '.gif')}
+                  alt='monster'
                 ></Monster>
                 <AnimateEffectCanvas
                   imageX={monster_data.effectX}
@@ -179,20 +179,20 @@ function RaidPage() {
               </div>
             </MonsterWrapper>
             <MonsterInfoContainer monster_hp={monster_hp}>
-              <div className="monster_name_wrapper">
+              <div className='monster_name_wrapper'>
                 <img
-                  src={require("../../static/images/" +
+                  src={require('../../static/images/' +
                     monster_data.kind +
-                    ".png")}
-                  alt="kind"
+                    '.png')}
+                  alt='kind'
                 />
                 <h2>{monster_name}</h2>
               </div>
-              <div className="monster_hp_wrapper">
+              <div className='monster_hp_wrapper'>
                 <h3>HP</h3>
-                <div className="hp_container">
-                  <div className="current_hp"></div>
-                  <div className="current_hp_text">
+                <div className='hp_container'>
+                  <div className='current_hp'></div>
+                  <div className='current_hp_text'>
                     <h3>{monster_hp}/5000</h3>
                   </div>
                 </div>
@@ -202,16 +202,16 @@ function RaidPage() {
           <DamageGraphContainer>
             <TitleContainer>
               <img
-                src={require("../../static/images/icons/Damaged.png")}
-                alt="Damaged"
-                className="damaged_icon"
+                src={require('../../static/images/icons/Damaged.png')}
+                alt='Damaged'
+                className='damaged_icon'
               />
               <h3>Damaged Ranking</h3>
             </TitleContainer>
             <ContentContainer>
               {logs.map((el, index) => {
                 if (index === 0) {
-                  el.push("true");
+                  el.push('true');
                 } else if (index >= 5) {
                   return null;
                 }
@@ -231,8 +231,8 @@ function RaidPage() {
         <DamageLogContent damage_log={damage_log} />
         <HelperBearContainer>
           <HelperBear
-            width="180px"
-            text="Complete todo and give damage to boss!"
+            width='180px'
+            text='Complete todo and give damage to boss!'
           ></HelperBear>
         </HelperBearContainer>
       </DamageStatusContainer>

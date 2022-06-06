@@ -12,6 +12,7 @@ module.exports = {
                 where: {
                     email: req.body.email,
                     logintype: req.body.logintype
+                    // logintype: 'general'
                 }
             })
             const hash = await bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password)
