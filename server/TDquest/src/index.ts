@@ -1,6 +1,8 @@
 import * as express from "express"
 import * as bodyParser from "body-parser"
 import * as cors from "cors"
+import * as https from 'https'
+import * as fs from 'fs'
 import { Request, Response } from "express"
 import { Routes } from "./routes"
 import { user } from "./entity/user"
@@ -17,7 +19,7 @@ createConnection().then(async connection => {
 
     app.use(
         cors({
-            origin: ["http://localhost:3000"],
+            origin: ["http://localhost:3000", "seonghyeon.link"],
             credentials: true,
             methods: ["GET", "POST", "PUT", "DELETE"]
         })
@@ -40,7 +42,18 @@ createConnection().then(async connection => {
     // ...
 
     // start express server
-    app.listen(3001)
+    https
+    .createServer(
+        {
+        key: fs.readFileSync(__dirname + '/key.pem', 'utf-8'),
+        cert: fs.readFileSync(__dirname + '/cert.pem', 'utf-8'),
+        },
+        function (req: Request, res: Response) {
+        res.write('Congrats! You made https server now :)');
+        res.end();
+        }
+    )
+    .listen(3001);
 
     // insert new users for test
 
@@ -73,9 +86,6 @@ createConnection().then(async connection => {
     //         user: { id: 101 }
     //     })
     // )
-
-
-
-    console.log("Express server has started on port 3001. Open http://localhost:3001/users to see results")
+    
 
 }).catch(error => console.log(error))
