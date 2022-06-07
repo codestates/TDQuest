@@ -26,6 +26,10 @@ export class characters {
   medal: string
 
   @OneToOne(() => user)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0258e8f (pull typescript)
   @JoinColumn()
   user: user
 }
