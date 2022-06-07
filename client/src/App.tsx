@@ -29,11 +29,11 @@ function App() {
           `character/?user_id=${verified_userId}`
         );
         dispatch(getCharacterAsync(userInfo.data.userInfo.id));
-        // console.log(
-        //   "------------------------------------------------- \n Initaialzie User success \n -------------------------------------------------"
-        // );
-        // console.log("userInfo by axios : ", userInfo.data);
-        // console.log("charInfo by axios : ", charInfo.data);
+        console.log(
+          "--------------------------------------- \n Initaialzie User success \n ------------------------------------"
+        );
+        console.log("userInfo by axios : ", userInfo.data);
+        console.log("charInfo by axios : ", charInfo.data);
       } catch (err: any) {
         // console.log("Initialize err :", err);
         LOCALSTORAGE.removeItem('isLogin');
