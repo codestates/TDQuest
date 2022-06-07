@@ -92,7 +92,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
               type='button'
               img={<img src={require('../static/images/kakao.png')} />}
               onClick={() => {
-                window.open(kakao_url);
+                window.location.assign(kakao_url);
               }}
             />
             {/* <Button bgColor="#fa6c67" text="Sign in with google" type="button" img={<img src={require("../static/images/google.png")}/>} onClick={()=>{dispatch(signOauth('google'))}} /> */}
@@ -102,7 +102,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
               type='button'
               img={<img src={require('../static/images/google.png')} />}
               onClick={() => {
-                window.open(google_url);
+                window.location.assign(google_url);
               }}
             />
             <span>OR</span>
