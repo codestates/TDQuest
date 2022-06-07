@@ -44,7 +44,7 @@ function RaidPage() {
     useState<DamageLogType[]>(initialDamageLog);
 
   useEffect(() => {
-    console.log(Raid_id);
+    // console.log(Raid_id);
     const getMonsterInfo = async () =>
       await TDQuestAPI.get(`monster/?monster_id=${Raid_id}`).then((res) => {
         setMonsterInfo(res.data.monsterInfo);
@@ -69,7 +69,7 @@ function RaidPage() {
     kind,
     reward,
   } = monsterInfo;
-  console.log(monsterInfo);
+  // console.log(monsterInfo);
 
   const monster_data = {
     kind: '',
@@ -136,8 +136,8 @@ function RaidPage() {
   const logs = ExtractData(damage_log);
   //보스에게 입힌 총 데미지 계산
   const totalDamage = damage_log.reduce((acc, cur) => acc + cur.log, 0);
-  console.log(logs);
-  console.log(totalDamage);
+  // console.log(logs);
+  // console.log(totalDamage);
 
   return loading ? (
     <RaidContainer bgColor={color_primary_green_light}>
