@@ -46,7 +46,7 @@ function RankingPage() {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
     dispatch(getRankingListAsync());
     dispatch(getTopRankerAsync());
-    console.log(charInfo);
+    // console.log(charInfo);
   }, []);
 
   return (

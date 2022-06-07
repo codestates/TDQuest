@@ -192,7 +192,7 @@ export const todolistSlice = createSlice({
         const index: any = state.todo.todoInfo.findIndex(
           (el: any) => el.id === targetId
         );
-        tempArray.splice(index, index + 1);
+        tempArray.splice(index, 1);
         state.todo.todoInfo = tempArray;
       })
       .addCase(patchTodoListAsync.fulfilled, (state, action) => {
@@ -220,7 +220,7 @@ export const todolistSlice = createSlice({
           const index: any = state.todo.todoInfo.findIndex(
             (el: any) => el.id === targetId
           );
-          todoArray.splice(index, index + 1);
+          todoArray.splice(index, 1);
           state.todo.todoInfo = todoArray;
 
           // add one to completedTodo
@@ -233,7 +233,7 @@ export const todolistSlice = createSlice({
           const index: any = state.completedTodo.todoInfo.findIndex(
             (el: any) => el.id === targetId
           );
-          completedArray.splice(index, index + 1);
+          completedArray.splice(index, 1);
           state.completedTodo.todoInfo = completedArray;
 
           // add one to todo list
