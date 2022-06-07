@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm"
-import { axios } from "axios"
+import  axios  from "axios"
 import { NextFunction, Request, Response } from "express"
 import { characters } from "../../entity/character"
 import { user } from "../../entity/user"
@@ -80,7 +80,7 @@ export class googleController {
                     logintype : "google"
                 })
                 .then(async (userInfo) => {
-                    await this.characterRepository.save({ user_id : userInfo.id})
+                    await this.characterRepository.save({ id : userInfo.id})
                     .then(async (character) => {
                         const damage_logInfo = await this.damage_logRepository.findOne({
                             where : { user_id : userInfo.id},
@@ -123,4 +123,3 @@ export class googleController {
           })
         }
       }  
-}
