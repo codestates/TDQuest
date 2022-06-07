@@ -20,6 +20,7 @@ export const MyPageContainer = styled.div<{ bgColor: string }>`
   align-items: center;
   height: 100%;
   min-height: 90vh;
+  margin-bottom: 10px;
   @media (max-width: 768px) {
     height: auto;
   }
@@ -51,6 +52,7 @@ export const UserInfoContainer = styled.div`
   align-items: center;
   @media (max-width: 768px) {
     flex-direction: column;
+    margin-top: 15px;
   }
 `;
 
@@ -214,4 +216,22 @@ export const ContentContainer = styled.div`
     border-radius: 3px;
     background-color: #d0cfcf;
   }
+`;
+
+export const AchievementsWrapper = styled.div`
+  width: 90%;
+  height: 90%;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(80px, 1fr));
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+`;
+
+export const Achievements = styled.img`
+  border-radius: 3px;
+  border: 1px solid darkslategray;
+  width: 50px;
+  height: 50px;
 `;

@@ -1,8 +1,78 @@
 import React, { useState } from "react";
-import { Contents } from "./RaidPageStyle";
+import styled from "styled-components";
 import { DamageLogType, Objtype } from "../../Types/generalTypes";
+import { fontSize_body_mobile_medium } from "../../components/CommonStyle";
 
-function DamageRankContent({ logs }: { logs: any }) {
+export const Contents = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+  width: 93%;
+  height: 45px;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  .trophy {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      image-rendering: pixelated;
+      width: 35px;
+      @media (max-width: 768px) {
+        width: 23px;
+        height: 23px;
+      }
+    }
+  }
+  .user_nickname {
+    display: flex;
+    align-items: center;
+    width: 20%;
+    overflow: hidden;
+    font-weight: bold;
+    height: 25px;
+    @media (max-width: 768px) {
+      width: 50%;
+      font-size: ${fontSize_body_mobile_medium};
+    }
+  }
+  .damage_ratio_container {
+    width: 53%;
+    height: 20px;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+  .damage_ratio {
+    width: 13%;
+    font-family: "Fredoka One", cursive;
+    display: flex;
+    justify-content: flex-end;
+    @media (max-width: 768px) {
+      width: 25%;
+      justify-content: flex-end;
+      font-size: ${fontSize_body_mobile_medium};
+    }
+  }
+`;
+
+export const DamageRate = styled.div<{ totalDamage: number; points: number }>`
+  width: ${(props) => `${(props.points / props.totalDamage) * 100}%`};
+  height: 20px;
+  border-radius: 5px;
+  background-color: #8fd14f;
+`;
+
+function DamageRankContent({
+  logs,
+  totalDamage,
+}: {
+  logs: any;
+  totalDamage: number;
+}) {
   let trophy = false;
   const nickname = logs[0];
   const points = logs[1];
@@ -19,10 +89,12 @@ function DamageRankContent({ logs }: { logs: any }) {
             alt="trophy"
           />
         </div>
-      ) : <div className="trophy"></div>}
+      ) : (
+        <div className="trophy"></div>
+      )}
       <div className="user_nickname">{nickname}</div>
       <div className="damage_ratio_container">
-        <div className="damage_ratio" />
+        <DamageRate totalDamage={totalDamage} points={points} />
       </div>
       <div className="damage_ratio">{points} pts</div>
     </Contents>

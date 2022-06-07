@@ -33,7 +33,6 @@ module.exports = {
             res.status(200).json({ message: '유저정보 수정', userInfo: userInfo })
         }
         catch (err) {
-            throw err
             res.status(400).json({ message: err })
         }
     },

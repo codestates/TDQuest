@@ -8,7 +8,10 @@ import {
   RewardContainer,
   TitleContainer,
   ContentContainer,
-  RewardInfo,
+  UserInfo,
+  CharacterContainer,
+  FrameTopRanker,
+  GoldenLeaf,
 } from './RankingPageStyle';
 import Status from '../../components/Status';
 import { color_secondary_beige } from '../../components/CommonStyle';
@@ -32,17 +35,18 @@ function RankingPage() {
   );
   const topRanker: any = useSelector((state: any) => state.ranking.top);
   const topRankerTotalPoint = (arg: any) => {
-    return arg.status_phy + arg.status_int + arg.status_spi + arg.status_etc;
+    return arg.status_phy + arg.status_int + arg.status_spi;
   };
   const { id: user_id, nickname } = JSON.parse(
     window.localStorage.getItem('isLogin') as string
   ).userInfo;
-  const charInfo: any = useSelector((state: any) => state.sign.characterInfo);
+  const charInfo: any = useSelector((state: any) => state.character);
 
   useEffect(() => {
     // 유저가 작성한 todo 목록 가져오기 (incompleted task)
     dispatch(getRankingListAsync());
     dispatch(getTopRankerAsync());
+    // console.log(charInfo);
   }, []);
 
   return (
@@ -66,27 +70,26 @@ function RankingPage() {
         </StatusContainer>
         <RewardContainer bgColor={color_secondary_beige}>
           <TitleContainer>
-            {/* <img
-              src={require('../../static/images/icons/Ring.png')}
-              alt='Ring'
-            /> */}
             <h3>Top Ranking</h3>
           </TitleContainer>
           <ContentContainer>
-            <RewardInfo>
-              <h3>left</h3>
-            </RewardInfo>
-            <div>
+            <CharacterContainer>
+              {topRanker.user ? (
+                <Status charData={topRanker} onlyChar={true} />
+              ) : null}
+              <GoldenLeaf></GoldenLeaf>
+            </CharacterContainer>
+            <UserInfo>
               <h3>Best user of this week</h3>
               <p>
                 <img src={crownIcon} alt='crown'></img>
-                {topRanker.user ? topRanker.user.nickname : 'test'}
+                {topRanker.user ? topRanker.user.nickname : 'user'}
               </p>
               <p>
                 Total stats:{' '}
                 {topRanker.user ? topRankerTotalPoint(topRanker) : 0} points
               </p>
-            </div>
+            </UserInfo>
           </ContentContainer>
         </RewardContainer>
       </SectionContainer>

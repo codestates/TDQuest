@@ -8,9 +8,9 @@ const { makeAccessToken, makeRefreshToken } = require("../../middleware/token");
 module.exports = {
   kakao: async (req, res) => {
     return res.redirect(`${process.env.KAKAO_URL}/
-      authorize?client_id=${process.env.KAKAO_ID}&
-      redirect_uri=${process.env.KAKAO_REDIRECT}&
-      response_type=code`);
+        authorize?client_id=${process.env.KAKAO_ID}&
+        redirect_uri=${process.env.KAKAO_REDIRECT}&
+        response_type=code`);
   },
 
   callback: async (req, res) => {
@@ -40,17 +40,17 @@ module.exports = {
     });
 
     const userId = {
+      email: me.kakao_account.email,
       nickname: me.kakao_account.profile.nickname,
     };
     const userInfo = await user.findOne({
-      where: { nickname: userId.nickname, logintype: "kakao" },
+      where: { email : userId.email, nickname: userId.nickname, logintype: "kakao" },
     });
 
     if (userInfo) {
       const accessToken = makeAccessToken(userInfo.dataValues.email);
       const refreshToken = makeRefreshToken(userInfo.dataValues.email);
-      await character
-        .findOne({
+      await character.findOne({
           where: { user_id: userInfo.dataValues.id },
         })
         .then(async (character) => {
@@ -65,18 +65,24 @@ module.exports = {
           };
           res.cookie("refreshToken", refreshToken).json({
             characterInfo: characterInfo,
+            userInfo: {
+              id: userInfo.id,
+              email: userInfo.email,
+              nickname: userInfo.nickname,
+              logintype: userInfo.logintype,
+              createdAt: userInfo.createdAt,
+              updatedAt: userInfo.updatedAt,
+            },
             accessToken: accessToken,
             damage_logInfo: damage_logInfo,
           });
         }); //{ httpOnly: true}
-    } //{ httpOnly: true}
+    }
     else {
       try {
-        await user
-          .create({ nickname: userId.nickname, logintype: "kakao" })
+        await user.create({ email : userId.email, nickname: userId.nickname, logintype: "kakao" })
           .then(async (userInfo) => {
-            await character
-              .create({ user_id: userInfo.dataValues.id })
+            await character.create({ user_id: userInfo.dataValues.id })
               .then(async (character) => {
                 const damage_logInfo = await damage_log.findOne({
                   where: { user_id: userInfo.dataValues.id },
@@ -94,6 +100,14 @@ module.exports = {
                 );
                 res.cookie("refreshToken", refreshToken).json({
                   characterInfo: characterInfo,
+                  userInfo: {
+                    id: userInfo.id,
+                    email: userInfo.email,
+                    nickname: userInfo.nickname,
+                    logintype: userInfo.logintype,
+                    createdAt: userInfo.createdAt,
+                    updatedAt: userInfo.updatedAt,
+                  },
                   accessToken: accessToken,
                   damage_logInfo: damage_logInfo,
                 });

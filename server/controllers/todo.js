@@ -40,12 +40,13 @@ module.exports = {
                 kind: req.body.kind,
                 content: req.body.content
             }, { where: { id: req.query.id } })
-                .then(async todoInfo => {
-                    await todo_list.findOne({ where: { id: req.query.id } })
+                .then(async data => {
+                    const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
                     res.status(200).json({ message: "수정되었습니다.", todoInfo: todoInfo })
                 })
         }
         catch (err) {
+            console.log(err)
             res.status(401).json({ message: 'Not Found' })
         }
     },
@@ -78,22 +79,6 @@ module.exports = {
         }
     }, // 완료되지않은 todolist 불러오기
 
-    check : async (req, res) => {
-        const characterArray = await character.findAll(
-            {
-                include: {
-                    model: user,
-                    include: {
-                        model: damage_log,
-                        where: { raid_id: req.query.raid_id },
-                    },
-                    required: true
-                }
-            })
-            .then(data => {
-            res.status(200).json({message : data})
-            })
-    },
     completeList: async (req, res) => {
         try {
             if (req.query.time) { // 특정 날짜
@@ -135,10 +120,10 @@ module.exports = {
                             }
                         })
                         .then(async data => {
-                                todoInfo = await todo_list.findOne({
-                                    where: { id: req.query.id }
-                                })
+                            todoInfo = await todo_list.findOne({
+                                where: { id: req.query.id }
                             })
+                        })
 
                     if (req.query.status === "phy") {
                         await character.increment(
@@ -160,13 +145,13 @@ module.exports = {
                                 where: { user_id: req.query.user_id }
                             })
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.increment(
                             { totalExp: 1 },
                             {
                                 where: { user_id: req.query.user_id }
                             })
-                            
+
                     }
 
                     const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } })
@@ -220,19 +205,19 @@ module.exports = {
                         await character.decrement(
                             { status_int: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+
                     }
                     else if (req.query.status === "spi") {
                         await character.decrement(
                             { status_spi: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.decrement(
                             { totalExp: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+
                     }
 
                     const characterInfo = await character.findOne(
@@ -262,6 +247,14 @@ module.exports = {
                 try {
                     let todoInfo = ''
                     let damage_logInfo = ''
+                    // 유저 스탯 비례하여 데미지를 주는 코드 추가 (stat * 1)
+                    let damage = 1                    
+                    let characterStat = {} 
+                    await character.findOne({ where: { user_id: req.query.user_id } })
+                    .then(data => {            
+                        characterStat = data.dataValues;                        
+                    })
+                    const { status_phy, status_int, status_spi, totalExp, medal } = characterStat
 
                     await todo_list.update({ is_complete: 1 },
                         {
@@ -270,39 +263,39 @@ module.exports = {
                                 is_complete: 0
                             }
                         }).then(async data => {
-                                todoInfo = await todo_list.findOne({
-                                    where: { id: req.query.id }
-                                })
+                            todoInfo = await todo_list.findOne({
+                                where: { id: req.query.id }
                             })
+                        })
 
                     if (req.query.status === "phy") {
                         await character.increment(
                             { status_phy: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+                        damage = 1 * status_phy;
                     }
                     else if (req.query.status === "int") {
                         await character.increment(
                             { status_int: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+                        damage = 1 * status_int;
                     }
                     else if (req.query.status === "spi") {
                         await character.increment(
                             { status_spi: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+                        damage = 1 * status_spi;
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.increment(
                             { totalExp: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+                        damage = 1 * Math.floor(totalExp / 100);
                     }
 
                     await damage_log.create(
                         {
-                            log: 1,
+                            log: damage,
                             user_id: req.query.user_id,
                             raid_id: req.query.raid_id
                         })
@@ -311,12 +304,12 @@ module.exports = {
                         })
 
                     await monster.decrement(
-                        { hp: 1 },
+                        { hp: damage },
                         { where: { id: req.query.raid_id } })
-                        
+
 
                     const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
-                    if (monsterInfo.dataValues.hp === 0) { // 몬스터를 잡았을 때
+                    if (monsterInfo.dataValues.hp <= 0) { // 몬스터를 잡았을 때
                         const characterArray = await character.findAll(
                             {
                                 include: {
@@ -325,7 +318,7 @@ module.exports = {
                                         model: damage_log,
                                         where: { raid_id: req.query.raid_id } //raid 참가한 인원
                                     },
-                                required: true
+                                    required: true
                                 }
                             })
                         characterArray.forEach(el => {
@@ -333,6 +326,16 @@ module.exports = {
                                 totalExp: monsterInfo.dataValues.reward
                             },
                                 { where: { id: el.dataValues.id } })
+                            // 보스 몬스터 잡았을 경우 참가한 유저들에게 업적 부여하는 코드 추가
+                            if (medal === null) {
+                                character.update({
+                                    medal: monsterInfo.dataValues.name
+                                }, { where: { id: el.dataValues.id } })
+                            } else {
+                                character.update({
+                                    medal: medal.concat(`,${monsterInfo.dataValues.name}`)
+                                }, { where: { id: el.dataValues.id } })
+                            }
                         })
                         const todoInfo = await todo_list.findOne({ where: { id: req.query.id } })
                         const characterInfo = await character.findOne({ where: { user_id: req.query.user_id } })
@@ -340,11 +343,12 @@ module.exports = {
                                 return {
                                     ...data.dataValues,
                                     level: data.dataValues.totalExp / 100,
-                                    exp: data.dataValues.totalExp % 100
+                                    exp: data.dataValues.totalExp % 100                                    
                                 }
                             })
+                        await monster.update({reward: 0},{ where: { id: req.query.raid_id } });
 
-                        res.status(200).json({ message: "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo: characterInfo, damage_logInfo : damage_logInfo })
+                        res.status(200).json({ message: "몬스터를 잡았습니다", todoInfo: todoInfo, characterInfo: characterInfo, damage_logInfo: damage_logInfo })
 
                     }
 
@@ -359,7 +363,7 @@ module.exports = {
                                 }
                             })
 
-                        res.status(200).json({ message: "데미지를 넣었습니다", todoInfo: todoInfo, characterInfo: characterInfo, damage_logInfo : damage_logInfo})
+                        res.status(200).json({ message: "데미지를 넣었습니다", todoInfo: todoInfo, characterInfo: characterInfo, damage_logInfo: damage_logInfo })
                     }
 
                 }
@@ -370,7 +374,8 @@ module.exports = {
             else { // 취소
                 try {
                     let todoInfo = ''
-
+                    let damage_logInfo = ''
+                    
                     await todo_list.update({ is_complete: false },
                         {
                             where: {
@@ -387,31 +392,31 @@ module.exports = {
                         await character.decrement(
                             { status_phy: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+
                     }
                     else if (req.query.status === "int") {
                         await character.decrement(
                             { status_int: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+
                     }
                     else if (req.query.status === "spi") {
                         await character.decrement(
                             { status_spi: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+
                     }
-                    else if (req.query.status === "etc") {
+                    else if (req.query.status === "exp") {
                         await character.decrement(
                             { totalExp: 1 },
                             { where: { user_id: req.query.user_id } })
-                            
+
                     }
 
                     await damage_log.findOne({
                         where: {
                             user_id: req.query.user_id,
-                            raid_id: req.query.user_id
+                            raid_id: req.query.raid_id
                         },
                         include: {
                             model: user,
@@ -430,7 +435,7 @@ module.exports = {
                     await monster.increment(
                         { hp: 1 },
                         { where: { id: req.query.raid_id } })
-                        
+
 
 
                     const monsterInfo = await monster.findOne({ where: { id: req.query.raid_id } })
@@ -481,6 +486,7 @@ module.exports = {
                     }
                 }
                 catch (err) {
+                    console.log(err)
                     res.status(400).json({ message: "실패" })
                 }
             }

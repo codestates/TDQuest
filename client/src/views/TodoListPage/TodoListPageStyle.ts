@@ -1,17 +1,20 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   fontSize_h1_laptop,
   fontSize_h2_laptop,
   fontSize_h3_laptop,
+  fontSize_h2_tablet,
+  fontSize_h3_tablet,
   fontSize_body_mobile_medium,
   fontSize_body_mobile_small,
+  fontSize_body_laptop_big,
   fontSize_body_laptop,
   color_menu_header_purple,
   color_border_yellow,
   color_context_brown,
   color_white,
   color_secondary_beige,
-} from '../../components/CommonStyle';
+} from "../../components/CommonStyle";
 
 export const TodoContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -41,8 +44,11 @@ export const TodoListPageHeader = styled.div`
     }
     h2 {
       font-size: ${fontSize_h2_laptop};
-      font-family: 'Fredoka One', cursive;
+      font-family: "Fredoka One", cursive;
       color: ${color_menu_header_purple};
+      @media (max-width: 768px) {
+        font-size: ${fontSize_h2_tablet};
+      }
     }
   }
 `;
@@ -51,14 +57,14 @@ export const SectionContainer = styled.div`
   width: 90%;
   display: grid;
   column-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   margin-bottom: 20px;
 `;
 
 export const StatusContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
   width: 100%;
-  height: 250px;
+  /* height: 250px; */
   border: 1px solid ${color_border_yellow};
   display: flex;
   justify-content: center;
@@ -83,11 +89,17 @@ export const TitleContainer = styled.div`
     margin-right: 5px;
   }
   h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     color: ${color_white};
     align-self: center;
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h3_tablet};
+    }
   }
 `;
 
@@ -99,9 +111,17 @@ export const ContentContainer = styled.div`
   h3 {
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
-    font-family: 'OpenSans';
+    font-family: "OpenSans";
     text-align: center;
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h3_tablet};
+    }
   }
 `;
 
-export const RewardInfo = styled.div``;
+export const RewardInfo = styled.div`
+  h3 {
+    font-family: "Fredoka One", cursive;
+    font-size: ${fontSize_body_laptop_big};
+  }
+`;

@@ -37,6 +37,8 @@ const TitleContainer = styled.div`
     margin-right: 5px;
   }
   h3 {
+    display: flex;
+    align-items: center;
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
     font-family: 'Fredoka One', cursive;
@@ -53,6 +55,9 @@ const ContentContainer = styled.div`
   padding-bottom: 10px;
   align-items: center;
   width: 100%;
+  .empty {
+    font-family: 'Fredoka One', cursive;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -224,7 +229,7 @@ function TaskContainer({
             ))}
           </>
         ) : (
-          'Empty...'
+          <div className='empty'>Empty...</div>
         )}
       </ContentContainer>
     </Container>

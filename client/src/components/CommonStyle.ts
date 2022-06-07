@@ -32,7 +32,7 @@ export const color_context_beige_light = "#F9FCFF";
 // Text hover
 export const color_context_blue = "#194795";
 
-export const color_context_blue_light = '#30acda';
+export const color_context_blue_light = "#30acda";
 
 // white
 export const color_white = "#FFFFFF";
@@ -44,6 +44,7 @@ export const color_white = "#FFFFFF";
 export const fontSize_h1_laptop = "36px";
 export const fontSize_h2_laptop = "30px";
 export const fontSize_h3_laptop = "24px";
+export const fontSize_body_laptop_big = "20px";
 export const fontSize_body_laptop = "18px";
 export const fontSize_body_laptop_small = "16px";
 export const fontSize_smallButton_laptop = "18px";

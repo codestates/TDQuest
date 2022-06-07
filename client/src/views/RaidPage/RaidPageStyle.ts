@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   color_primary_green_light,
   color_context_brown,
@@ -6,8 +6,9 @@ import {
   color_white,
   color_context_beige,
   fontSize_h2_laptop,
-  fontSize_h3_laptop
-} from "../../components/CommonStyle"
+  fontSize_h3_laptop,
+  fontSize_h2_mobile,
+} from '../../components/CommonStyle';
 
 export const RaidContainer = styled.div<{ bgColor: string }>`
   padding-top: 80px;
@@ -18,6 +19,7 @@ export const RaidContainer = styled.div<{ bgColor: string }>`
   align-items: center;
   height: 100%;
   min-height: 90vh;
+  padding-bottom: 20px;
   @media (max-width: 768px) {
     height: auto;
   }
@@ -37,7 +39,7 @@ export const RaidPageHeader = styled.div`
     }
     h2 {
       font-size: ${fontSize_h2_laptop};
-      font-family: "Fredoka One", cursive;
+      font-family: 'Fredoka One', cursive;
       color: #414693;
     }
   }
@@ -52,10 +54,14 @@ export const SectionContainer = styled.section`
 export const RaidDetailContainer = styled.div`
   display: flex;
   width: 90%;
-  height: 300px;
+  height: 350px;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
 `;
 
 export const MonsterContainer = styled.div`
@@ -66,6 +72,9 @@ export const MonsterContainer = styled.div`
   min-height: 250px;
   height: 100%;
   position: relative;
+  @media (max-width: 768px) {
+    min-height: 330px;
+  }
 `;
 
 export const MonsterWrapper = styled.div`
@@ -75,20 +84,19 @@ export const MonsterWrapper = styled.div`
   height: 100%;
   .background {
     width: 100%;
-    height: 80%;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    background-color: #686cd5;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(#686cd5 75%, #997a66 25%);
     z-index: 5;
   }
-  .ground {
+  /* .ground {
     width: 100%;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     height: 20%;
     background-color: #997a66;
     z-index: 20;
-  }
+  } */
   .monster_wrapper {
     position: absolute;
     width: 100%;
@@ -100,22 +108,13 @@ export const MonsterWrapper = styled.div`
   }
 `;
 
-export const EffectsCanvas = styled.canvas`
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-
-  position: absolute;
-  image-rendering: pixelated;
-`;
-
 export const Monster = styled.img`
   image-rendering: pixelated;
   width: 220px;
   z-index: 50;
 `;
 
-export const MonsterInfoContainer = styled.div`
+export const MonsterInfoContainer = styled.div<{ monster_hp: number }>`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
@@ -130,7 +129,7 @@ export const MonsterInfoContainer = styled.div`
     h2 {
       font-size: 28px;
       height: 1.5rem;
-      font-family: "Fredoka One", cursive;
+      font-family: 'Fredoka One', cursive;
       text-align: center;
     }
   }
@@ -139,12 +138,12 @@ export const MonsterInfoContainer = styled.div`
     justify-content: center;
     margin-top: 10px;
     h3 {
-      font-family: "Fredoka One", cursive;
+      font-family: 'Fredoka One', cursive;
       font-size: ${fontSize_body_laptop};
       margin-right: 10px;
     }
     .hp_container {
-      width: 70%;
+      width: 100%;
       height: 20px;
       background-color: ${color_context_beige};
       display: flex;
@@ -153,7 +152,7 @@ export const MonsterInfoContainer = styled.div`
       position: relative;
       border-radius: 5px;
       .current_hp {
-        width: 65%;
+        width: ${(props) => `${(props.monster_hp / 5000) * 100}%`};
         height: 100%;
         background-color: #8fd14f;
         border-top-left-radius: 5px;
@@ -168,7 +167,7 @@ export const MonsterInfoContainer = styled.div`
         align-items: center;
         h3 {
           position: absolute;
-          font-family: "Fredoka One", cursive;
+          font-family: 'Fredoka One', cursive;
           z-index: 50;
           font-size: 16px;
         }
@@ -186,6 +185,12 @@ export const DamageGraphContainer = styled.div`
   height: 100%;
   margin-left: 50px;
   box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+  @media (max-width: 768px) {
+    min-width: 300px;
+    margin-top: 20px;
+    margin-left: 0px;
+    width: 100%;
+  }
 `;
 
 export const TitleContainer = styled.div`
@@ -204,8 +209,11 @@ export const TitleContainer = styled.div`
   }
   h3 {
     font-size: ${fontSize_h3_laptop};
-    font-family: "Fredoka One", cursive;
+    font-family: 'Fredoka One', cursive;
     color: ${color_white};
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h2_mobile};
+    }
   }
 `;
 
@@ -220,56 +228,62 @@ export const ContentContainer = styled.div`
   h3 {
     font-size: ${fontSize_body_laptop};
     height: 1.5rem;
-    font-family: "OpenSans";
+    font-family: 'OpenSans';
     text-align: center;
-  }
-`;
-
-export const Contents = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-  width: 93%;
-  height: 40px;
-  justify-content: space-evenly;
-  align-items: center;
-  background-color: white;
-  .trophy {
-    width: 20px;
-    height: 20px;
-    img {
-      image-rendering: pixelated;
-      width: 100%;
-    }
-  }
-  .user_nickname {
-    width: 20%;
-    overflow: hidden;
-    font-weight: bold;
-    height: 20px;
-  }
-  .damage_ratio_container {
-    width: 53%;
-    height: 20px;
-    .damage_ratio {
-      width: 95%;
-      height: 20px;
-      border-radius: 5px;
-      background-color: #8fd14f;
-    }
-  }
-  .damage_ratio {
-    width: 10%;
-    font-family: "Fredoka One", cursive;
   }
 `;
 
 export const DamageStatusContainer = styled.div`
   width: 85%;
-  margin-top: 20px;
-  height: 200px;
+  margin-top: 30px;
+  height: 300px;
   background-color: ${color_context_beige};
   box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
   display: flex;
   padding-top: 20px;
   padding-left: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 90%;
+    margin-top: 20px;
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 10px;
+  }
+`;
+
+export const CharContainer = styled.div`
+  width: 40%;
+  height: 80%;
+  image-rendering: pixelated;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .effect {
+    image-rendering: pixelated;
+    width: 100px;
+    height: 100px;
+    transform: rotate(180deg);
+  }
+  .charcter {
+    width: 70px;
+  }
+`;
+
+export const HelperBearContainer = styled.div`
+  width: 40%;
+  height: 80%;
+  image-rendering: pixelated;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 `;

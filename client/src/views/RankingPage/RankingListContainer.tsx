@@ -2,15 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
   fontSize_h3_laptop,
-  color_context_gray,
-  color_menu_header_purple,
+  fontSize_h3_tablet,
   color_border_yellow,
   color_context_beige,
   color_context_brown,
   color_white,
-  fontSize_body_laptop,
-  color_context_blue_light,
-  color_context_beige_light,
 } from '../../components/CommonStyle';
 import crownIcon from '../../static/images/icons/Crown.png';
 
@@ -41,6 +37,9 @@ const TitleContainer = styled.div`
     font-family: 'Fredoka One', cursive;
     color: ${color_white};
     margin-top: 7px;
+    @media (max-width: 768px) {
+      font-size: ${fontSize_h3_tablet};
+    }
   }
 `;
 

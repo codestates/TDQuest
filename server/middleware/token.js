@@ -23,25 +23,6 @@ module.exports = {
         }
     },
 
-    verifyToken: (token) => {
-        try {
-            const decoded = jwt.verify(token, process.env.ACCESS_SECRET)
-            return decoded;
-        } catch (error) {
-            if (error.name === 'TokenExpiredError') {
-                res.status(404).json({ message: "Not Found" })
-            }
-            if (error.name === 'JsonWebTokenError') {
-                res.status(404).json({ message: "Not Found" })
-            }
-            if (error.name === 'NotBeforeError') {
-                console.log(error);
-                res.status(404).json({ message: "Not Found" })
-            }
-            return false
-        }
-    },
-
 
     checkAccessToken: async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];

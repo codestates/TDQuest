@@ -10,19 +10,21 @@ module.exports = {
         try {
             const userInfo = await user.findOne({
                 where: {
-                    email: req.body.email
+                    email: req.body.email,
+                    logintype: req.body.logintype
+                    // logintype: 'general'
                 }
             })
-            const hash = await  bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password)
-              if (!hash) {
+            const hash = await bcrypt.compare(req.body.password.toString(), userInfo.dataValues.password)
+            if (!hash) {
                 res.status(404).json({ message: "Wrong user password" })
-              }  
-              else {
+            }
+            else {
                 const accessToken = await makeAccessToken(userInfo.dataValues.email)
                 const refreshToken = await makeRefreshToken(userInfo.dataValues.email)
-                
+
                 const damage_logInfo = await damage_log.findOne({
-                    where : { user_id : userInfo.dataValues.id}
+                    where: { user_id: userInfo.dataValues.id }
                 })
 
                 await character.findOne({
@@ -38,19 +40,19 @@ module.exports = {
                             .json({
                                 characterInfo: characterInfo,
                                 userInfo: {
-                                    id : userInfo.id,
-                                    email : userInfo.email,
-                                    nickname : userInfo.nickname,
-                                    logintype : userInfo.logintype,
-                                    createdAt : userInfo.createdAt,
-                                    updatedAt : userInfo.updatedAt
+                                    id: userInfo.id,
+                                    email: userInfo.email,
+                                    nickname: userInfo.nickname,
+                                    logintype: userInfo.logintype,
+                                    createdAt: userInfo.createdAt,
+                                    updatedAt: userInfo.updatedAt
                                 },
-                                damage_logInfo : damage_logInfo,
+                                damage_logInfo: damage_logInfo,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken
                             })
                     })
-              }
+            }
         }
         catch (err) {
             res.status(404).json({ message: "Wrong user Id" })
@@ -58,7 +60,7 @@ module.exports = {
     },
 
     logout: async (req, res) => {
-        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
         res.status(200).json({ message: '로그아웃되었습니다.' })
     },
 }
