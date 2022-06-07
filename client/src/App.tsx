@@ -30,7 +30,7 @@ function App() {
         );
         dispatch(getCharacterAsync(userInfo.data.userInfo.id));
         console.log(
-          "------------------------------------------------- \n Initaialzie User success \n -------------------------------------------------"
+          "--------------------------------------- \n Initaialzie User success \n ------------------------------------"
         );
         console.log("userInfo by axios : ", userInfo.data);
         console.log("charInfo by axios : ", charInfo.data);
