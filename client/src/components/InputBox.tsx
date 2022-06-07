@@ -1,5 +1,5 @@
-import { useState, ChangeEvent, FormEvent } from "react";
-import Button from "./Button";
+import { useState, ChangeEvent, FormEvent } from 'react';
+import Button from './Button';
 import {
   InputBoxContainer,
   FormContainer,
@@ -8,23 +8,23 @@ import {
   InputContainer,
   ButtonBox,
   OauthContainer,
-} from "./InputBoxStyle";
-import { signIn, signUp, SignUserInfo } from "../features/sign/signSlice";
-import { getCharacterAsync } from "../features/character/characterSlice";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { useNavigate } from "react-router-dom";
+} from './InputBoxStyle';
+import { signIn, signUp, SignUserInfo } from '../features/sign/signSlice';
+import { getCharacterAsync } from '../features/character/characterSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useNavigate } from 'react-router-dom';
 
 function InputBox({ state, handler }: { state: boolean; handler: any }) {
   const emailRule: RegExp =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const [emailResult, setEmailResult] = useState(false);
-  const [psw1, setPsw1] = useState("");
+  const [psw1, setPsw1] = useState('');
   const [pswResult, setPswResult] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    email: "",
-    password: "",
-    nickname: "",
-    logintype : 'general',
+    email: '',
+    password: '',
+    nickname: '',
+    logintype: 'general',
   });
   const [oauthState, setOauthState] = useState(true);
 
@@ -52,30 +52,34 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
     e.preventDefault();
     if (state) {
       dispatch(signIn(userInfo)).then((res) => {
-        if (res.payload.status === "loggedIn") {
+        if (res.payload.status === 'loggedIn') {
           dispatch(getCharacterAsync(res.payload.userInfo.id));
-          navigate("/todo");
+          navigate('/todo');
         } else {
-          alert("입력하신 정보가 올바르지 않습니다");
+          alert('입력하신 정보가 올바르지 않습니다');
         }
       });
     } else {
       if (emailResult && pswResult) {
         dispatch(signUp(userInfo));
       } else {
-        alert("이메일 또는 비밀번호를 확인하세요");
+        alert('이메일 또는 비밀번호를 확인하세요');
       }
     }
   };
   //const kakao_url = 'http://localhost:3001/kakao'
   //const google_url = 'http://localhost:3001/google'
-  const kakao_url = 'https://kauth.kakao.com/oauth/authorize?client_id=51ff7cb7b6a28cd0aae21b4069e991dc&redirect_uri=http://localhost:3000&response_type=code';
-  const google_url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=271860095349-9ir71s2ve6k3l9ts7r4mnis7lu211575.apps.googleusercontent.com&redirect_uri=http://localhost:3000&response_type=code&include_granted_scopes=true&scope=https://www.googleapis.com/auth/userinfo.profile'
+  // const kakao_url = 'https://kauth.kakao.com/oauth/authorize?client_id=51ff7cb7b6a28cd0aae21b4069e991dc&redirect_uri=http://localhost:3000&response_type=code';
+  // const google_url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=271860095349-9ir71s2ve6k3l9ts7r4mnis7lu211575.apps.googleusercontent.com&redirect_uri=http://localhost:3000&response_type=code&include_granted_scopes=true&scope=https://www.googleapis.com/auth/userinfo.profile'
+  const kakao_url =
+    'https://kauth.kakao.com/oauth/authorize?client_id=51ff7cb7b6a28cd0aae21b4069e991dc&redirect_uri=https://tdquest.ml&response_type=code';
+  const google_url =
+    'https://accounts.google.com/o/oauth2/v2/auth?client_id=271860095349-9ir71s2ve6k3l9ts7r4mnis7lu211575.apps.googleusercontent.com&redirect_uri=https://tdquest.ml&response_type=code&include_granted_scopes=true&scope=https://www.googleapis.com/auth/userinfo.profile';
   return (
     <InputBoxContainer>
       <Headline>
-        <img src={require("../static/images/HelperBear.png")} alt="logo" />
-        <h1>{state ? "Sign in" : "Sign up"} to TD-Quest</h1>
+        <img src={require('../static/images/HelperBear.png')} alt='logo' />
+        <h1>{state ? 'Sign in' : 'Sign up'} to TD-Quest</h1>
       </Headline>
 
       <FormContainer onSubmit={(value) => handleSubmit(value)}>
@@ -83,29 +87,29 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
           <OauthContainer>
             {/* <Button bgColor="#f9e000" text="Sign in with kakao" type="button" img={<img src={require("../static/images/kakao.png")}/>} onClick={()=>{dispatch(signOauth('KaKao'))}} /> */}
             <Button
-              bgColor="#f9e000"
-              text="Sign in with kakao"
-              type="button"
-              img={<img src={require("../static/images/kakao.png")} />}
+              bgColor='#f9e000'
+              text='Sign in with kakao'
+              type='button'
+              img={<img src={require('../static/images/kakao.png')} />}
               onClick={() => {
                 window.open(kakao_url);
               }}
             />
             {/* <Button bgColor="#fa6c67" text="Sign in with google" type="button" img={<img src={require("../static/images/google.png")}/>} onClick={()=>{dispatch(signOauth('google'))}} /> */}
             <Button
-              bgColor="#fa6c67"
-              text="Sign in with google"
-              type="button"
-              img={<img src={require("../static/images/google.png")} />}
+              bgColor='#fa6c67'
+              text='Sign in with google'
+              type='button'
+              img={<img src={require('../static/images/google.png')} />}
               onClick={() => {
                 window.open(google_url);
               }}
             />
             <span>OR</span>
             <Button
-              text="Sign In"
-              type="button"
-              img={<img src={require("../static/images/Logo.png")} />}
+              text='Sign In'
+              type='button'
+              img={<img src={require('../static/images/Logo.png')} />}
               onClick={() => {
                 setOauthState(false);
               }}
@@ -121,10 +125,10 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
 
               <span>
                 <input
-                  type="email"
-                  placeholder="ID (e-mail)"
+                  type='email'
+                  placeholder='ID (e-mail)'
                   style={
-                    !state && !emailResult ? { border: "2px red solid" } : {}
+                    !state && !emailResult ? { border: '2px red solid' } : {}
                   }
                   onChange={emailTest}
                 />
@@ -133,7 +137,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
                     {emailResult ? (
                       <span></span>
                     ) : (
-                      <span style={{ color: "#f56864" }}>
+                      <span style={{ color: '#f56864' }}>
                         ID must be e-mail format
                       </span>
                     )}
@@ -151,11 +155,11 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
 
               <span>
                 <input
-                  type="text"
-                  placeholder="NickName"
+                  type='text'
+                  placeholder='NickName'
                   style={
                     !state && !userInfo.nickname
-                      ? { border: "2px red solid" }
+                      ? { border: '2px red solid' }
                       : {}
                   }
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -167,7 +171,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
                     {userInfo.nickname ? (
                       <span></span>
                     ) : (
-                      <span style={{ color: "#f56864" }}>
+                      <span style={{ color: '#f56864' }}>
                         Nickname must be filled up
                       </span>
                     )}
@@ -186,10 +190,10 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
 
               <span>
                 <input
-                  type="password"
-                  placeholder="Password"
+                  type='password'
+                  placeholder='Password'
                   style={
-                    !state && !pswResult ? { border: "2px red solid" } : {}
+                    !state && !pswResult ? { border: '2px red solid' } : {}
                   }
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setPsw1(e.target.value);
@@ -200,11 +204,11 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
                   <input
                     style={
                       pswResult
-                        ? { marginTop: "0.5rem" }
-                        : { marginTop: "0.5rem", border: "2px red solid" }
+                        ? { marginTop: '0.5rem' }
+                        : { marginTop: '0.5rem', border: '2px red solid' }
                     }
-                    type="password"
-                    placeholder="Password Check"
+                    type='password'
+                    placeholder='Password Check'
                     onChange={pswTest}
                   />
                 ) : null}
@@ -213,7 +217,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
                     {pswResult ? (
                       <span></span>
                     ) : (
-                      <span style={{ color: "#f56864" }}>
+                      <span style={{ color: '#f56864' }}>
                         Password must be same
                       </span>
                     )}
@@ -225,7 +229,7 @@ function InputBox({ state, handler }: { state: boolean; handler: any }) {
             </InputContainer>
 
             <ButtonBox>
-              <Button text={state ? "Sign In" : "Sign Up"} height="40px" />
+              <Button text={state ? 'Sign In' : 'Sign Up'} height='40px' />
             </ButtonBox>
 
             <DontYouSign>
