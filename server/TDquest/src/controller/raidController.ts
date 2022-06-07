@@ -1,12 +1,16 @@
 import { getRepository } from "typeorm"
 import { NextFunction, Request, Response } from "express"
 import { raid } from "../entity/raid"
+<<<<<<< HEAD
 import { damage_log } from "../entity/damage_log"
 import { monster } from "../entity/monster"
+=======
+>>>>>>> 0258e8f (pull typescript)
 
 export class raidController {
 
     private raidRepository = getRepository(raid)
+<<<<<<< HEAD
     private damage_logRepository = getRepository(damage_log)
     private monsterRepository = getRepository(monster)
 
@@ -48,6 +52,11 @@ export class raidController {
                 message: err
             })
         }
+=======
+
+    async all(request: Request, response: Response, next: NextFunction) {
+        return this.raidRepository.find()
+>>>>>>> 0258e8f (pull typescript)
     }
 
 }

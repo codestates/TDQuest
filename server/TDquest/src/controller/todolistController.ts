@@ -5,6 +5,7 @@ import { characters } from "../entity/character"
 import { damage_log } from "../entity/damage_log"
 import { raid } from "../entity/raid"
 import { monster } from "../entity/monster"
+import { user } from "../entity/user"
 
 export class todolistController {
 

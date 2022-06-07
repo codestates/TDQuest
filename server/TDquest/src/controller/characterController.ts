@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm"
 import { NextFunction, Request, Response } from "express"
 import { characters } from "../entity/character"
+import { user } from "../entity/user"
 
 export class charactersController {
 
