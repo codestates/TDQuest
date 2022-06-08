@@ -203,6 +203,7 @@ export const ContentContainer = styled.div`
   align-items: center;
   padding: 10px 0;
   background-color: ${color_context_beige};
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   h3 {
     font-size: ${fontSize_body_laptop};
     height: 1.5rem;
@@ -234,4 +235,5 @@ export const Achievements = styled.img`
   border: 1px solid darkslategray;
   width: 50px;
   height: 50px;
+  box-shadow: rgba(99, 99, 99, 0.5) 2px 2px 8px 2px;
 `;

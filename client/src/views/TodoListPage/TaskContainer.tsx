@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 import {
   fontSize_h3_laptop,
   color_context_gray,
@@ -11,10 +11,10 @@ import {
   fontSize_body_laptop,
   color_context_blue_light,
   color_context_beige_light,
-} from '../../components/CommonStyle';
-import PlusIcon from '../../static/images/icons/icon_plus.svg';
-import MenuIcon from '../../static/images/icons/three-dots-icon.jpeg';
-import CategoriesComponent from './CategoriesComponent';
+} from "../../components/CommonStyle";
+import PlusIcon from "../../static/images/icons/icon_plus.svg";
+import MenuIcon from "../../static/images/icons/three-dots-icon.jpeg";
+import CategoriesComponent from "./CategoriesComponent";
 
 const Container = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
@@ -25,7 +25,13 @@ const Container = styled.div<{ bgColor: string }>`
   display: grid;
   grid-template-rows: 40px 1fr;
   overflow: auto;
+  border-radius: 5px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
 `;
+
 const TitleContainer = styled.div`
   width: 100%;
   background-color: ${color_context_brown};
@@ -41,7 +47,7 @@ const TitleContainer = styled.div`
     align-items: center;
     font-size: ${fontSize_h3_laptop};
     height: 2rem;
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     color: ${color_white};
     align-self: center;
   }
@@ -56,7 +62,7 @@ const ContentContainer = styled.div`
   align-items: center;
   width: 100%;
   .empty {
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
   }
 `;
 
@@ -70,6 +76,8 @@ const InputContainer = styled.div`
 const InputBox = styled.div`
   width: 85%;
   border: 2px ridge ${color_context_blue_light};
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 3px;
   /* border-style: ridge; */
   display: grid;
   grid-template-columns: 1fr 30px;
@@ -78,7 +86,7 @@ const InputBox = styled.div`
     border: none;
     padding: 5px;
     font-size: ${fontSize_body_laptop};
-    font-family: 'Fredoka One', cursive;
+    font-family: "Fredoka One", cursive;
     outline: none;
 
     ::placeholder {
@@ -107,6 +115,8 @@ const Item = styled.div`
   margin-top: 15px;
   display: flex;
   align-items: center;
+  border-radius: 3px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   /* display: grid;
   grid-template-columns: 30px 1fr 30px;
   align-items: center; */
@@ -141,8 +151,8 @@ function TaskContainer({
   itemCreateFunction?: any | undefined;
   todoList?: any | undefined;
 }) {
-  const [category, setCategory] = useState('phy');
-  const [tastContent, setTastContent] = useState('');
+  const [category, setCategory] = useState("phy");
+  const [tastContent, setTastContent] = useState("");
 
   const categoryHandler = (el: string) => {
     setCategory(el);
@@ -153,16 +163,16 @@ function TaskContainer({
 
   // empty object checking function
   const isEmptyObj = (obj: object) => {
-    return JSON.stringify(obj) === '{}';
+    return JSON.stringify(obj) === "{}";
   };
 
   return (
     <Container bgColor={color_context_beige}>
       <TitleContainer>
         {icon ? (
-          <img src={require(`../../static/images/icons/${icon}`)} alt='Ring' />
+          <img src={require(`../../static/images/icons/${icon}`)} alt="Ring" />
         ) : (
-          ''
+          ""
         )}
         <h3>{title}</h3>
       </TitleContainer>
@@ -176,7 +186,7 @@ function TaskContainer({
             ></CategoriesComponent>
             <InputBox>
               <input
-                placeholder='Add to-do'
+                placeholder="Add to-do"
                 value={tastContent}
                 onChange={(el) => {
                   inputHandler(el.target.value);
@@ -185,17 +195,17 @@ function TaskContainer({
               <InputIcon>
                 <img
                   src={PlusIcon}
-                  alt='Plus'
+                  alt="Plus"
                   onClick={() => {
                     itemCreateFunction(tastContent, category);
-                    setTastContent('');
+                    setTastContent("");
                   }}
                 />
               </InputIcon>
             </InputBox>
           </InputContainer>
         ) : (
-          ''
+          ""
         )}
         {/*  Todo list empty 여부 확인 */}
         {todoList && !isEmptyObj(todoList) ? (
@@ -205,31 +215,31 @@ function TaskContainer({
                 {itemModalBtn ? (
                   <img
                     src={MenuIcon}
-                    alt='Menu'
+                    alt="Menu"
                     onClick={() => {
                       openModalFunction(el.content, el.id, el.kind);
                     }}
                   />
                 ) : (
-                  ''
+                  ""
                 )}
                 <div>{el.content}</div>
                 {itemIcon ? (
                   <img
                     src={itemIcon}
-                    alt='Menu'
+                    alt="Menu"
                     onClick={() => {
                       itemBtnActionFunction(el.id, el.kind);
                     }}
                   />
                 ) : (
-                  ''
+                  ""
                 )}
               </Item>
             ))}
           </>
         ) : (
-          <div className='empty'>Empty...</div>
+          <div className="empty">Empty...</div>
         )}
       </ContentContainer>
     </Container>

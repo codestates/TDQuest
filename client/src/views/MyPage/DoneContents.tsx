@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   color_context_beige_light,
   fontSize_body_laptop_small,
-  fontSize_body_mobile_small
+  fontSize_body_mobile_small,
 } from "../../components/CommonStyle";
 import { TodoContentType } from "../../Types/generalTypes";
 import { TDQuestAPI } from "../../API/tdquestAPI";
@@ -16,6 +16,7 @@ const DoneContent = styled.div`
   align-items: center;
   justify-content: flex-start;
   background-color: ${color_context_beige_light};
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   @media (max-width: 768px) {
     width: 95%;
   }
@@ -50,11 +51,15 @@ const DoneContent = styled.div`
   }
 `;
 
-function DoneContents({id, content, updatedAt, handleDeleteList}: TodoContentType) {
-
+function DoneContents({
+  id,
+  content,
+  updatedAt,
+  handleDeleteList,
+}: TodoContentType) {
   const handleClick = (id: number) => {
     TDQuestAPI.delete(`todo/?id=${id}`).then((res) => res.data);
-  }
+  };
 
   return (
     <DoneContent>
@@ -62,10 +67,14 @@ function DoneContents({id, content, updatedAt, handleDeleteList}: TodoContentTyp
         <div className="content">{content}</div>
         <div className="created_contanier">
           {updatedAt}
-          <button onClick={()=>{
-            handleClick(id)
-            handleDeleteList(id);
-          }}>⛔️</button>
+          <button
+            onClick={() => {
+              handleClick(id);
+              handleDeleteList(id);
+            }}
+          >
+            ⛔️
+          </button>
         </div>
       </div>
     </DoneContent>
