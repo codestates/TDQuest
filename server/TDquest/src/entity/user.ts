@@ -19,6 +19,9 @@ export class user {
     @Column()
     password: string
 
+    @Column()
+    logintype: string
+
     @OneToMany(() => damage_log, (damage_log) => damage_log.user)
     damage_logs: damage_log[]
 
