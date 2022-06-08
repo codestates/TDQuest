@@ -12,6 +12,7 @@ export const Contents = styled.div`
   align-items: center;
   background-color: white;
   border-radius: 5px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   .trophy {
     width: 30px;
     height: 30px;
