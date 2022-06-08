@@ -22,6 +22,7 @@ export const TodoContainer = styled.div<{ bgColor: string }>`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  width: 100%;
   height: 100%;
   min-height: 90vh;
   padding-top: 80px;
@@ -59,23 +60,43 @@ export const SectionContainer = styled.div`
   column-gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   margin-bottom: 20px;
+  @media (max-width: 768px) {
+    width: 90%;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 `;
 
 export const StatusContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
-  width: 100%;
-  /* height: 250px; */
+  width: auto;
   border: 1px solid ${color_border_yellow};
+  border-radius: 5px;
   display: flex;
+  padding: 10px;
   justify-content: center;
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 export const RewardContainer = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
-  width: 100%;
+  width: auto;
   height: 250px;
   border: 1px solid ${color_border_yellow};
+  border-radius: 5px;
   display: grid;
   grid-template-rows: 40px 100%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+  }
 `;
 
 export const TitleContainer = styled.div`
@@ -116,6 +137,12 @@ export const ContentContainer = styled.div`
     @media (max-width: 768px) {
       font-size: ${fontSize_h3_tablet};
     }
+  }
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 15px 0;
   }
 `;
 
