@@ -197,6 +197,8 @@ export const todolistSlice = createSlice({
       })
       .addCase(patchTodoListAsync.fulfilled, (state, action) => {
         // 수정 했을때
+        // console.log(action.payload.todoInfo);
+
         const tempArray = state.todo.todoInfo;
         const targetId: number = action.payload.todoInfo.id;
         const index: any = state.todo.todoInfo.findIndex(
