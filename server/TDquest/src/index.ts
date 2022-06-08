@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser"
 import * as cors from "cors"
 import * as https from 'https'
 import * as fs from 'fs'
+import * as util from 'util'
 import { Request, Response } from "express"
 import { Routes } from "./routes"
 import { user } from "./entity/user"
@@ -40,21 +41,24 @@ createConnection().then(async connection => {
 
     // setup express app here
     // ...
-
+    app.listen(3001)
     // start express server
-    https
-    .createServer(
-        {
-        key: fs.readFileSync(__dirname + '/key.pem', 'utf-8'),
-        cert: fs.readFileSync(__dirname + '/cert.pem', 'utf-8'),
-        },
-        function (req: Request, res: Response) {
-        res.write('Congrats! You made https server now :)');
-        res.end();
-        }
-    )
-    .listen(3001);
-
+    const readFile = util.promisify(fs.readFile);
+    // async function startServer() {
+    //     const [key, cert] = await Promise.all([
+    //       readFile(__dirname + '/key.pem'),
+    //       readFile(__dirname + '/cert.pem')
+    //     ]);
+    //     https.createServer({ key, cert }, (req, res) => {
+    //       res.statusCode = 200;
+    //       res.end('hello world');
+    //     })
+    //       .listen(3001, () => {
+    //         console.log('Server started');
+    //       });
+    //   }
+       
+    //   startServer();
     // insert new users for test
 
     // await connection.manager.save(

@@ -37,7 +37,7 @@ export class userController {
 
     async getUser(request: Request, response: Response, next: NextFunction) {
         try {
-            const userInfo = await this.userRepository.findOne({where: {id :request.params.id}})
+            const userInfo = await this.userRepository.findOne({where: {id :request.query.id}})
             return Object.assign({
                 userInfo: userInfo,
                 message: '유저정보'

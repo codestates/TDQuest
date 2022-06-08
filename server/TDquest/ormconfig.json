@@ -1,9 +1,10 @@
 {
   "type": "mysql",
-  "host": "localhost",
-  "username": "root", 
-  "password": "password", 
-  "database": "TDquest", 
+  "host": "tdquest.cju8kanwkj6m.ap-northeast-2.rds.amazonaws.com",
+  "username": "admin", 
+  "port": "3307",
+  "password": "9115063y", 
+  "database": "tdquest", 
   "synchronize": false,
   "logging": false,
   "entities": [

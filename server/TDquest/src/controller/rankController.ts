@@ -14,6 +14,7 @@ export class rankController {
       let ranker = [];
       characterStat.map(el => {
         const stat = el.status_phy + el.status_int + el.status_spi
+        console.log(stat)
         if (max < stat) {
           max = stat
         }
@@ -24,8 +25,8 @@ export class rankController {
         }
       })
       ranker.map(async el => {
-        const rankerUser = await this.charactersRepository.findOne(el)
-        return rankerUser
+          const rankerUser = await this.charactersRepository.findOne({where: {user : {id: el}}})
+          return rankerUser
       })
       return Object.assign({
         ranker: ranker
