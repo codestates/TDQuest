@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm"
 import  axios from "axios"
+import 'dotenv/config'
 import { NextFunction, Request, Response } from "express"
 import { characters } from "../../entity/character"
 import { user } from "../../entity/user"
@@ -47,10 +48,10 @@ export class googleController {
             if (userInfo) {
                 const accessToken = await makeAccessToken(userInfo.email)
                 const refreshToken = await makeRefreshToken(userInfo.email)
-                await this.characterRepository.findOne({ where : { user_id : userInfo.id}})
+                await this.characterRepository.findOne({ where : { user: {id : userInfo.id}}})
                 .then(async character => {
                     const damage_logInfo = await this.damage_logRepository.findOne({
-                        where : { user_id : userInfo.id}
+                        where : { user: {id : userInfo.id}}
                     })
 
                     const characterInfo = {
@@ -65,7 +66,7 @@ export class googleController {
                             id: userInfo.id,
                             email: userInfo.email,
                             nickname: userInfo.nickname,
-                            // logintype: userInfo.logintype,
+                            logintype: userInfo.logintype,
                         },
                         accessToken : accessToken,
                         damage_logInfo : damage_logInfo,
@@ -83,7 +84,7 @@ export class googleController {
                     await this.characterRepository.save({ id : userInfo.id})
                     .then(async (character) => {
                         const damage_logInfo = await this.damage_logRepository.findOne({
-                            where : { user_id : userInfo.id},
+                            where : { user: {id : userInfo.id}},
                         })
 
                         const characterInfo = {
@@ -123,3 +124,4 @@ export class googleController {
           })
         }
       }  
+

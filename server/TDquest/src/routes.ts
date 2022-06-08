@@ -4,26 +4,42 @@ import { damageLogController } from "./controller/damageLogController"
 import { monsterController } from "./controller/monsterController"
 import { raidController } from "./controller/raidController"
 import { todolistController } from "./controller/todolistController"
+<<<<<<< HEAD
 import { logController } from "./controller/log"
 import { rankController } from "./controller/rankController"
 
 export const Routes = [{
     method: "patch",
     route: "/userInfo",
+=======
+
+export const Routes = [{
+    method: "put",
+    route: "/user",
+>>>>>>> 0258e8f (pull typescript)
     controller: userController,
     action: "updateUser"
 }, {
     method: "get",
+<<<<<<< HEAD
     route: "/userInfo",
+=======
+    route: "/user/:id",
+>>>>>>> 0258e8f (pull typescript)
     controller: userController,
     action: "getUser"
 }, {
     method: "post",
+<<<<<<< HEAD
     route: "/sign/in",
+=======
+    route: "/user",
+>>>>>>> 0258e8f (pull typescript)
     controller: userController,
     action: "signIn"
 }, {
     method: "delete",
+<<<<<<< HEAD
     route: "/sign/out",
     controller: userController,
     action: "signOut"
@@ -38,6 +54,12 @@ export const Routes = [{
     controller: logController,
     action: "logout"
 }, {
+=======
+    route: "/user/:id",
+    controller: userController,
+    action: "signOut"
+}, {
+>>>>>>> 0258e8f (pull typescript)
     method: "get",
     route: "/character",
     controller: charactersController,
@@ -51,7 +73,16 @@ export const Routes = [{
     method: "get",
     route: "/monster",
     controller: monsterController,
+<<<<<<< HEAD
     action: "getMonster"
+=======
+    action: "all"
+}, {
+    method: "get",
+    route: "/raid",
+    controller: raidController,
+    action: "all"
+>>>>>>> 0258e8f (pull typescript)
 }, {
     method: "get",
     route: "/todo/complete",
@@ -59,7 +90,11 @@ export const Routes = [{
     action: "completeTodo"
 }, {
     method: "get",
+<<<<<<< HEAD
     route: "/todo/incomplete",
+=======
+    route: "/todo",
+>>>>>>> 0258e8f (pull typescript)
     controller: todolistController,
     action: "inCompleteTodo"
 }, {
@@ -77,6 +112,7 @@ export const Routes = [{
     route: "/todo",
     controller: todolistController,
     action: "deleteTodo"
+<<<<<<< HEAD
 }, {
     method: "put",
     route: "/todo/complete",
@@ -102,5 +138,7 @@ export const Routes = [{
     route: "/raids/invite",
     controller: raidController,
     action: "inviteRaids"
+=======
+>>>>>>> 0258e8f (pull typescript)
 }
 ]
