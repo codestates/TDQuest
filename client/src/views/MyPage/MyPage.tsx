@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { color_primary_green_light } from '../../components/CommonStyle';
-import Loading from '../../components/Loading';
-import Status from '../../components/Status';
-import HelperBear from '../../components/HelperBear';
-import Button from '../../components/Button';
-import MsgModal from '../../components/MsgModal';
-import { Toast } from '../../components/Toast';
-import { DeleteUserAlertModal } from './DeleteUserModal';
-import { ChangePasswordModal } from './ChangePWModal';
-import DoneContents from './DoneContents';
+import React, { useState, useEffect } from "react";
+import { color_primary_green_light } from "../../components/CommonStyle";
+import Loading from "../../components/Loading";
+import Status from "../../components/Status";
+import HelperBear from "../../components/HelperBear";
+import Button from "../../components/Button";
+import MsgModal from "../../components/MsgModal";
+import { Toast } from "../../components/Toast";
+import { DeleteUserAlertModal } from "./DeleteUserModal";
+import { ChangePasswordModal } from "./ChangePWModal";
+import DoneContents from "./DoneContents";
 import {
   CharDataType,
   UserDataType,
   TodoListType,
-} from '../../Types/generalTypes';
+} from "../../Types/generalTypes";
 import {
   MyPageRoot,
   MyPageContainer,
@@ -29,22 +29,22 @@ import {
   ContentContainer,
   AchievementsWrapper,
   Achievements,
-} from './MyPageStyle';
+} from "./MyPageStyle";
 // API REQUEST
-import { TDQuestAPI } from '../../API/tdquestAPI';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { TDQuestAPI } from "../../API/tdquestAPI";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   getUserData,
   modifyNickname,
-} from '../../features/userinfo/userInfoSlice';
+} from "../../features/userinfo/userInfoSlice";
 
 function MyPage() {
   const [donelist, setDonelist] = useState<TodoListType[]>([]);
   const [loading, setLoading] = useState(true);
   const [onChange, setOnChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [curNickName, setCurNickName] = useState('');
-  const [checkNickNameValidation, setNickNameValidation] = useState('');
+  const [curNickName, setCurNickName] = useState("");
+  const [checkNickNameValidation, setNickNameValidation] = useState("");
   const [pwModal, setPwModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [netError, setNetError] = useState(false);
@@ -52,18 +52,18 @@ function MyPage() {
   const userData = useAppSelector((state) => state.MyPageInfo);
   const charData = useAppSelector((state) => state.character);
   const dispatch = useAppDispatch();
-  const medals: string[] = charData?.medal.split(',') || [];
+  const medals: string[] = charData?.medal.split(",") || [];
   // console.log(medals);
 
   const LOCALSTORAGE = window.localStorage;
   const LOCALSTORAGE_PASRED = JSON.parse(
-    window.localStorage.getItem('isLogin') as string
+    window.localStorage.getItem("isLogin") as string
   );
 
   const { id: L_user_id, email: L_email } = LOCALSTORAGE_PASRED.userInfo;
-  const accessToken = JSON.parse(
-    window.localStorage.getItem('accessToken') as string
-  );
+  // const accessToken = JSON.parse(
+  //   window.localStorage.getItem('accessToken') as string
+  // );
 
   useEffect(() => {
     if (loading) {
@@ -71,9 +71,9 @@ function MyPage() {
         // console.log(L_user_id);
         // console.log(accessToken);
         await TDQuestAPI.get(`todo/complete/?user_id=${L_user_id}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${accessToken}`,
+          // },
         })
           .then((res) => {
             setDonelist(res.data.todo_lists);
@@ -89,22 +89,19 @@ function MyPage() {
 
       dispatch(getUserData(L_user_id)).then((res) => {
         switch (res.type) {
-          case 'userinfo/pending':
+          case "userinfo/pending":
             return setLoading(true);
-          case 'userinfo/fulfilled': {
+          case "userinfo/fulfilled": {
             setNetError(false);
             setLoading(false);
             break;
           }
-          case 'userinfo/rejected':
+          case "userinfo/rejected":
             return setNetError(true);
         }
       });
     }
-    //setCharData(LOCALSTORAGE_PASRED.characterInfo);
   }, []);
-
-  // console.log(userData);
 
   // User Action 관련한 함수들
   const handleChange = () => {
@@ -117,7 +114,7 @@ function MyPage() {
 
   // 유저 닉네임 수정 관련 함수 (버튼 클릭 시 실행)
   const handleSaveChange = () => {
-    if (curNickName === '') {
+    if (curNickName === "") {
       return null;
     }
     setOnChange(!onChange);
@@ -127,18 +124,18 @@ function MyPage() {
     ).then((res) => {
       // console.log(res);
       switch (res.type) {
-        case 'modifyNickname/pending':
+        case "modifyNickname/pending":
           return setLoading(true);
-        case 'modifyNickname/fulfilled': {
+        case "modifyNickname/fulfilled": {
           setLoading(false);
           // console.log("닉네임 수정 성공");
           setNetError(false);
           setShowToast(true);
           LOCALSTORAGE_PASRED.userInfo.nickname = curNickName;
-          LOCALSTORAGE.setItem('isLogin', JSON.stringify(LOCALSTORAGE_PASRED));
+          LOCALSTORAGE.setItem("isLogin", JSON.stringify(LOCALSTORAGE_PASRED));
           break;
         }
-        case 'modifyNickname/rejected': {
+        case "modifyNickname/rejected": {
           setLoading(false);
           setNetError(true);
           setShowToast(true);
@@ -166,17 +163,17 @@ function MyPage() {
 
   const deleteAccount = async () => {
     // 유저 정보 삭제 관련 로직
-    console.log('유저 정보 삭제');
+    console.log("유저 정보 삭제");
     console.log(checkNickNameValidation, userData.nickname);
     if (checkNickNameValidation === userData.nickname) {
       await TDQuestAPI.delete(`sign/out/?id=${L_user_id}`).then((res) => {
         console.log(res.data.message);
-        LOCALSTORAGE.removeItem('isLogin');
-        LOCALSTORAGE.removeItem('accessToken');
-        LOCALSTORAGE.assign('/');
+        LOCALSTORAGE.removeItem("isLogin");
+        LOCALSTORAGE.removeItem("accessToken");
+        LOCALSTORAGE.assign("/");
       });
     } else {
-      console.log('닉네임을 올바르게 입력하세요');
+      console.log("닉네임을 올바르게 입력하세요");
     }
   };
 
@@ -196,15 +193,15 @@ function MyPage() {
     <MyPageRoot>
       {loading ? (
         <MyPageContainer bgColor={color_primary_green_light}>
-          <Loading customText='Loading...' />
+          <Loading customText="Loading..." />
         </MyPageContainer>
       ) : (
         <MyPageContainer bgColor={color_primary_green_light}>
           <MyPageHeader>
-            <div className='headerContainer'>
+            <div className="headerContainer">
               <img
-                src={require('../../static/images/icons/Achievements.png')}
-                alt='Achievements'
+                src={require("../../static/images/icons/Achievements.png")}
+                alt="Achievements"
               />
               <h1>My Info</h1>
             </div>
@@ -215,16 +212,16 @@ function MyPage() {
             </CharContainer>
             <UserInfoDetailContainer>
               {onChange ? (
-                <div className='change_userinfo_wrapper'>
+                <div className="change_userinfo_wrapper">
                   <input
-                    type='text'
-                    className='change_name'
+                    type="text"
+                    className="change_name"
                     placeholder={` ${userData.nickname}`}
                     onChange={changeName}
-                    autoComplete='off'
+                    autoComplete="off"
                   ></input>
                   <button
-                    className='change_pw_btn'
+                    className="change_pw_btn"
                     onClick={() => {
                       openModal();
                       setPwModal(true);
@@ -235,7 +232,7 @@ function MyPage() {
                   {/* 유저 비밀번호 수정 관련 모달 창 코드 */}
                   {pwModal ? (
                     <MsgModal
-                      header='❗️ Change Password'
+                      header="❗️ Change Password"
                       open={showModal}
                       close={closeModal}
                       noFooter={true}
@@ -252,7 +249,7 @@ function MyPage() {
                   {/* 유저 계정 삭제 확인 관련 모달 창 코드 */}
                   {pwModal ? null : (
                     <MsgModal
-                      header='❗️ Delete account'
+                      header="❗️ Delete account"
                       open={showModal}
                       close={closeModal}
                       footerClick={deleteAccount}
@@ -268,29 +265,29 @@ function MyPage() {
                   )}
                 </div>
               ) : (
-                <div className='user_id_wrapper'>
+                <div className="user_id_wrapper">
                   <h1>{userData.nickname}</h1>
                   <h2>{userData.email}</h2>
                 </div>
               )}
               {!onChange ? (
-                <div className='ButtonContainer'>
-                  <Button text='Change info' onClick={handleChange} />
-                  <div className='button_margin'></div>
-                  <Button text='Delete Account' deactive={true} />
+                <div className="ButtonContainer">
+                  <Button text="Change info" onClick={handleChange} />
+                  <div className="button_margin"></div>
+                  <Button text="Delete Account" deactive={true} />
                 </div>
               ) : (
-                <div className='ButtonContainer'>
-                  <Button text='Save Change' onClick={handleSaveChange} />
-                  <div className='button_margin'></div>
-                  <Button text='Delete Account' onClick={openModal} />
+                <div className="ButtonContainer">
+                  <Button text="Save Change" onClick={handleSaveChange} />
+                  <div className="button_margin"></div>
+                  <Button text="Delete Account" onClick={openModal} />
                 </div>
               )}
             </UserInfoDetailContainer>
 
             <HelperBearContainer>
               <HelperBear
-                width='220px'
+                width="220px"
                 text={`Your total done list : ${donelist.length}! Great job!`}
               />
             </HelperBearContainer>
@@ -322,14 +319,14 @@ function MyPage() {
               </TitleContainer>
               <ContentContainer>
                 <AchievementsWrapper>
-                  {medals[0] !== ''
+                  {medals[0] !== ""
                     ? medals.map((el, idx) => {
                         return (
                           <Achievements
                             key={idx}
-                            src={require('../../static/images/Achievements/' +
+                            src={require("../../static/images/Achievements/" +
                               el +
-                              '.png')}
+                              ".png")}
                           ></Achievements>
                         );
                       })
@@ -344,7 +341,7 @@ function MyPage() {
                 text={`🚫 Network Error! \n Check your network settings`}
               />
             ) : (
-              <Toast text='✅  User Info Changed Complete!' />
+              <Toast text="✅  User Info Changed Complete!" />
             )
           ) : null}
         </MyPageContainer>

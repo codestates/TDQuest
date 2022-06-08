@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   RankingContainer,
   RankingPageHeader,
@@ -12,15 +12,15 @@ import {
   CharacterContainer,
   FrameTopRanker,
   GoldenLeaf,
-} from './RankingPageStyle';
-import Status from '../../components/Status';
-import { color_secondary_beige } from '../../components/CommonStyle';
-import RankingListContainer from './RankingListContainer';
+} from "./RankingPageStyle";
+import Status from "../../components/Status";
+import { color_secondary_beige } from "../../components/CommonStyle";
+import RankingListContainer from "./RankingListContainer";
 import {
   getRankingListAsync,
   getTopRankerAsync,
-} from '../../features/ranking/rankingSlice';
-import crownIcon from '../../static/images/icons/Crown.png';
+} from "../../features/ranking/rankingSlice";
+import crownIcon from "../../static/images/icons/Crown.png";
 
 function RankingPage() {
   const dispatch: any = useDispatch();
@@ -38,7 +38,7 @@ function RankingPage() {
     return arg.status_phy + arg.status_int + arg.status_spi;
   };
   const { id: user_id, nickname } = JSON.parse(
-    window.localStorage.getItem('isLogin') as string
+    window.localStorage.getItem("isLogin") as string
   ).userInfo;
   const charInfo: any = useSelector((state: any) => state.character);
 
@@ -52,10 +52,10 @@ function RankingPage() {
   return (
     <RankingContainer>
       <RankingPageHeader>
-        <div className='headerContainer'>
+        <div className="headerContainer">
           <img
-            src={require('../../static/images/icons/Leaderboard.png')}
-            alt='Leaderboard'
+            src={require("../../static/images/icons/Leaderboard.png")}
+            alt="Leaderboard"
           />
           <h2>Ranking</h2>
         </div>
@@ -65,7 +65,7 @@ function RankingPage() {
           <Status
             userName={nickname}
             charData={charInfo}
-            direction='row'
+            direction="row"
           ></Status>
         </StatusContainer>
         <RewardContainer bgColor={color_secondary_beige}>
@@ -81,12 +81,12 @@ function RankingPage() {
             </CharacterContainer>
             <UserInfo>
               <h3>Best user of this week</h3>
-              <p>
-                <img src={crownIcon} alt='crown'></img>
-                {topRanker.user ? topRanker.user.nickname : 'user'}
+              <p className="top_userName">
+                <img src={crownIcon} alt="crown"></img>
+                {topRanker.user ? topRanker.user.nickname : "user"}
               </p>
-              <p>
-                Total stats:{' '}
+              <p className="total_status">
+                Total stats:{" "}
                 {topRanker.user ? topRankerTotalPoint(topRanker) : 0} points
               </p>
             </UserInfo>
@@ -95,21 +95,21 @@ function RankingPage() {
       </SectionContainer>
       <SectionContainer>
         <RankingListContainer
-          title='PHY Ranking'
-          category='PHY'
-          icon='Physical.png'
+          title="PHY Ranking"
+          category="PHY"
+          icon="Physical.png"
           rankingList={phyRankingList}
         ></RankingListContainer>
         <RankingListContainer
-          title='INT Ranking'
-          category='INT'
-          icon='Intelligence.png'
+          title="INT Ranking"
+          category="INT"
+          icon="Intelligence.png"
           rankingList={intRankingList}
         ></RankingListContainer>
         <RankingListContainer
-          title='SPI Ranking'
-          category='SPI'
-          icon='Spirit.png'
+          title="SPI Ranking"
+          category="SPI"
+          icon="Spirit.png"
           rankingList={spiRankingList}
         ></RankingListContainer>
       </SectionContainer>
